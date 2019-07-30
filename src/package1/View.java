@@ -17,6 +17,11 @@ public class View {
 	private JPanel upperPanel;
 	private JPanel lowerPanel;
 	private JSplitPane splitPane;
+	
+	private JMenuBar menubar;
+	private JMenu file, help;
+	private JMenuItem exit, about;
+	
 	private JLabel imageLabel1;	
 	private ImageIcon image;
 	
@@ -46,6 +51,21 @@ public class View {
 		frame.add(splitPane);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(1024, 600);
+		
+		//Create a menu
+		menubar = new JMenuBar();
+		frame.setJMenuBar(menubar);
+		
+		file = new JMenu("File");
+		menubar.add(file);
+		exit = new JMenuItem("Exit");
+		file.add(exit);
+		
+		help = new JMenu("Help");
+		menubar.add(help);
+		about = new JMenuItem("About");
+		help.add(about);
+		
 		frame.setVisible(true);
 		
 		
