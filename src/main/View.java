@@ -16,6 +16,8 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class View {
 
@@ -52,7 +54,34 @@ public class View {
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.getContentPane().setLayout(null);
 		
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBounds(20, 60, 780, 420);
+		frame.getContentPane().add(mainPanel);
+		mainPanel.setLayout(null);
+					
 		JButton btnAddNodes = new JButton("Nodes");
+		btnAddNodes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Image nodeImage = new ImageIcon(this.getClass().getResource("/node.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+				JLabel nodeLabel = new JLabel();
+				nodeLabel.setIcon(new ImageIcon(nodeImage));
+				
+				mainPanel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent e) {
+						nodeLabel.setBounds(e.getX(),e.getY(),50,30);
+						mainPanel.add(nodeLabel);
+						mainPanel.setBackground(new Color(240,240,240));
+					}
+				});
+				
+				//nodeLabel.setBounds(20,20,50,30);
+				//mainPanel.add(nodeLabel);
+				//mainPanel.setBackground(new Color(240,240,240));
+				//System.out.println(e.getX() + ", " + e.getY());
+			}
+		});
 		Image nodeImage = new ImageIcon(this.getClass().getResource("/node.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 		btnAddNodes.setIcon(new ImageIcon(nodeImage));
 		btnAddNodes.setBackground(Color.LIGHT_GRAY);
@@ -78,6 +107,12 @@ public class View {
 		btnMove.setBackground(Color.LIGHT_GRAY);
 		btnMove.setBounds(260, 10, 100, 30);
 		frame.getContentPane().add(btnMove);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setBackground(Color.LIGHT_GRAY);
+		btnDelete.setBounds(380, 10, 100, 30);
+		frame.getContentPane().add(btnDelete);
+				
 		frame.setBounds(100, 100, 840, 560);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
