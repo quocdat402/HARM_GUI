@@ -12,6 +12,8 @@ public class Controller {
 	
 	private View view;
 	private Model model;
+	 
+	
 	
 	public Controller(Model m, View v) {
 		
@@ -40,8 +42,14 @@ public class Controller {
 				nodeLabel.setBounds(e.getX(),e.getY(),20,20);
 				view.getMainPanel().add(nodeLabel);
 				view.getMainPanel().setBackground(new Color(240,240,240));
+				
+				
 			}
 		});
+		
+		
 	}
+	
+	
 
 }

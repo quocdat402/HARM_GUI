@@ -18,6 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class View {
 
@@ -28,16 +30,24 @@ public class View {
 	private JMenu file, help;
 	private JMenuItem exit, about;
 	private Image nodeImage, arcImage;
+	private MainPanel MainPanel;
+	//private List<Node> nodes = new ArrayList<Node>();
 	
 	public View() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.getContentPane().setLayout(null);
 		
+		//MainPanel = new MainPanel();
+		//MainPanel.setBounds(20, 60, 780, 420);
+		//frame.getContentPane().add(MainPanel);
+		//MainPanel.setLayout(null);
+		//MainPanel.addMouseListener(new NodeClickListener(MainPanel));
+		
 		mainPanel = new JPanel();
 		mainPanel.setBounds(20, 60, 780, 420);
 		frame.getContentPane().add(mainPanel);
-		mainPanel.setLayout(null);
+		mainPanel.setLayout(null);		
 					
 		btnAddNodes = new JButton("Nodes");
 		nodeImage = new ImageIcon(this.getClass().getResource("/node.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
@@ -187,6 +197,10 @@ public class View {
 	public void setArcImage(Image arcImage) {
 		this.arcImage = arcImage;
 	}
+	
+	
+	
+	
 	
 	
 }
