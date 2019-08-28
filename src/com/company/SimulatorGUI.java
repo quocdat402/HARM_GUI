@@ -25,8 +25,7 @@ public class SimulatorGUI extends JFrame {
     private int clickCount = 0;
     private ArrayList<Pair> listOfPairs;//Added for storing pairs of nodes
     private Map<String, Point> map;//Stores Jlabel added on center panel and its location.
-    private ByteArrayOutputStream baos;
-    private ByteArrayInputStream bais;
+    
     private int counter = 0;//To know the number of routers pasted on center panel
     private JButton button;
     private JLabel lblNode;
@@ -105,34 +104,16 @@ public class SimulatorGUI extends JFrame {
         lblNode = new JLabel("Node Label");
         lblNode.setBorder(BorderFactory.createLineBorder(Color.black,1));
         southPanel.add(lblNode);
-        class MyMouseAdapter extends MouseAdapter {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                clickCount = 1;
-                try {
-                    copy((JLabel) e.getSource());
-                } catch (Exception ex) {
-                }
-            }
-        }
+                
         
-        lblNode.addMouseListener(new MyMouseAdapter());
+        
         southPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
         contentPane.add(southPanel, BorderLayout.SOUTH);
         
         centerPanel = new MyJPanel();
         centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP));
-        centerPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (clickCount == 1) {
-                    try {
-                        pasteLabel(e.getX(), e.getY());
-                    } catch (Exception ex) {
-                    }
-                }
-            }
-        });
+        
+        
         
         contentPane.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(null);
@@ -183,70 +164,9 @@ public class SimulatorGUI extends JFrame {
         }
     }
     
-    public void copy(JLabel label) throws Exception {
-        baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(label);
-        oos.close();
-    }
+    
 
-    public void pasteLabel(int x, int y) throws Exception {
-    	
-        if (clickCount == 1) {
-            bais = new ByteArrayInputStream(baos.toByteArray());
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            JLabel obj = (JLabel) ois.readObject();
-            MyMouseAdapter myMouseAdapter = new MyMouseAdapter();
-            obj.addMouseListener(myMouseAdapter);
-            obj.addMouseMotionListener(myMouseAdapter);
-            centerPanel.add(obj);
-            obj.setText("Node "+counter);
-            //obj.setBounds(x, y, obj.getWidth(), obj.getHeight());
-            obj.setLocation(x,y);
-            clickCount = 0;
-            ois.close();
-            map.put("Node "+counter , obj.getLocation());
-            counter++;
-        }
-    }
-
-    class MyMouseAdapter extends MouseAdapter {
-        private Point initialLoc;
-        private Point initialLocOnScreen;
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            Component comp = (Component) e.getSource();
-            initialLoc = comp.getLocation();
-            initialLocOnScreen = e.getLocationOnScreen();
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            Component comp = (Component) e.getSource();
-            Point locOnScreen = e.getLocationOnScreen();
-
-            int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
-            int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
-            comp.setLocation(x, y);
-            map.put(((JLabel)comp).getText(),new Point(x,y));
-            centerPanel.repaint();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            Component comp = (Component) e.getSource();
-            Point locOnScreen = e.getLocationOnScreen();
-
-            int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
-            int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
-            comp.setLocation(x, y);
-            map.put(((JLabel)comp).getText(),new Point(x,y));
-            centerPanel.repaint();
-        }
-        
-        
-    }
+    
 
 	public JPanel getSouthPanel() {
 		return southPanel;
@@ -302,18 +222,7 @@ public class SimulatorGUI extends JFrame {
 	public void setMap(Map<String, Point> map) {
 		this.map = map;
 	}
-	public ByteArrayOutputStream getBaos() {
-		return baos;
-	}
-	public void setBaos(ByteArrayOutputStream baos) {
-		this.baos = baos;
-	}
-	public ByteArrayInputStream getBais() {
-		return bais;
-	}
-	public void setBais(ByteArrayInputStream bais) {
-		this.bais = bais;
-	}
+	
 	public int getCounter() {
 		return counter;
 	}

@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -17,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import com.company.SimulatorGUI.MyMouseAdapter;
+
 
 public class MainController {
 
@@ -25,6 +27,8 @@ public class MainController {
 	private MainModel model;
 	private int counter = 0;//To know the number of routers pasted on center panel
 	private int clickCount = 0;
+	private ByteArrayOutputStream baos;
+    private ByteArrayInputStream bais;
 	
 	public MainController(MainModel m,SimulatorGUI sGUI) {
 		
@@ -71,6 +75,30 @@ public class MainController {
                 }
             }
         });
+		
+		simulatorGUI.getLblNode().addMouseListener(new MouseAdapter() {
+        	public void mouseClicked(MouseEvent e) {
+                clickCount = 1;
+                try {
+                    copy((JLabel) e.getSource());
+                } catch (Exception ex) {
+                }
+            }
+        });
+		
+		simulatorGUI.getCenterPanel().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (clickCount == 1) {
+                    try {
+                        pasteLabel(e.getX(), e.getY());
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+        });
+		
+		
 		
 		
 		
@@ -129,5 +157,69 @@ public class MainController {
         return nodes;
     }
 	
+	public void copy(JLabel label) throws Exception {
+        baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(label);
+        oos.close();
+    }
+
+    public void pasteLabel(int x, int y) throws Exception {
+    	
+        if (clickCount == 1) {
+            bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            JLabel obj = (JLabel) ois.readObject();
+            MyMouseAdapter myMouseAdapter = new MyMouseAdapter();
+            obj.addMouseListener(myMouseAdapter);
+            obj.addMouseMotionListener(myMouseAdapter);
+            simulatorGUI.getCenterPanel().add(obj);
+            obj.setText("Node "+counter);
+            //obj.setBounds(x, y, obj.getWidth(), obj.getHeight());
+            obj.setLocation(x,y);
+            clickCount = 0;
+            ois.close();
+            simulatorGUI.getMap().put("Node "+counter , obj.getLocation());
+            counter++;
+        }
+    }
+    
+    class MyMouseAdapter extends MouseAdapter {
+        private Point initialLoc;
+        private Point initialLocOnScreen;
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            Component comp = (Component) e.getSource();
+            initialLoc = comp.getLocation();
+            initialLocOnScreen = e.getLocationOnScreen();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            Component comp = (Component) e.getSource();
+            Point locOnScreen = e.getLocationOnScreen();
+
+            int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
+            int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
+            comp.setLocation(x, y);
+            simulatorGUI.getMap().put(((JLabel)comp).getText(),new Point(x,y));
+            simulatorGUI.getCenterPanel().repaint();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            Component comp = (Component) e.getSource();
+            Point locOnScreen = e.getLocationOnScreen();
+
+            int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
+            int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
+            comp.setLocation(x, y);
+            simulatorGUI.getMap().put(((JLabel)comp).getText(),new Point(x,y));
+            simulatorGUI.getCenterPanel().repaint();
+        }
+        
+        
+    }
 	
 }
