@@ -19,19 +19,21 @@ import java.util.Set;
 
 public class SimulatorGUI extends JFrame {
     private JPanel contentPane;
-    JPanel southPanel;
-    JPanel centerPanel;
-    JPanel westPanel;
-    int clickCount = 0;
-    ArrayList<Pair> listOfPairs;//Added for storing pairs of nodes
-    Map<String, Point> map;//Stores Jlabel added on center panel and its location.
-    ByteArrayOutputStream baos;
-    ByteArrayInputStream bais;
-    int counter = 0;//To know the number of routers pasted on center panel
+    private JPanel southPanel;
+    private JPanel centerPanel;
+    private JPanel westPanel;
+    private int clickCount = 0;
+    private ArrayList<Pair> listOfPairs;//Added for storing pairs of nodes
+    private Map<String, Point> map;//Stores Jlabel added on center panel and its location.
+    private ByteArrayOutputStream baos;
+    private ByteArrayInputStream bais;
+    private int counter = 0;//To know the number of routers pasted on center panel
+    private JButton button;
+    private JLabel lblNode;
+    private JButton btnClear;
 
     public SimulatorGUI() {
         contentPane = new JPanel();
-
         listOfPairs = new ArrayList<Pair>();
         map = new LinkedHashMap<String,Point>();
 
@@ -100,7 +102,7 @@ public class SimulatorGUI extends JFrame {
         menuBar.add(mnHelp);
 
         southPanel = new JPanel();
-        JLabel lblNode = new JLabel("Node Label");
+        lblNode = new JLabel("Node Label");
         lblNode.setBorder(BorderFactory.createLineBorder(Color.black,1));
         southPanel.add(lblNode);
         class MyMouseAdapter extends MouseAdapter {
@@ -113,11 +115,11 @@ public class SimulatorGUI extends JFrame {
                 }
             }
         }
+        
         lblNode.addMouseListener(new MyMouseAdapter());
         southPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
         contentPane.add(southPanel, BorderLayout.SOUTH);
-
-        //centerPanel = new JPanel();
+        
         centerPanel = new MyJPanel();
         centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP));
         centerPanel.addMouseListener(new MouseAdapter() {
@@ -131,90 +133,24 @@ public class SimulatorGUI extends JFrame {
                 }
             }
         });
+        
         contentPane.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(null);
 
         westPanel = new JPanel();
         contentPane.add(westPanel, BorderLayout.WEST);
         westPanel.setBorder(BorderFactory.createTitledBorder("Option"));
-        JButton btnClear = new JButton("Clear");
-        btnClear.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                centerPanel.removeAll();
-                centerPanel.validate();
-                centerPanel.repaint();
-                listOfPairs.clear();map.clear();
-                counter = 0;
-            }
-        });
+        btnClear = new JButton("Clear");
+        
         westPanel.add(btnClear);
-        JButton button  = new JButton("DrawArc");
-        button.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent evt)
-            {
-                String[] nodes = showGUIForNodeSelection();
-                if (nodes == null || nodes[0]==null || nodes.length == 0 )
-                {}
-                else if (!nodes[0].equals(nodes[1]))
-                {
-                    String split[] = nodes[0].split(",");
-                    Point p1 = new Point(Integer.valueOf(split[0]),Integer.valueOf(split[1]));
-                    split = nodes[1].split(",");
-                    Point p2 = new Point(Integer.valueOf(split[0]),Integer.valueOf(split[1]));
-                    JLabel label1 = (JLabel)centerPanel.getComponentAt(p1);
-                    JLabel label2 = (JLabel)centerPanel.getComponentAt(p2);
-                    Pair pair = new Pair(label1,label2);
-                    listOfPairs.add(pair);
-                    centerPanel.repaint();
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(SimulatorGUI.this,"Nodes can't be same","Error",JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        button  = new JButton("DrawArc");
+        
         westPanel.add(button);
     }
-    private String[] showGUIForNodeSelection()
-    {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(map.size(),2));
-        ButtonGroup group1 = new ButtonGroup();
-        ButtonGroup group2 = new ButtonGroup();
-        final String nodes[] = new String[2];
-        Set<String> keySet = map.keySet();
-        for (String name : keySet)
-        {
-            JRadioButton rButton = new JRadioButton(name);
-            rButton.setActionCommand(map.get(name).x+","+map.get(name).y);
-            rButton.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent evt)
-                {
-                    nodes[0] = ((JRadioButton)evt.getSource()).getActionCommand();
-                }
-            });
-            group1.add(rButton);
-            panel.add(rButton);
-            JRadioButton rButton1 = new JRadioButton(name);
-            rButton1.setActionCommand(map.get(name).x+","+map.get(name).y);
-            rButton1.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent evt)
-                {
-                    nodes[1] = ((JRadioButton)evt.getSource()).getActionCommand();
-                }
-            });
-            group2.add(rButton1);
-            panel.add(rButton1);
-        }
-        JOptionPane.showMessageDialog(SimulatorGUI.this,panel,"Choose the nodes pair",JOptionPane.INFORMATION_MESSAGE);
-        return nodes;
-    }
-    private class MyJPanel extends JPanel//Creater your own JPanel and override paintComponentMethod.
+    
+    
+    
+    private class MyJPanel extends JPanel//Create your own JPanel and override paintComponentMethod.
     {
         @Override
         public void paintComponent(Graphics g)
@@ -246,6 +182,7 @@ public class SimulatorGUI extends JFrame {
             }
         }
     }
+    
     public void copy(JLabel label) throws Exception {
         baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -254,6 +191,7 @@ public class SimulatorGUI extends JFrame {
     }
 
     public void pasteLabel(int x, int y) throws Exception {
+    	
         if (clickCount == 1) {
             bais = new ByteArrayInputStream(baos.toByteArray());
             ObjectInputStream ois = new ObjectInputStream(bais);
@@ -306,5 +244,81 @@ public class SimulatorGUI extends JFrame {
             map.put(((JLabel)comp).getText(),new Point(x,y));
             centerPanel.repaint();
         }
+        
+        
     }
+
+	public JPanel getSouthPanel() {
+		return southPanel;
+	}
+	public void setSouthPanel(JPanel southPanel) {
+		this.southPanel = southPanel;
+	}
+	public JPanel getCenterPanel() {
+		return centerPanel;
+	}
+	public void setCenterPanel(JPanel centerPanel) {
+		this.centerPanel = centerPanel;
+	}
+	public JPanel getWestPanel() {
+		return westPanel;
+	}
+	public void setWestPanel(JPanel westPanel) {
+		this.westPanel = westPanel;
+	}
+	public JButton getButton() {
+		return button;
+	}
+	public void setButton(JButton button) {
+		this.button = button;
+	}
+	public JLabel getLblNode() {
+		return lblNode;
+	}
+	public void setLblNode(JLabel lblNode) {
+		this.lblNode = lblNode;
+	}
+	public JButton getBtnClear() {
+		return btnClear;
+	}
+	public void setBtnClear(JButton btnClear) {
+		this.btnClear = btnClear;
+	}
+	public int getClickCount() {
+		return clickCount;
+	}
+	public void setClickCount(int clickCount) {
+		this.clickCount = clickCount;
+	}
+	public ArrayList<Pair> getListOfPairs() {
+		return listOfPairs;
+	}
+	public void setListOfPairs(ArrayList<Pair> listOfPairs) {
+		this.listOfPairs = listOfPairs;
+	}
+	public Map<String, Point> getMap() {
+		return map;
+	}
+	public void setMap(Map<String, Point> map) {
+		this.map = map;
+	}
+	public ByteArrayOutputStream getBaos() {
+		return baos;
+	}
+	public void setBaos(ByteArrayOutputStream baos) {
+		this.baos = baos;
+	}
+	public ByteArrayInputStream getBais() {
+		return bais;
+	}
+	public void setBais(ByteArrayInputStream bais) {
+		this.bais = bais;
+	}
+	public int getCounter() {
+		return counter;
+	}
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+	
 }

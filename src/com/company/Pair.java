@@ -9,9 +9,11 @@ import java.util.*;
 
 class Pair
 {
-    JLabel label1 ;
-    JLabel label2 ;
+    private JLabel label1 ;
+    private JLabel label2 ;
+    
     private Pair(){}
+    
     public Pair(JLabel label1, JLabel label2)
     {
         this.label1 = label1;
@@ -22,6 +24,7 @@ class Pair
     {
         return "{"+label1.getLocation()+","+label2.getLocation()+"}";
     }
+    
     public int howToDraw()
     {
         Point point1 = label1.getLocation();
@@ -45,14 +48,17 @@ class Pair
         else
             return 5;
     }
+    
     public JLabel getLabel1()
     {
         return label1;
     }
+    
     public JLabel getLabel2()
     {
         return label2;
     }
+    
     @Override
     public boolean equals(Object obj)
     {

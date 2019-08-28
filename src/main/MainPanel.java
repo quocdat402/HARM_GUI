@@ -17,9 +17,7 @@ public class MainPanel extends JPanel {
 	
 	@Override
 	public void paint(Graphics g) {
-		
-		g.drawOval(100, 100, 50, 50);
-		
+				
 		for (Node n : nodes) {
 			n.draw(g);
 		}

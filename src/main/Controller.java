@@ -27,28 +27,31 @@ public class Controller {
 	}
 	
 	public void initController() {
-		view.getBtnAddNodes().addActionListener(e -> addNodes());
-		
+		//view.getBtnAddNodes().addActionListener(e -> addNodes());
+		//view.getMainPanel().addAncestorListener(e);
 	}
 	
-	private void addNodes() {
-		Image nodeImage = new ImageIcon(this.getClass().getResource("/node.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-		JLabel nodeLabel = new JLabel();
-		nodeLabel.setIcon(new ImageIcon(nodeImage));
-		
-		view.getMainPanel().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				nodeLabel.setBounds(e.getX(),e.getY(),20,20);
-				view.getMainPanel().add(nodeLabel);
-				view.getMainPanel().setBackground(new Color(240,240,240));
-				
-				
-			}
-		});
-		
-		
-	}
+	
+	
+//	private void addNodes() {
+//		Image nodeImage = new ImageIcon(this.getClass().getResource("/node.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+//		JLabel nodeLabel = new JLabel();
+//		nodeLabel.setIcon(new ImageIcon(nodeImage));
+//		
+//		view.getMainPanel().addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//				nodeLabel.setBounds(e.getX(),e.getY(),20,20);
+//				view.getMainPanel().add(nodeLabel);
+//				view.getMainPanel().setBackground(new Color(240,240,240));
+//				
+//				
+//			}
+//		});
+//		
+//		
+//	}
+	
 	
 	
 

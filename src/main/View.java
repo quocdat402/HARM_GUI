@@ -38,16 +38,16 @@ public class View {
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.getContentPane().setLayout(null);
 		
-		//MainPanel = new MainPanel();
-		//MainPanel.setBounds(20, 60, 780, 420);
-		//frame.getContentPane().add(MainPanel);
-		//MainPanel.setLayout(null);
-		//MainPanel.addMouseListener(new NodeClickListener(MainPanel));
+		MainPanel = new MainPanel();
+		MainPanel.setBounds(20, 60, 780, 420);
+		frame.getContentPane().add(MainPanel);
+		MainPanel.setLayout(null);
+		MainPanel.addMouseListener(new NodeClickListener(MainPanel));
 		
-		mainPanel = new JPanel();
-		mainPanel.setBounds(20, 60, 780, 420);
-		frame.getContentPane().add(mainPanel);
-		mainPanel.setLayout(null);		
+		//mainPanel = new JPanel();
+		//mainPanel.setBounds(20, 60, 780, 420);
+		//frame.getContentPane().add(mainPanel);
+		//mainPanel.setLayout(null);		
 					
 		btnAddNodes = new JButton("Nodes");
 		nodeImage = new ImageIcon(this.getClass().getResource("/node.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
