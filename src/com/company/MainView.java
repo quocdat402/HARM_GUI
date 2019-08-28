@@ -17,21 +17,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class SimulatorGUI extends JFrame {
+public class MainView extends JFrame {
     private JPanel contentPane;
     private JPanel southPanel;
     private JPanel centerPanel;
     private JPanel westPanel;
-    private int clickCount = 0;
     private ArrayList<Pair> listOfPairs;//Added for storing pairs of nodes
     private Map<String, Point> map;//Stores Jlabel added on center panel and its location.
     
-    private int counter = 0;//To know the number of routers pasted on center panel
     private JButton button;
     private JLabel lblNode;
     private JButton btnClear;
 
-    public SimulatorGUI() {
+    public MainView() {
+    	
         contentPane = new JPanel();
         listOfPairs = new ArrayList<Pair>();
         map = new LinkedHashMap<String,Point>();
@@ -103,18 +102,11 @@ public class SimulatorGUI extends JFrame {
         southPanel = new JPanel();
         lblNode = new JLabel("Node Label");
         lblNode.setBorder(BorderFactory.createLineBorder(Color.black,1));
-        southPanel.add(lblNode);
-                
-        
-        
+        southPanel.add(lblNode);       
         southPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
         contentPane.add(southPanel, BorderLayout.SOUTH);
-        
         centerPanel = new MyJPanel();
-        centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP));
-        
-        
-        
+        centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP)); 
         contentPane.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(null);
 
@@ -164,10 +156,6 @@ public class SimulatorGUI extends JFrame {
         }
     }
     
-    
-
-    
-
 	public JPanel getSouthPanel() {
 		return southPanel;
 	}
@@ -204,12 +192,7 @@ public class SimulatorGUI extends JFrame {
 	public void setBtnClear(JButton btnClear) {
 		this.btnClear = btnClear;
 	}
-	public int getClickCount() {
-		return clickCount;
-	}
-	public void setClickCount(int clickCount) {
-		this.clickCount = clickCount;
-	}
+	
 	public ArrayList<Pair> getListOfPairs() {
 		return listOfPairs;
 	}
@@ -223,11 +206,6 @@ public class SimulatorGUI extends JFrame {
 		this.map = map;
 	}
 	
-	public int getCounter() {
-		return counter;
-	}
-	public void setCounter(int counter) {
-		this.counter = counter;
-	}
+	
 	
 }

@@ -23,16 +23,16 @@ import javax.swing.JRadioButton;
 
 public class MainController {
 
-	private SimulatorGUI simulatorGUI;
+	private MainView view;
 	private MainModel model;
 	private int counter = 0;//To know the number of routers pasted on center panel
 	private int clickCount = 0;
 	private ByteArrayOutputStream baos;
     private ByteArrayInputStream bais;
 	
-	public MainController(MainModel m,SimulatorGUI sGUI) {
+	public MainController(MainModel m,MainView v) {
 		
-		simulatorGUI = sGUI;
+		view = v;
 		model = m;
 		
 		initView();
@@ -47,9 +47,9 @@ public class MainController {
 		
 		
 		
-		simulatorGUI.getBtnClear().addActionListener(e -> clearAll());
+		view.getBtnClear().addActionListener(e -> clearAll());
 		
-		simulatorGUI.getButton().addActionListener(new ActionListener()
+		view.getButton().addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent evt)
@@ -63,11 +63,11 @@ public class MainController {
                     Point p1 = new Point(Integer.valueOf(split[0]),Integer.valueOf(split[1]));
                     split = nodes[1].split(",");
                     Point p2 = new Point(Integer.valueOf(split[0]),Integer.valueOf(split[1]));
-                    JLabel label1 = (JLabel)simulatorGUI.getCenterPanel().getComponentAt(p1);
-                    JLabel label2 = (JLabel)simulatorGUI.getCenterPanel().getComponentAt(p2);
+                    JLabel label1 = (JLabel)view.getCenterPanel().getComponentAt(p1);
+                    JLabel label2 = (JLabel)view.getCenterPanel().getComponentAt(p2);
                     Pair pair = new Pair(label1,label2);
-                    simulatorGUI.getListOfPairs().add(pair);
-                    simulatorGUI.getCenterPanel().repaint();
+                    view.getListOfPairs().add(pair);
+                    view.getCenterPanel().repaint();
                 }
                 else
                 {
@@ -76,7 +76,7 @@ public class MainController {
             }
         });
 		
-		simulatorGUI.getLblNode().addMouseListener(new MouseAdapter() {
+		view.getLblNode().addMouseListener(new MouseAdapter() {
         	public void mouseClicked(MouseEvent e) {
                 clickCount = 1;
                 try {
@@ -86,7 +86,7 @@ public class MainController {
             }
         });
 		
-		simulatorGUI.getCenterPanel().addMouseListener(new MouseAdapter() {
+		view.getCenterPanel().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (clickCount == 1) {
@@ -106,15 +106,16 @@ public class MainController {
 	
 	private void clearAll() {
 		
-		simulatorGUI.getBtnClear().addMouseListener(new MouseAdapter() {
+		view.getBtnClear().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	simulatorGUI.getCenterPanel().removeAll();
-            	simulatorGUI.getCenterPanel().validate();
-            	simulatorGUI.getCenterPanel().repaint();
-            	simulatorGUI.getListOfPairs().clear();
-            	simulatorGUI.getMap().clear();
-            	simulatorGUI.setCounter(0);
+            	view.getCenterPanel().removeAll();
+            	view.getCenterPanel().validate();
+            	view.getCenterPanel().repaint();
+            	view.getListOfPairs().clear();
+            	view.getMap().clear();
+            	counter = 0;
+
             }
         });
 		
@@ -123,15 +124,15 @@ public class MainController {
 	private String[] showGUIForNodeSelection()
     {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(simulatorGUI.getMap().size(),2));
+        panel.setLayout(new GridLayout(view.getMap().size(),2));
         ButtonGroup group1 = new ButtonGroup();
         ButtonGroup group2 = new ButtonGroup();
         final String nodes[] = new String[2];
-        Set<String> keySet = simulatorGUI.getMap().keySet();
+        Set<String> keySet = view.getMap().keySet();
         for (String name : keySet)
         {
             JRadioButton rButton = new JRadioButton(name);
-            rButton.setActionCommand(simulatorGUI.getMap().get(name).x+","+simulatorGUI.getMap().get(name).y);
+            rButton.setActionCommand(view.getMap().get(name).x+","+view.getMap().get(name).y);
             rButton.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent evt)
@@ -142,7 +143,7 @@ public class MainController {
             group1.add(rButton);
             panel.add(rButton);
             JRadioButton rButton1 = new JRadioButton(name);
-            rButton1.setActionCommand(simulatorGUI.getMap().get(name).x+","+simulatorGUI.getMap().get(name).y);
+            rButton1.setActionCommand(view.getMap().get(name).x+","+view.getMap().get(name).y);
             rButton1.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent evt)
@@ -173,13 +174,13 @@ public class MainController {
             MyMouseAdapter myMouseAdapter = new MyMouseAdapter();
             obj.addMouseListener(myMouseAdapter);
             obj.addMouseMotionListener(myMouseAdapter);
-            simulatorGUI.getCenterPanel().add(obj);
+            view.getCenterPanel().add(obj);
             obj.setText("Node "+counter);
             //obj.setBounds(x, y, obj.getWidth(), obj.getHeight());
             obj.setLocation(x,y);
             clickCount = 0;
             ois.close();
-            simulatorGUI.getMap().put("Node "+counter , obj.getLocation());
+            view.getMap().put("Node "+counter , obj.getLocation());
             counter++;
         }
     }
@@ -203,8 +204,8 @@ public class MainController {
             int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
             int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
             comp.setLocation(x, y);
-            simulatorGUI.getMap().put(((JLabel)comp).getText(),new Point(x,y));
-            simulatorGUI.getCenterPanel().repaint();
+            view.getMap().put(((JLabel)comp).getText(),new Point(x,y));
+            view.getCenterPanel().repaint();
         }
 
         @Override
@@ -215,8 +216,8 @@ public class MainController {
             int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
             int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
             comp.setLocation(x, y);
-            simulatorGUI.getMap().put(((JLabel)comp).getText(),new Point(x,y));
-            simulatorGUI.getCenterPanel().repaint();
+            view.getMap().put(((JLabel)comp).getText(),new Point(x,y));
+            view.getCenterPanel().repaint();
         }
         
         

@@ -8,10 +8,10 @@ public class Main {
             public void run() {
                 try {
                 	MainModel m = new MainModel();
-                	SimulatorGUI frame = new SimulatorGUI();
-                    MainController C = new MainController(m, frame);
+                	MainView v = new MainView();
+                    MainController C = new MainController(m, v);
                     C.initController();
-                    frame.setVisible(true);
+                    v.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
