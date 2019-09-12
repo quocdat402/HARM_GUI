@@ -3,38 +3,48 @@ package com.company;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import com.company.*;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
 
 public class MainView extends JFrame {
     private JPanel contentPane;
-    private JPanel southPanel;
-    private JPanel centerPanel;
-    private JPanel westPanel;
+    private JPanel northPanel;
+    private MyJPanel centerPanel;
     private ArrayList<Pair> listOfPairs;//Added for storing pairs of nodes
+    private ArrayList<JLabel> nodeArray;
     private Map<String, Point> map;//Stores Jlabel added on center panel and its location.
     
     private JButton button;
     private JLabel lblNode;
     private JButton btnClear;
+    private JButton btnArc;
+    private JButton btnNode;
+    private List<Node> nodes;
+    private Map<Node, Point> nodesInfo;
+    private List<Arc> arcs;
+    private JButton btnMove;
+    private JButton btnDelete;
 
     public MainView() {
     	
         contentPane = new JPanel();
+        
         listOfPairs = new ArrayList<Pair>();
+        nodeArray = new ArrayList<JLabel>();
         map = new LinkedHashMap<String,Point>();
-
+        nodes = new ArrayList<Node>();
+        arcs = new ArrayList<Arc>();
+        nodesInfo = new LinkedHashMap<Node, Point>();
+        
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
@@ -99,81 +109,90 @@ public class MainView extends JFrame {
         JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
 
-        southPanel = new JPanel();
+        northPanel = new JPanel();
+        
+        btnNode = new JButton("Node");
+        btnNode.setBackground(Color.LIGHT_GRAY);
+        northPanel.add(btnNode);
+        
+        btnArc = new JButton("Arc");
+        btnArc.setBackground(Color.LIGHT_GRAY);
+        
+        northPanel.add(btnArc);
+        
+        btnMove = new JButton("Move");
+        btnMove.setBackground(Color.LIGHT_GRAY);
+        northPanel.add(btnMove);
+        
+        btnDelete = new JButton("Delete");
+        btnDelete.setBackground(Color.LIGHT_GRAY);
+        northPanel.add(btnDelete);
+        btnClear = new JButton("Clear");
+        btnClear.setBackground(Color.LIGHT_GRAY);
+        northPanel.add(btnClear);
         lblNode = new JLabel("Node Label");
         lblNode.setBorder(BorderFactory.createLineBorder(Color.black,1));
-        southPanel.add(lblNode);       
-        southPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
-        contentPane.add(southPanel, BorderLayout.SOUTH);
+        northPanel.add(lblNode);       
+        northPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
+        contentPane.add(northPanel, BorderLayout.NORTH);
+        button  = new JButton("DrawArc");
+        northPanel.add(button);
         centerPanel = new MyJPanel();
         centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP)); 
         contentPane.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(null);
-
-        westPanel = new JPanel();
-        contentPane.add(westPanel, BorderLayout.WEST);
-        westPanel.setBorder(BorderFactory.createTitledBorder("Option"));
-        btnClear = new JButton("Clear");
-        
-        westPanel.add(btnClear);
-        button  = new JButton("DrawArc");
-        
-        westPanel.add(button);
     }
-    
-    
     
     private class MyJPanel extends JPanel//Create your own JPanel and override paintComponentMethod.
     {
-        @Override
+        
+    	/*
+    	@Override
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
-            for (Pair pair : listOfPairs )
-            {
+            for (Pair pair : listOfPairs ) {
                 JLabel label1 = pair.getLabel1();
                 JLabel label2 = pair.getLabel2();
                 Point point1 = label1.getLocation();
                 Point point2 = label2.getLocation();
-                int i = pair.howToDraw();
-                if ( i == 1)
-                {
-                    g.drawLine(point1.x  , point1.y + label1.getHeight() / 2 , point2.x + label2.getWidth() , point2.y  +  label2.getHeight() / 2);
-                }
-                else if (i == 2)
-                {
-                    g.drawLine(point2.x , point2.y + label2.getHeight() / 2 , point1.x + label1.getWidth() , point1.y  +  label1.getHeight() / 2);
-                }
-                else if (i == 3)
-                {
-                    g.drawLine(point1.x + label1.getWidth() / 2 , point1.y , point2.x + label2.getWidth() / 2, point2.y + label2.getHeight());
-                }
-                else if (i == 4)
-                {
-                    g.drawLine(point2.x + label2.getWidth() / 2 , point2.y , point1.x + label1.getWidth() / 2, point1.y + label1.getHeight());
-                }
+                g.drawLine(point1.x, point1.y, point2.x, point2.y);
             }
         }
+        */
+    	
+    	
+         
+    	
+    	
+    	@Override
+    	public void paintComponent(Graphics g) {
+    				
+    		super.paintComponent(g);
+    		
+    		for (Node n : nodes) {
+    			n.draw(g);
+    		}
+    		
+    		for (Arc a : arcs) {
+    			a.drawLine(g);
+    		}
+    	}
     }
     
-	public JPanel getSouthPanel() {
-		return southPanel;
+	public JPanel getNorthPanel() {
+		return northPanel;
 	}
-	public void setSouthPanel(JPanel southPanel) {
-		this.southPanel = southPanel;
+	public void setNorthPanel(JPanel southPanel) {
+		this.northPanel = southPanel;
 	}
 	public JPanel getCenterPanel() {
 		return centerPanel;
 	}
-	public void setCenterPanel(JPanel centerPanel) {
+	public void setCenterPanel(MyJPanel centerPanel) {
 		this.centerPanel = centerPanel;
 	}
-	public JPanel getWestPanel() {
-		return westPanel;
-	}
-	public void setWestPanel(JPanel westPanel) {
-		this.westPanel = westPanel;
-	}
+	
 	public JButton getButton() {
 		return button;
 	}
@@ -192,7 +211,6 @@ public class MainView extends JFrame {
 	public void setBtnClear(JButton btnClear) {
 		this.btnClear = btnClear;
 	}
-	
 	public ArrayList<Pair> getListOfPairs() {
 		return listOfPairs;
 	}
@@ -204,6 +222,42 @@ public class MainView extends JFrame {
 	}
 	public void setMap(Map<String, Point> map) {
 		this.map = map;
+	}
+	public JButton getBtnArc() {
+		return btnArc;
+	}
+	public void setBtnArc(JButton btnArc) {
+		this.btnArc = btnArc;
+	}
+	public List<Node> getNodes() {
+		return nodes;
+	}
+	public void setNodes(List<Node> nodes) {
+		this.nodes = nodes;
+	}
+	public JButton getBtnNode() {
+		return btnNode;
+	}
+	public void setBtnNode(JButton btnNode) {
+		this.btnNode = btnNode;
+	}
+	public List<Arc> getArcs() {
+		return arcs;
+	}
+	public void setArcs(List<Arc> arcs) {
+		this.arcs = arcs;
+	}
+	public JButton getBtnMove() {
+		return btnMove;
+	}
+	public void setBtnMove(JButton btnMove) {
+		this.btnMove = btnMove;
+	}
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+	public void setBtnDelete(JButton btnDelete) {
+		this.btnDelete = btnDelete;
 	}
 	
 	

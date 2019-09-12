@@ -29,6 +29,7 @@ class Pair
     {
         Point point1 = label1.getLocation();
         Point point2 = label2.getLocation();
+        
         if (point1.x > point2.x)
         {
             return 1;
