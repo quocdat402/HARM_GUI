@@ -16,8 +16,9 @@ public class Arc {
 	private final int ARR_SIZE = 4;
 	private int initNode;
 	private int endNode;
+	private double vulnerability;
 	
-	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode) {
+	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, double vulnerability) {
 		super();
 		this.x1 = x1;
 		this.y1 = y1;
@@ -26,11 +27,15 @@ public class Arc {
 		this.color = color;
 		this.initNode = initNode;
 		this.endNode = endNode;
+		this.vulnerability = vulnerability;
 	}
 	
 	public void drawLine(Graphics g) {
 		g.setColor(color);
-		drawArrow(g, x1, y1, x2, y2);		
+		drawArrow(g, x1, y1, x2, y2);	
+		
+		g.setColor(color.black);
+		g.drawString(String.valueOf(vulnerability), (x1+x2)/2, (y1+y2)/2 + 25);
 	}
 	
 	
@@ -96,6 +101,14 @@ public class Arc {
 
 	public void setY2(int y2) {
 		this.y2 = y2;
+	}
+
+	public double getVulnerability() {
+		return vulnerability;
+	}
+
+	public void setVulnerability(double vulnerability) {
+		this.vulnerability = vulnerability;
 	}
 
 }

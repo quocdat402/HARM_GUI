@@ -38,11 +38,15 @@ public class MainController {
     private int activateArc;
     private int activateMove;
     private int activateDelete;
+    private int activateGetInfo;
     
     private int nodeNumber;
     private boolean dragging = false;
     private Point last;
 	private int width, height;
+	
+	private int nodePropertyInt;
+	private int arcPropertyInt;
     
 	public MainController(MainModel m,MainView v) {
 		
@@ -62,19 +66,32 @@ public class MainController {
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter();
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter();
 		MoveMouseAdapter moveMouseAdapter = new MoveMouseAdapter();
+		DeleteArcMouseAdapter deleteArcMouseAdapter = new DeleteArcMouseAdapter();
+		DeleteNodeMouseAdapter deleteNodeMouseAdapter = new DeleteNodeMouseAdapter();
+		GetInfoMouseAdapter getInforMouseAdapter = new GetInfoMouseAdapter();
+		NodeInfoMouseAdpater nodeInfoMouseAdpater = new NodeInfoMouseAdpater();
+		ArcInfoMouseAdapter arcInfoMouseAdapter = new ArcInfoMouseAdapter();
 		
-		view.getBtnClear().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-            	view.getCenterPanel().removeAll();
-            	view.getCenterPanel().validate();
-            	view.getCenterPanel().repaint();
-            	view.getArcs().clear();
-            	view.getNodes().clear();
-            	
-            	nodeNumber = 0;
-            }
-        });	
+		view.getArcProperties().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				view.getArcFrame().setVisible(true);
+				
+			}
+		});
+		
+		view.getNodeProperties().addActionListener(new ActionListener() {
+						
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				view.getNodeFrame().setVisible(true);
+			
+			}
+			
+		});
 		
 		view.getButton().addActionListener(new ActionListener() {
             @Override
@@ -135,11 +152,28 @@ public class MainController {
 		view.getCenterPanel().addMouseListener(arcMouseAdapter);
 		view.getCenterPanel().addMouseListener(moveMouseAdapter);
 		view.getCenterPanel().addMouseMotionListener(moveMouseAdapter);
+		view.getCenterPanel().addMouseListener(deleteArcMouseAdapter);
+		view.getCenterPanel().addMouseListener(deleteNodeMouseAdapter);
+		view.getCenterPanel().addMouseListener(getInforMouseAdapter);
+		view.getCenterPanel().addMouseListener(nodeInfoMouseAdpater);
+		view.getCenterPanel().addMouseListener(arcInfoMouseAdapter);
+		view.getBtnClear().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+            	view.getCenterPanel().removeAll();
+            	view.getCenterPanel().validate();
+            	view.getCenterPanel().repaint();
+            	view.getArcs().clear();
+            	view.getNodes().clear();
+            	
+            	nodeNumber = 0;
+            }
+        });
 		view.getBtnNode().addActionListener(e->activateNodeInt());
 		view.getBtnArc().addActionListener(e->activateArcInt());
 		view.getBtnMove().addActionListener(e -> activateMoveInt());
 		view.getBtnDelete().addActionListener(e -> activateDeleteInt());
-		
+		view.getBtnGetinfo().addActionListener(e -> activateGetInfoInt());
 		view.getCenterPanel().addMouseListener(new MouseAdapter() {
 	        
 			@Override
@@ -151,19 +185,53 @@ public class MainController {
 		       		int radius = view.getNodes().get(i).getDiameter()/2;
 		       			        		
 		       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
-		       			System.out.println(x);
-		       			System.out.println(y);
-		       			System.out.println(Math.pow(radius, 2));
-		       			System.out.println("Test");
+		       			
 		       		}
 	        	}
 	        }		
 		});
+		
+		view.getBtnName().addActionListener(new ActionListener() {
+            
+			
+			@Override
+            public void actionPerformed(ActionEvent evt) {
+				
+				if(view.getTxtName() == null) {
+					
+				} else {
+					
+					view.getNodes().get(nodePropertyInt).setName(view.getTxtName().getText());
+					view.getCenterPanel().repaint();
+				}			
+				
+			}			
+			
+		});
+		
+		view.getBtnVul().addActionListener(new ActionListener() {
+            
+			
+			@Override
+            public void actionPerformed(ActionEvent evt) {
+				
+				if(view.getTxtVul() == null) {
+					
+				} else {
+					
+					view.getArcs().get(arcPropertyInt).setVulnerability(Double.valueOf(view.getTxtVul().getText()));
+					view.getCenterPanel().repaint();
+				}			
+				
+			}			
+			
+		});
+		
 	}
 	
 	private int activateNodeInt() {
 		if (activateNode == 0) {
-			if(activateArc == 1  || activateMove == 1 || activateDelete == 1) {
+			if(activateArc == 1  || activateMove == 1 || activateDelete == 1 || activateGetInfo == 1) {
 				
 			} else {
 				activateNode = 1;
@@ -178,7 +246,7 @@ public class MainController {
 	
 	private int activateArcInt() {
 		if (activateArc == 0) {
-			if(activateNode == 1 || activateMove == 1 || activateDelete == 1) {
+			if(activateNode == 1 || activateMove == 1 || activateDelete == 1 || activateGetInfo == 1) {
 				
 			} else {
 				activateArc = 1;
@@ -194,7 +262,7 @@ public class MainController {
 	
 	private int activateMoveInt() {
 		if (activateMove == 0) {
-			if(activateNode == 1 || activateArc == 1 || activateDelete == 1) {
+			if(activateNode == 1 || activateArc == 1 || activateDelete == 1 || activateGetInfo == 1) {
 				
 			} else {
 				activateMove = 1;
@@ -212,7 +280,7 @@ public class MainController {
 	private int activateDeleteInt() {
 		
 		if (activateDelete == 0) {
-			if(activateNode == 1 || activateArc == 1 || activateMove == 1) {
+			if(activateNode == 1 || activateArc == 1 || activateMove == 1 || activateGetInfo == 1) {
 				
 			} else {
 				activateDelete = 1;
@@ -223,6 +291,23 @@ public class MainController {
 			view.getBtnDelete().setBackground(Color.LIGHT_GRAY);
 		}
 		return activateDelete;
+	}
+	
+	private int activateGetInfoInt() {
+		
+		if (activateGetInfo == 0) {
+			if(activateNode == 1 || activateArc == 1 || activateMove == 1 || activateDelete == 1) {
+				
+			} else {
+				activateGetInfo = 1;
+				view.getBtnGetinfo().setBackground(Color.yellow);
+			}
+		} else if (activateGetInfo == 1) {
+			activateGetInfo = 0;
+			view.getBtnGetinfo().setBackground(Color.LIGHT_GRAY);
+		}
+		return activateGetInfo;
+		
 	}
 	
 	private void deleteNodesArcs() {
@@ -360,20 +445,20 @@ public class MainController {
             
         	if(activateArc == 1) {
         		
-        		      		
-        		for(int i = 0; i < view.getNodes().size(); i++) {
-	        		int x = view.getNodes().get(i).getX() + 12;
-		       		int y = view.getNodes().get(i).getY() + 12;
-		       		int radius = view.getNodes().get(i).getDiameter()/2;
-		       			        		
-		       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
-		       			x1 =  x;
-		       			y1 =  y;		        	
-		        		view.getCenterPanel().repaint();
-		        		initNode = i;
-		       		}
-	        	}
-        		
+        		if(e.getButton() == MouseEvent.BUTTON1) {      		
+	        		for(int i = 0; i < view.getNodes().size(); i++) {
+		        		int x = view.getNodes().get(i).getX() + 12;
+			       		int y = view.getNodes().get(i).getY() + 12;
+			       		int radius = view.getNodes().get(i).getDiameter()/2;
+			       			        		
+			       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
+			       			x1 =  x;
+			       			y1 =  y;		        	
+			        		view.getCenterPanel().repaint();
+			        		initNode = i;
+			       		}
+		        	}	
+        		}
         	}
         }
         
@@ -389,38 +474,40 @@ public class MainController {
         		
         		//view.getCenterPanel().repaint();
         		
-        		for(int i = 0; i < view.getNodes().size(); i++) {
-	        		int x = view.getNodes().get(i).getX() + 12;
-		       		int y = view.getNodes().get(i).getY() + 12;
-		       		int radius = view.getNodes().get(i).getDiameter()/2;
-		       			        		
-		       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
-		       			
-		       			x2 = x;
-		       			if (x2 < x1) {
-		       				
-		       				x2 = x + 12;
-		       				
-		       			} else if ( x2 > x1) {
-		       				
-		       				x2 = x - 12;
-		       				
-		       			} else {
-		       				
-		       				x2 = x;
-		       				
-		       			}
-		       			y2 = y;
-		       			endNode = i;
-		       			Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode);
-		        		view.getArcs().add(arc);
-		        		
-		        		view.getCenterPanel().repaint();
-		        		
-		        		System.out.println(arc.getInitNode());
-		        		System.out.println(arc.getEndNode());
-		       		}
-	        	}
+    			if(e.getButton() == MouseEvent.BUTTON1) {
+    			
+	        		for(int i = 0; i < view.getNodes().size(); i++) {
+		        		int x = view.getNodes().get(i).getX() + 12;
+			       		int y = view.getNodes().get(i).getY() + 12;
+			       		int radius = view.getNodes().get(i).getDiameter()/2;
+			       			        		
+			       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
+			       			
+			       			x2 = x;
+			       			if (x2 < x1) {
+			       				
+			       				x2 = x + 12;
+			       				
+			       			} else if ( x2 > x1) {
+			       				
+			       				x2 = x - 12;
+			       				
+			       			} else {
+			       				
+			       				x2 = x;
+			       				
+			       			}
+			       			y2 = y;
+			       			endNode = i;
+			       			Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode,0);
+			        		view.getArcs().add(arc);
+			        		
+			        		view.getCenterPanel().repaint();
+			        		
+			        		
+			       		}
+		        	}	
+    			}
         	}   		
         }  	
     	
@@ -434,14 +521,240 @@ public class MainController {
 		public void mousePressed(MouseEvent e) {
 			
 			if (activateNode ==1) {
-				Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + nodeNumber, nodeNumber);			
-				view.getNodes().add(node);
-				view.getCenterPanel().repaint();
-				nodeNumber++;
-				System.out.println(node.getX() + " ," + node.getY());
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + nodeNumber, nodeNumber);			
+					view.getNodes().add(node);
+					view.getCenterPanel().repaint();
+					nodeNumber++;
+					
+				}
 			}
 		}
 	}
+	
+	private class ArcInfoMouseAdapter extends MouseAdapter {
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			for (int i = 0; i< view.getArcs().size(); i++) {
+				
+				Arc arc = view.getArcs().get(i);
+				
+				if(distance(arc.getX1(), arc.getY1(), e.getX(), e.getY()) + distance(arc.getX2(), arc.getY2(), e.getX(), e.getY()) < 
+						distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
+					
+					if(e.isPopupTrigger()) {
+	    				view.getArcPopUp().show(e.getComponent(), e.getX(), e.getY());
+	    				arcPropertyInt = i;
+					}	
+					
+					
+				}
+				
+				
+			}
+			
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+			for (int i = 0; i< view.getArcs().size(); i++) {
+				
+				Arc arc = view.getArcs().get(i);
+				
+				if(distance(arc.getX1(), arc.getY1(), e.getX(), e.getY()) + distance(arc.getX2(), arc.getY2(), e.getX(), e.getY()) < 
+						distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
+					
+					if(e.isPopupTrigger()) {
+	    				view.getArcPopUp().show(e.getComponent(), e.getX(), e.getY());
+	    				arcPropertyInt = i;
+	    			}	
+					
+					
+				}
+				
+				
+			}
+			
+		}
+		
+		
+		
+	}
+	
+	private class NodeInfoMouseAdpater extends MouseAdapter {
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			
+			for(int i = 0; i < view.getNodes().size(); i++) {
+        		int x = view.getNodes().get(i).getX() + 12;
+	       		int y = view.getNodes().get(i).getY() + 12;
+	       		int radius = view.getNodes().get(i).getDiameter()/2;
+	       			        		
+	       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
+	       			
+	       			if(e.isPopupTrigger()) {
+	    				view.getNodePopUp().show(e.getComponent(), e.getX(), e.getY());
+	    				nodePropertyInt = i;
+	       			
+	       			}	
+	       		}
+        	}
+			
+			
+			
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+			
+			for(int i = 0; i < view.getNodes().size(); i++) {
+        		int x = view.getNodes().get(i).getX() + 12;
+	       		int y = view.getNodes().get(i).getY() + 12;
+	       		int radius = view.getNodes().get(i).getDiameter()/2;
+	       			        		
+	       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
+	       			
+	       			if(e.isPopupTrigger()) {
+	    				view.getNodePopUp().show(e.getComponent(), e.getX(), e.getY());
+	    				nodePropertyInt = i;
+	       			}	
+	       		}
+        	}
+			
+		}
+		
+		
+	}
+	
+	
+	private class DeleteArcMouseAdapter extends MouseAdapter {
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if (activateDelete == 1) {
+				
+				if(e.getButton() == MouseEvent.BUTTON1) {
+				
+					//line detection
+					for (int i = 0; i< view.getArcs().size(); i++) {
+											
+						Arc arc = view.getArcs().get(i);
+						
+						if(distance(arc.getX1(), arc.getY1(), e.getX(), e.getY()) + distance(arc.getX2(), arc.getY2(), e.getX(), e.getY()) < 
+								distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
+							
+							view.getArcs().remove(i);
+							view.getCenterPanel().repaint();
+							
+							
+						}
+						
+						
+					}
+				}
+				
+				
+			}
+		}
+	}
+	
+	private class DeleteNodeMouseAdapter extends MouseAdapter {
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			if (activateDelete == 1) {
+			
+				for(int i = 0; i < view.getNodes().size(); i++) {
+	        		int x = view.getNodes().get(i).getX() + 12;
+		       		int y = view.getNodes().get(i).getY() + 12;
+		       		int radius = view.getNodes().get(i).getDiameter()/2;
+		       			        		
+		       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
+		       				   
+		       			
+		       			for (int j = 0; j< view.getArcs().size(); j++) {
+							
+							
+							/*
+							Arc arc = view.getArcs().get(j);
+							
+							if(view.getNodes().get(i).getNumber() == arc.getInitNode() ||
+									view.getNodes().get(i).getNumber() == arc.getEndNode()) {
+								
+								view.getArcs().remove(j);
+							}
+							*/
+		       				
+		       				if(view.getNodes().get(i).getNumber() == view.getArcs().get(j).getInitNode()) {
+		       					
+		       					System.out.println(j);
+		       					view.getArcs().remove(j);
+		       					
+		       				}
+		       				
+		       				
+						}
+		       			
+		       			view.getNodes().remove(i);
+		       			
+		        		view.getCenterPanel().repaint();
+		        		
+		       		}
+	        	}
+			}
+		}
+	}
+	
+	private class GetInfoMouseAdapter extends MouseAdapter {
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			if( activateGetInfo == 1) {
+			
+				for (int i = 0; i< view.getArcs().size(); i++) {
+					
+					Arc arc = view.getArcs().get(i);
+					
+					if(distance(arc.getX1(), arc.getY1(), e.getX(), e.getY()) + distance(arc.getX2(), arc.getY2(), e.getX(), e.getY()) < 
+							distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
+						
+						System.out.println("X1 = " + arc.getX1() + ", Y1 = " + arc.getY1());
+						System.out.println("X2 = " + arc.getX2() + ", Y2 = " + arc.getY2());
+						System.out.println("InitNode = " + arc.getInitNode() + ", EndNode = " + arc.getEndNode());
+						System.out.println("Vulnerability = " + arc.getVulnerability());
+					}
+					
+					
+				}
+				
+				for(int i = 0; i < view.getNodes().size(); i++) {
+		    		int x = view.getNodes().get(i).getX() + 12;
+		       		int y = view.getNodes().get(i).getY() + 12;
+		       		int radius = view.getNodes().get(i).getDiameter()/2;
+		       		Node node = view.getNodes().get(i);	        		
+		       		
+		       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
+		       			
+		       			System.out.println("X = " +  node.getX() + ", Y = " + node.getY());
+		       			System.out.println("Diameter = " +  node.getDiameter() + ", Name = " + node.getName());
+		       			System.out.println("Number = " +  node.getNumber());
+		       		}
+				}
+			}
+		}
+	}
+	
+	public double distance(int x1, int y1, int x2, int y2) {       
+			    return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+			}
 	
 	private class MoveMouseAdapter extends MouseAdapter {
 		
@@ -452,7 +765,7 @@ public class MainController {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			
-			if (activateMove ==1) {
+			if (activateMove == 1) {
 				for(int i = 0; i < view.getNodes().size(); i++) {
 		    		int x = view.getNodes().get(i).getX() + 12;
 		       		int y = view.getNodes().get(i).getY() + 12;
@@ -461,10 +774,12 @@ public class MainController {
 		       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
 		       			
 		       			nodeIndex = i;
-		       			System.out.println(nodeIndex);
+		       			
 		       		}
 		    	}
+				
 			view.getCenterPanel().repaint();
+			
 			}
 		}
 		
@@ -501,14 +816,10 @@ public class MainController {
 							
 							view.getArcs().get(i).setX2(e.getX() + 12);
 							
-						}
-							
-						
+						}													
 						view.getArcs().get(i).setY2(e.getY() + 12);
-						
 					}
 				}
-				
 				view.getCenterPanel().repaint();
 			}
 		}
@@ -563,7 +874,7 @@ public class MainController {
        		int radius = view.getNodes().get(i).getDiameter()/2;
        			        		
        		if(Math.pow(x-point.getX(), 2) + Math.pow(y-point.getY(), 2) <= Math.pow(radius, 2)) {
-       			System.out.println("hi");
+       			
        			return true;
        		}
     	}
@@ -586,7 +897,7 @@ public class MainController {
         		int radius = view.getNodes().get(0).getDiameter()/2;
         		
         		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
-        			System.out.println("Test");
+        			
         		}
         	}
 		});

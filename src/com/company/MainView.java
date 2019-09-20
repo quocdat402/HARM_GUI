@@ -29,10 +29,31 @@ public class MainView extends JFrame {
     private JButton btnArc;
     private JButton btnNode;
     private List<Node> nodes;
-    private Map<Node, Point> nodesInfo;
     private List<Arc> arcs;
     private JButton btnMove;
     private JButton btnDelete;
+    private JButton btnUndo;
+    private JButton btnRedo;
+    private JButton btnGetinfo;
+    private JPopupMenu nodePopUp;
+    private JPopupMenu arcPopUp;
+    
+    private JMenuItem nodeProperties;
+    private JMenuItem arcProperties;
+    
+    private JFrame nodeFrame;    
+    private JFrame arcFrame;
+    
+    private JPanel arcPanel;
+    private JPanel nodePanel;
+    
+    private JLabel lblVul;
+    private JTextField txtVul;
+    private JButton btnVul;
+    
+    private JLabel lblName;
+    private JTextField txtName;
+    private JButton btnName;
 
     public MainView() {
     	
@@ -43,7 +64,6 @@ public class MainView extends JFrame {
         map = new LinkedHashMap<String,Point>();
         nodes = new ArrayList<Node>();
         arcs = new ArrayList<Arc>();
-        nodesInfo = new LinkedHashMap<Node, Point>();
         
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
@@ -111,6 +131,14 @@ public class MainView extends JFrame {
 
         northPanel = new JPanel();
         
+        btnUndo = new JButton("Undo");
+        btnUndo.setBackground(Color.LIGHT_GRAY);
+        northPanel.add(btnUndo);
+        
+        btnRedo = new JButton("Redo");
+        btnRedo.setBackground(Color.LIGHT_GRAY);
+        northPanel.add(btnRedo);
+        
         btnNode = new JButton("Node");
         btnNode.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnNode);
@@ -130,6 +158,10 @@ public class MainView extends JFrame {
         btnClear = new JButton("Clear");
         btnClear.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnClear);
+        
+        btnGetinfo = new JButton("GetInfo");
+        btnGetinfo.setBackground(Color.LIGHT_GRAY);
+        northPanel.add(btnGetinfo);
         lblNode = new JLabel("Node Label");
         lblNode.setBorder(BorderFactory.createLineBorder(Color.black,1));
         northPanel.add(lblNode);       
@@ -141,6 +173,54 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP)); 
         contentPane.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(null);
+        
+        nodeFrame = new JFrame();
+        nodeFrame.setSize(300, 300);
+        nodeFrame.setTitle("Node");
+        
+        arcFrame = new JFrame();
+        arcFrame.setSize(300, 300);
+        arcFrame.setTitle("Arc");        
+        //arcFrame.setLayout(null);
+        
+        
+        
+        nodePopUp = new JPopupMenu("Node pop-up");
+        nodeProperties = new JMenuItem("Properties");
+        nodePopUp.add(nodeProperties);
+        
+        arcPopUp = new JPopupMenu("Arc pop-up");
+        arcProperties = new JMenuItem("Properties"); 
+        arcPopUp.add(arcProperties);
+        
+        arcPanel = new JPanel();
+        
+        lblVul = new JLabel("Vulnerability");
+        txtVul = new JTextField();
+        txtVul.setPreferredSize(new Dimension(200, 24));
+        btnVul = new JButton("Okay");
+        
+        
+        arcPanel.add(lblVul);
+        arcPanel.add(txtVul);
+        arcPanel.add(btnVul);
+        
+        arcFrame.add(arcPanel);
+        
+        nodePanel = new JPanel();
+        
+        lblName = new JLabel("Name");
+        txtName = new JTextField();
+        txtName.setPreferredSize(new Dimension(200, 24));
+        btnName = new JButton("Okay");
+        
+        nodePanel.add(lblName);
+        nodePanel.add(txtName);
+        nodePanel.add(btnName);
+        
+        nodeFrame.add(nodePanel);
+        
+        
     }
     
     private class MyJPanel extends JPanel//Create your own JPanel and override paintComponentMethod.
@@ -259,7 +339,94 @@ public class MainView extends JFrame {
 	public void setBtnDelete(JButton btnDelete) {
 		this.btnDelete = btnDelete;
 	}
-	
-	
-	
+	public JButton getBtnUndo() {
+		return btnUndo;
+	}
+	public void setBtnUndo(JButton btnUndo) {
+		this.btnUndo = btnUndo;
+	}
+	public JButton getBtnRedo() {
+		return btnRedo;
+	}
+	public void setBtnRedo(JButton btnRedo) {
+		this.btnRedo = btnRedo;
+	}
+	public JButton getBtnGetinfo() {
+		return btnGetinfo;
+	}
+	public void setBtnGetinfo(JButton btnGetinfo) {
+		this.btnGetinfo = btnGetinfo;
+	}
+	public JPopupMenu getNodePopUp() {
+		return nodePopUp;
+	}
+	public void setNodePopUp(JPopupMenu nodePopUp) {
+		this.nodePopUp = nodePopUp;
+	}
+	public JMenuItem getNodeProperties() {
+		return nodeProperties;
+	}
+	public void setNodeProperties(JMenuItem nodeProperties) {
+		this.nodeProperties = nodeProperties;
+	}
+	public JFrame getNodeFrame() {
+		return nodeFrame;
+	}
+	public void setNodeFrame(JFrame nodeFrame) {
+		this.nodeFrame = nodeFrame;
+	}
+	public JFrame getArcFrame() {
+		return arcFrame;
+	}
+	public void setArcFrame(JFrame arcFrame) {
+		this.arcFrame = arcFrame;
+	}
+	public JMenuItem getArcProperties() {
+		return arcProperties;
+	}
+	public void setArcProperties(JMenuItem arcProperties) {
+		this.arcProperties = arcProperties;
+	}
+	public JPopupMenu getArcPopUp() {
+		return arcPopUp;
+	}
+	public void setArcPopUp(JPopupMenu arcPopUp) {
+		this.arcPopUp = arcPopUp;
+	}
+	public JLabel getLblVul() {
+		return lblVul;
+	}
+	public void setLblVul(JLabel lblVul) {
+		this.lblVul = lblVul;
+	}
+	public JTextField getTxtVul() {
+		return txtVul;
+	}
+	public void setTxtVul(JTextField txtVul) {
+		this.txtVul = txtVul;
+	}
+	public JButton getBtnVul() {
+		return btnVul;
+	}
+	public void setBtnVul(JButton btnVul) {
+		this.btnVul = btnVul;
+	}
+	public JLabel getLblName() {
+		return lblName;
+	}
+	public void setLblName(JLabel lblName) {
+		this.lblName = lblName;
+	}
+	public JTextField getTxtName() {
+		return txtName;
+	}
+	public void setTxtName(JTextField txtName) {
+		this.txtName = txtName;
+	}
+	public JButton getBtnName() {
+		return btnName;
+	}
+	public void setBtnName(JButton btnName) {
+		this.btnName = btnName;
+	}
 }
