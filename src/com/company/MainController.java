@@ -13,13 +13,22 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.Document;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 
 import com.company.*;
 
@@ -29,11 +38,6 @@ public class MainController {
 
 	private MainView view;
 	private MainModel model;
-	private int counter = 0;//To know the number of routers pasted on center panel
-	private int clickCount = 0;
-	private ByteArrayOutputStream baos;
-    private ByteArrayInputStream bais;
-    private ObjectInputStream ois;
     private int activateNode;
     private int activateArc;
     private int activateMove;
@@ -41,13 +45,11 @@ public class MainController {
     private int activateGetInfo;
     
     private int nodeNumber;
-    private boolean dragging = false;
-    private Point last;
-	private int width, height;
 	
 	private int nodePropertyInt;
 	private int arcPropertyInt;
-    
+
+	
 	public MainController(MainModel m,MainView v) {
 		
 		view = v;
@@ -72,6 +74,8 @@ public class MainController {
 		NodeInfoMouseAdpater nodeInfoMouseAdpater = new NodeInfoMouseAdpater();
 		ArcInfoMouseAdapter arcInfoMouseAdapter = new ArcInfoMouseAdapter();
 		
+		
+		
 		view.getArcProperties().addActionListener(new ActionListener() {
 
 			@Override
@@ -93,59 +97,7 @@ public class MainController {
 			
 		});
 		
-		view.getButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt)
-            {
-                String[] nodes = showGUIForNodeSelection();
-                int i = 0;
-                System.out.println(nodes[1]);
-                System.out.println(view.getMap().keySet());
-                System.out.println(view.getMap().get("Node " + i).x);
-                System.out.println(view.getMap().get("Node 0").y);
-                if (nodes == null || nodes[0]==null || nodes.length == 0 ) {
-                	
-                }
-                else if (!nodes[0].equals(nodes[1])) {
-                    String split[] = nodes[0].split(",");                    
-                    Point p1 = new Point(Integer.valueOf(split[0]),Integer.valueOf(split[1]));
-                    split = nodes[1].split(",");
-                    Point p2 = new Point(Integer.valueOf(split[0]),Integer.valueOf(split[1]));
-                    JLabel label1 = (JLabel)view.getCenterPanel().getComponentAt(p1);
-                    JLabel label2 = (JLabel)view.getCenterPanel().getComponentAt(p2);
-                                       
-                    Pair pair = new Pair(label1,label2);
-                    view.getListOfPairs().add(pair);
-                    view.getCenterPanel().repaint();
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null,"Nodes can't be same","Error",JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });	
-		
-		view.getLblNode().addMouseListener(new MouseAdapter() {
-        	public void mouseClicked(MouseEvent e) {
-                clickCount = 1;
-                try {
-                    copy((JLabel) e.getSource());
-                } catch (Exception ex) {
-                }
-            }
-        });		
-		
-		view.getCenterPanel().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (clickCount == 1) {
-                    try {
-                        pasteLabel(e.getX(), e.getY());
-                    } catch (Exception ex) {
-                    }
-                }
-            }
-        });
+	
 		
 		view.getBtnArc().addMouseListener(arcMouseAdapter);
 		view.getCenterPanel().addMouseListener(nodeMouseAdapter);
@@ -190,6 +142,7 @@ public class MainController {
 	        	}
 	        }		
 		});
+		
 		
 		view.getBtnName().addActionListener(new ActionListener() {
             
@@ -310,130 +263,6 @@ public class MainController {
 		
 	}
 	
-	private void deleteNodesArcs() {
-		
-	}
-	
-	private void clearAll() {
-		
-		view.getBtnClear().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-            	view.getCenterPanel().removeAll();
-            	view.getCenterPanel().validate();
-            	view.getCenterPanel().repaint();
-            	view.getArcs().clear();
-            	view.getNodes().clear();
-            	
-            	nodeNumber = 0;
-            }
-        });
-	}
-	
-	private String[] showGUIForNodeSelection() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(view.getMap().size(),2));
-        ButtonGroup group1 = new ButtonGroup();
-        ButtonGroup group2 = new ButtonGroup();
-        final String nodes[] = new String[2];
-        Set<String> keySet = view.getMap().keySet();
-        for (String name : keySet)
-        {
-        	JRadioButton rButton = new JRadioButton(name);
-            rButton.setActionCommand(view.getMap().get(name).x+","+view.getMap().get(name).y);
-            rButton.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent evt)
-                {
-                    nodes[0] = ((JRadioButton)evt.getSource()).getActionCommand();
-                }
-            });
-            group1.add(rButton);
-            panel.add(rButton);
-            JRadioButton rButton1 = new JRadioButton(name);
-            rButton1.setActionCommand(view.getMap().get(name).x+","+view.getMap().get(name).y);
-            rButton1.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent evt)
-                {
-                    nodes[1] = ((JRadioButton)evt.getSource()).getActionCommand();
-                }
-            });
-            group2.add(rButton1);
-            panel.add(rButton1);
-        }
-        JOptionPane.showMessageDialog(null,panel,"Choose the nodes pair",JOptionPane.INFORMATION_MESSAGE);
-        return nodes;
-    }
-	
-	public void copy(JLabel label) throws Exception {
-        baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(label);
-        oos.close();
-    }
-
-    public void pasteLabel(int x, int y) throws Exception {
-    	
-        
-        bais = new ByteArrayInputStream(baos.toByteArray());
-        ois = new ObjectInputStream(bais);
-        JLabel obj = (JLabel) ois.readObject();
-                
-        MyMouseAdapter myMouseAdapter = new MyMouseAdapter();
-        
-        obj.addMouseListener(myMouseAdapter);
-        obj.addMouseMotionListener(myMouseAdapter);
-        view.getCenterPanel().add(obj);
-        obj.setText("Node "+counter);
-        //obj.setBounds(x, y, obj.getWidth(), obj.getHeight());
-        obj.setLocation(x,y);
-        clickCount = 0;
-        ois.close();
-        view.getMap().put("Node "+counter , obj.getLocation());
-        counter++;
-    }
-    
-    private class MyMouseAdapter extends MouseAdapter {
-        private Point initialLoc;
-        private Point initialLocOnScreen;
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            Component comp = (Component) e.getSource();
-            initialLoc = comp.getLocation();
-            initialLocOnScreen = e.getLocationOnScreen();
-            
-            System.out.println(initialLoc);
-            System.out.println(comp);
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            Component comp = (Component) e.getSource();
-            Point locOnScreen = e.getLocationOnScreen();
-
-            int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
-            int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
-            comp.setLocation(x, y);
-            
-            view.getMap().put(((JLabel)comp).getText(),new Point(x,y));
-            view.getCenterPanel().repaint();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            Component comp = (Component) e.getSource();
-            Point locOnScreen = e.getLocationOnScreen();
-            int x = locOnScreen.x - initialLocOnScreen.x + initialLoc.x;
-            int y = locOnScreen.y - initialLocOnScreen.y + initialLoc.y;
-            comp.setLocation(x, y);
-            view.getNodes();
-            view.getMap().put(((JLabel)comp).getText(),new Point(x,y));
-            view.getCenterPanel().repaint();
-        }
-    }
-    
     private class ArcMouseAdapter extends MouseAdapter {
     	
     	private int initNode;
@@ -452,6 +281,7 @@ public class MainController {
 			       		int radius = view.getNodes().get(i).getDiameter()/2;
 			       			        		
 			       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
+			       			
 			       			x1 =  x;
 			       			y1 =  y;		        	
 			        		view.getCenterPanel().repaint();
@@ -462,17 +292,9 @@ public class MainController {
         	}
         }
         
-    	
     	@Override
         public void mouseReleased(MouseEvent e) {
     		if(activateArc == 1) {
-        		//x2 = e.getX();
-        		//y2 = e.getY();
-        		
-        		//Arc arc = new Arc(x1, y1, x2, y2, Color.black);
-        		//view.getArcs().add(arc);
-        		
-        		//view.getCenterPanel().repaint();
         		
     			if(e.getButton() == MouseEvent.BUTTON1) {
     			
@@ -487,10 +309,12 @@ public class MainController {
 			       			if (x2 < x1) {
 			       				
 			       				x2 = x + 12;
+			       				x1 = x1 - 12;
 			       				
 			       			} else if ( x2 > x1) {
 			       				
 			       				x2 = x - 12;
+			       				x1 = x1 + 12;
 			       				
 			       			} else {
 			       				
@@ -570,18 +394,10 @@ public class MainController {
 					if(e.isPopupTrigger()) {
 	    				view.getArcPopUp().show(e.getComponent(), e.getX(), e.getY());
 	    				arcPropertyInt = i;
-	    			}	
-					
-					
-				}
-				
-				
-			}
-			
+	    			}		
+				}	
+			}	
 		}
-		
-		
-		
 	}
 	
 	private class NodeInfoMouseAdpater extends MouseAdapter {
@@ -604,9 +420,6 @@ public class MainController {
 	       			}	
 	       		}
         	}
-			
-			
-			
 		}
 		
 		@Override
@@ -625,11 +438,8 @@ public class MainController {
 	    				nodePropertyInt = i;
 	       			}	
 	       		}
-        	}
-			
+        	}	
 		}
-		
-		
 	}
 	
 	
@@ -651,15 +461,9 @@ public class MainController {
 							
 							view.getArcs().remove(i);
 							view.getCenterPanel().repaint();
-							
-							
-						}
-						
-						
+						}		
 					}
 				}
-				
-				
 			}
 		}
 	}
@@ -668,6 +472,8 @@ public class MainController {
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
+			
+			ArrayList<Integer> arcArray = new ArrayList<Integer>();
 			
 			if (activateDelete == 1) {
 			
@@ -679,28 +485,38 @@ public class MainController {
 		       		if(Math.pow(x-e.getX(), 2) + Math.pow(y-e.getY(), 2) <= Math.pow(radius, 2)) {
 		       				   
 		       			
-		       			for (int j = 0; j< view.getArcs().size(); j++) {
-							
-							
-							/*
-							Arc arc = view.getArcs().get(j);
-							
-							if(view.getNodes().get(i).getNumber() == arc.getInitNode() ||
-									view.getNodes().get(i).getNumber() == arc.getEndNode()) {
-								
-								view.getArcs().remove(j);
-							}
-							*/
+		       			int j = 0;
+		       			while ( j < view.getArcs().size()) {
 		       				
-		       				if(view.getNodes().get(i).getNumber() == view.getArcs().get(j).getInitNode()) {
+		       				if(view.getNodes().get(i).getNumber() == view.getArcs().get(j).getEndNode()) {
 		       					
-		       					System.out.println(j);
 		       					view.getArcs().remove(j);
+		       					view.getCenterPanel().repaint();
 		       					
+		       				} else {
+		       					
+		       					j++;
 		       				}
 		       				
 		       				
-						}
+		       			}
+		       			
+		       			int k = 0;
+		       			while ( k < view.getArcs().size()) {
+		       				
+		       				if(view.getNodes().get(i).getNumber() == view.getArcs().get(k).getInitNode()) {
+		       					
+		       					view.getArcs().remove(k);
+		       					view.getCenterPanel().repaint();
+		       					
+		       				} else {
+		       					
+		       					k++;
+		       				}
+		       				
+		       				
+		       			}
+		       			
 		       			
 		       			view.getNodes().remove(i);
 		       			
@@ -730,6 +546,7 @@ public class MainController {
 						System.out.println("X2 = " + arc.getX2() + ", Y2 = " + arc.getY2());
 						System.out.println("InitNode = " + arc.getInitNode() + ", EndNode = " + arc.getEndNode());
 						System.out.println("Vulnerability = " + arc.getVulnerability());
+						System.out.println("Index = " + i);
 					}
 					
 					
@@ -794,10 +611,21 @@ public class MainController {
 					
 					if(nodeIndex == view.getArcs().get(i).getInitNode()) {
 						
-						view.getArcs().get(i).setX1(e.getX() + 12);
+						if(view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
+							
+							view.getArcs().get(i).setX1(e.getX() + 24);
+							
+						} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
+							
+							view.getArcs().get(i).setX1(e.getX());
+							
+						} else {
+							
+							view.getArcs().get(i).setX1(e.getX() + 12);
+							
+						}													
 						view.getArcs().get(i).setY1(e.getY() + 12);
-						
-					}
+					}					
 				}
 				
 				for(int i = 0; i < view.getArcs().size(); i++) {
@@ -835,11 +663,30 @@ public class MainController {
 					
 					if(nodeIndex == view.getArcs().get(i).getInitNode()) {
 						
-						view.getArcs().get(i).setX1(e.getX() + 12);
-						view.getArcs().get(i).setY1(e.getY() + 12);
+						if(nodeIndex == view.getArcs().get(i).getInitNode()) {
+							
+							if(view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
+								
+								view.getArcs().get(i).setX1(e.getX() + 24);
+								
+							} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
+								
+								view.getArcs().get(i).setX1(e.getX());
+								
+							} else {
+								
+								view.getArcs().get(i).setX1(e.getX() - 12);
+								
+							}													
+							view.getArcs().get(i).setY1(e.getY() + 12);
+						}
+						
 						
 					}
 				}
+				
+				
+				
 				
 				for(int i = 0; i < view.getArcs().size(); i++) {
 					
@@ -903,4 +750,8 @@ public class MainController {
 		});
 		
 	}
+	
+	
+	
+	
 }

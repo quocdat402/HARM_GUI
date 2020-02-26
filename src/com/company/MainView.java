@@ -3,11 +3,15 @@ package com.company;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.undo.StateEditable;
+import javax.swing.undo.UndoManager;
+import javax.swing.undo.UndoableEditSupport;
 
 import com.company.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +23,6 @@ public class MainView extends JFrame {
     private JPanel contentPane;
     private JPanel northPanel;
     private MyJPanel centerPanel;
-    private ArrayList<Pair> listOfPairs;//Added for storing pairs of nodes
-    private ArrayList<JLabel> nodeArray;
-    private Map<String, Point> map;//Stores Jlabel added on center panel and its location.
-    
-    private JButton button;
-    private JLabel lblNode;
     private JButton btnClear;
     private JButton btnArc;
     private JButton btnNode;
@@ -54,23 +52,24 @@ public class MainView extends JFrame {
     private JLabel lblName;
     private JTextField txtName;
     private JButton btnName;
+    
+    private JMenuItem mntmOpen;
+    private JMenuItem mntmSave;
+    
+    private UndoManager undoManager = new UndoManager();
 
     public MainView() {
     	
-        contentPane = new JPanel();
-        
-        listOfPairs = new ArrayList<Pair>();
-        nodeArray = new ArrayList<JLabel>();
-        map = new LinkedHashMap<String,Point>();
-        nodes = new ArrayList<Node>();
-        arcs = new ArrayList<Arc>();
-        
+        contentPane = new JPanel();             
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
         setTitle("HARMs Simulator Prototype");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
+        
+        nodes = new ArrayList<Node>();
+        arcs = new ArrayList<Arc>();
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -81,10 +80,10 @@ public class MainView extends JFrame {
         JMenuItem mntmNew = new JMenuItem("New");
         mnFile.add(mntmNew);
 
-        JMenuItem mntmOpen = new JMenuItem("Open");
+        mntmOpen = new JMenuItem("Open");
         mnFile.add(mntmOpen);
 
-        JMenuItem mntmSave = new JMenuItem("Save");
+        mntmSave = new JMenuItem("Save");
         mnFile.add(mntmSave);
 
         JMenuItem mntmSaveAs = new JMenuItem("Save As");
@@ -95,24 +94,6 @@ public class MainView extends JFrame {
 
         JMenuItem mntmExit = new JMenuItem("Exit");
         mnFile.add(mntmExit);
-
-        JMenu mnEdit = new JMenu("Edit");
-        menuBar.add(mnEdit);
-
-        JMenuItem mntmCopy = new JMenuItem("Copy");
-        mnEdit.add(mntmCopy);
-
-        JMenuItem mntmPaste = new JMenuItem("Paste");
-        mnEdit.add(mntmPaste);
-
-        JSeparator separator_1 = new JSeparator();
-        mnEdit.add(separator_1);
-
-        JMenuItem mntmNewMenuItem = new JMenuItem("Undo");
-        mnEdit.add(mntmNewMenuItem);
-
-        JMenuItem mntmRedo = new JMenuItem("Redo");
-        mnEdit.add(mntmRedo);
 
         JMenu mnOptions = new JMenu("Options");
         menuBar.add(mnOptions);
@@ -162,13 +143,8 @@ public class MainView extends JFrame {
         btnGetinfo = new JButton("GetInfo");
         btnGetinfo.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnGetinfo);
-        lblNode = new JLabel("Node Label");
-        lblNode.setBorder(BorderFactory.createLineBorder(Color.black,1));
-        northPanel.add(lblNode);       
         northPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
         contentPane.add(northPanel, BorderLayout.NORTH);
-        button  = new JButton("DrawArc");
-        northPanel.add(button);
         centerPanel = new MyJPanel();
         centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP)); 
         contentPane.add(centerPanel, BorderLayout.CENTER);
@@ -205,7 +181,7 @@ public class MainView extends JFrame {
         arcPanel.add(txtVul);
         arcPanel.add(btnVul);
         
-        arcFrame.add(arcPanel);
+        arcFrame.getContentPane().add(arcPanel);
         
         nodePanel = new JPanel();
         
@@ -218,13 +194,16 @@ public class MainView extends JFrame {
         nodePanel.add(txtName);
         nodePanel.add(btnName);
         
-        nodeFrame.add(nodePanel);
+        nodeFrame.getContentPane().add(nodePanel);
         
         
     }
     
-    private class MyJPanel extends JPanel//Create your own JPanel and override paintComponentMethod.
+    private class MyJPanel extends JPanel implements StateEditable//Create your own JPanel and override paintComponentMethod.
     {
+    	
+    	UndoableEditSupport undoableEditSupport = new UndoableEditSupport(this);
+    	
         
     	/*
     	@Override
@@ -240,11 +219,7 @@ public class MainView extends JFrame {
             }
         }
         */
-    	
-    	
-         
-    	
-    	
+    	    	
     	@Override
     	public void paintComponent(Graphics g) {
     				
@@ -258,6 +233,20 @@ public class MainView extends JFrame {
     			a.drawLine(g);
     		}
     	}
+
+
+		@Override
+		public void storeState(Hashtable state) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		@Override
+		public void restoreState(Hashtable state) {
+			// TODO Auto-generated method stub
+			
+		}
     }
     
 	public JPanel getNorthPanel() {
@@ -273,36 +262,14 @@ public class MainView extends JFrame {
 		this.centerPanel = centerPanel;
 	}
 	
-	public JButton getButton() {
-		return button;
-	}
-	public void setButton(JButton button) {
-		this.button = button;
-	}
-	public JLabel getLblNode() {
-		return lblNode;
-	}
-	public void setLblNode(JLabel lblNode) {
-		this.lblNode = lblNode;
-	}
+	
 	public JButton getBtnClear() {
 		return btnClear;
 	}
 	public void setBtnClear(JButton btnClear) {
 		this.btnClear = btnClear;
 	}
-	public ArrayList<Pair> getListOfPairs() {
-		return listOfPairs;
-	}
-	public void setListOfPairs(ArrayList<Pair> listOfPairs) {
-		this.listOfPairs = listOfPairs;
-	}
-	public Map<String, Point> getMap() {
-		return map;
-	}
-	public void setMap(Map<String, Point> map) {
-		this.map = map;
-	}
+	
 	public JButton getBtnArc() {
 		return btnArc;
 	}
@@ -428,5 +395,17 @@ public class MainView extends JFrame {
 	}
 	public void setBtnName(JButton btnName) {
 		this.btnName = btnName;
+	}
+	public JMenuItem getMntmOpen() {
+		return mntmOpen;
+	}
+	public void setMntmOpen(JMenuItem mntmOpen) {
+		this.mntmOpen = mntmOpen;
+	}
+	public JMenuItem getMntmSave() {
+		return mntmSave;
+	}
+	public void setMntmSave(JMenuItem mntmSave) {
+		this.mntmSave = mntmSave;
 	}
 }
