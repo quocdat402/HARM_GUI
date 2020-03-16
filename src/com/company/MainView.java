@@ -56,6 +56,8 @@ public class MainView extends JFrame {
     private JMenuItem mntmOpen;
     private JMenuItem mntmSave;
     
+    private JMenuItem mntmAttackgraph;
+    
     private UndoManager undoManager = new UndoManager();
 
     public MainView() {
@@ -103,7 +105,11 @@ public class MainView extends JFrame {
 
         JMenu mnTools = new JMenu("Tools");
         menuBar.add(mnTools);
-
+        
+        mntmAttackgraph = new JMenuItem("Attack Graph");
+        mnTools.add(mntmAttackgraph);
+        
+        
         JMenu mnExtentions = new JMenu("Extentions");
         menuBar.add(mnExtentions);
 
@@ -408,4 +414,11 @@ public class MainView extends JFrame {
 	public void setMntmSave(JMenuItem mntmSave) {
 		this.mntmSave = mntmSave;
 	}
+	public JMenuItem getMntmAttackgraph() {
+		return mntmAttackgraph;
+	}
+	public void setMntmAttackgraph(JMenuItem mntmAttackgraph) {
+		this.mntmAttackgraph = mntmAttackgraph;
+	}
+	
 }

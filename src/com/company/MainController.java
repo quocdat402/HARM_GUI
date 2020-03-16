@@ -121,6 +121,7 @@ public class MainController {
             	nodeNumber = 0;
             }
         });
+		view.getMntmAttackgraph().addActionListener(e-> attackGraphAction());
 		view.getBtnNode().addActionListener(e->activateNodeInt());
 		view.getBtnArc().addActionListener(e->activateArcInt());
 		view.getBtnMove().addActionListener(e -> activateMoveInt());
@@ -179,6 +180,12 @@ public class MainController {
 			}			
 			
 		});
+		
+	}
+	
+	private void attackGraphAction() {
+		
+		
 		
 	}
 	
