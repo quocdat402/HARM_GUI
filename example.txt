@@ -1,7 +1,8 @@
-18.0
-8.0
-2
-2
-2
-4.5
-0.1295999999999999
+Number of hosts: 4
+Risk: 18.0
+Cost: 4.0
+Mean of attack path lengths: 1.5
+Mode of attack path lengths: 2
+Shortest attack path length: 1
+Return of Attack: 4.5
+Probability of attack success: 0.3599999999999999

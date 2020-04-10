@@ -11,8 +11,11 @@ public class Node {
 	private Color color;
 	private String name;
 	private int number;
+	private boolean attacker;
+	private boolean target;
 	
-	public Node(int x, int y, int diameter, Color color, String name, int number) {
+	public Node(int x, int y, int diameter, Color color, String name, int number, boolean attacker,
+			boolean target) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -20,6 +23,8 @@ public class Node {
 		this.color = color;
 		this.name = name;
 		this.number = number;
+		this.attacker = attacker;
+		this.target = target;
 	}
 
 	public int getX() {
@@ -77,6 +82,22 @@ public class Node {
 
 	public void setNumber(int number) {
 		this.number = number;
+	}
+
+	public boolean isAttacker() {
+		return attacker;
+	}
+
+	public void setAttacker(boolean attacker) {
+		this.attacker = attacker;
+	}
+
+	public boolean isTarget() {
+		return target;
+	}
+
+	public void setTarget(boolean target) {
+		this.target = target;
 	}
 	
 }

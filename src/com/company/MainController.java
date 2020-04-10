@@ -9,11 +9,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -45,6 +56,7 @@ public class MainController {
     private int activateGetInfo;
     
     private int nodeNumber;
+    private int arcNumber;
 	
 	private int nodePropertyInt;
 	private int arcPropertyInt;
@@ -117,7 +129,7 @@ public class MainController {
             	view.getCenterPanel().repaint();
             	view.getArcs().clear();
             	view.getNodes().clear();
-            	
+            	arcNumber = 0;
             	nodeNumber = 0;
             }
         });
@@ -127,6 +139,8 @@ public class MainController {
 		view.getBtnMove().addActionListener(e -> activateMoveInt());
 		view.getBtnDelete().addActionListener(e -> activateDeleteInt());
 		view.getBtnGetinfo().addActionListener(e -> activateGetInfoInt());
+		view.getNodeAttacker().addActionListener(e -> nodeAttacker());
+		view.getNodeTarget().addActionListener(e -> nodeTarget());
 		view.getCenterPanel().addMouseListener(new MouseAdapter() {
 	        
 			@Override
@@ -183,7 +197,176 @@ public class MainController {
 		
 	}
 	
+	private void nodeAttacker() {
+		
+		int AttackerSetting = 0;
+		
+		for(int i = 0; i < view.getNodes().size(); i++) {
+			if(view.getNodes().get(i).isAttacker() == true) {
+				JOptionPane.showMessageDialog(null, "Attacker is already set");
+				AttackerSetting = 1;
+			}
+			
+		}
+		
+		if(AttackerSetting == 1) {
+			
+		} else {
+			view.getNodes().get(nodePropertyInt).setAttacker(true);
+		}
+	}
+	
+	private void nodeTarget() {
+		
+		int targetSetting = 0;
+		
+		for(int i = 0; i < view.getNodes().size(); i++) {
+			if(view.getNodes().get(i).isTarget() == true) {
+				JOptionPane.showMessageDialog(null, "Target is already set");
+				targetSetting = 1;
+			}
+			
+		}
+		
+		if(targetSetting == 1) {
+			
+		} else {
+			view.getNodes().get(nodePropertyInt).setTarget(true);
+		} 
+		
+	}
+	
 	private void attackGraphAction() {
+		
+//		try {
+//			FileWriter arcInputs = new FileWriter("ArcInput.txt");
+//			FileWriter nodeInputs = new FileWriter("NodeInput.txt");
+//			FileWriter numberOfNodes = new FileWriter("numberOfNodes.txt");
+//			for(int i = 0; i < view.getArcs().size(); i++) {
+//				arcInputs.write(String.valueOf(view.getArcs().get(i).getInitNode()));
+//				arcInputs.write(String.valueOf(view.getArcs().get(i).getEndNode()) + "\n");
+//			}
+//			
+//			
+//			numberOfNodes.write(String.valueOf(nodeNumber));
+//			
+//			for(int i= 0; i< view.getNodes().size(); i++) {
+//				
+//				
+//				if(view.getNodes().get(i).isAttacker() == true) {
+//					
+//					
+//					nodeInputs.write("A");
+//					nodeInputs.write(String.valueOf((view.getNodes().get(i).getNumber())));
+//					nodeInputs.write(String.valueOf((view.getNodes().get(i).isAttacker())) + "\n");
+//				}
+//				if(view.getNodes().get(i).isTarget() == true) {
+//					
+//					nodeInputs.write("T");
+//					nodeInputs.write(String.valueOf((view.getNodes().get(i).getNumber())));
+//					nodeInputs.write(String.valueOf((view.getNodes().get(i).isTarget())) + "\n");
+//					
+//				}
+//				
+//			}
+//			
+//			numberOfNodes.close();
+//			arcInputs.close();
+//			nodeInputs.close();
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		
+//		
+//		view.getResultFrame().setVisible(true);
+//		String command = "python3 example3.py";
+//		try {
+//			Process p = Runtime.getRuntime().exec(command);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		
+//		try {
+//			File Outputs = new File("example.txt");
+//			Scanner myReader = new Scanner(Outputs);
+//			while(myReader.hasNextLine()) {
+//				String output = myReader.nextLine();
+//				System.out.println(output);
+//			}
+//			myReader.close();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		String fromclient;
+    	String toclient;
+    	
+    	try {
+			ServerSocket server = new ServerSocket(5000);
+			System.out.println("Waiting for client on port 5000");
+			
+//			String command = "python3 example3.py";
+//			try {
+//				Process p = Runtime.getRuntime().exec(command);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			List<String> toclientList = new ArrayList<String>();
+			
+			while(true) {
+				Socket connected = server.accept();
+				BufferedReader inFromUser = new BufferedReader(
+						new InputStreamReader(System.in));
+				BufferedReader inFromClient = new BufferedReader(
+						new InputStreamReader (connected.getInputStream()));
+				PrintWriter outToClient = new PrintWriter(connected.getOutputStream(), true);
+				
+				
+				
+				toclient = Integer.toString(nodeNumber);
+				outToClient.println(toclient);
+				toclient = Integer.toString(arcNumber);
+				outToClient.println(toclient);
+				for(int i = 0; i < view.getArcs().size(); i++) {
+					toclientList.add(String.valueOf(view.getArcs().get(i).getInitNode())
+							+ String.valueOf(view.getArcs().get(i).getEndNode()));
+				}
+				
+				for(int i = 0; i < view.getArcs().size(); i++) {
+					outToClient.println(toclientList.get(i));
+				}
+				while((fromclient = inFromClient.readLine()) != null) {
+					
+					System.out.println(fromclient);
+				}
+				connected.close();
+				
+				
+					
+				
+				
+			server.close();
+			}
+			
+			
+			
+
+			
+			
+		} catch (IOException e1) {
+			//System.err.println("Invalid Server");
+		}
 		
 		
 		
@@ -330,11 +513,11 @@ public class MainController {
 			       			}
 			       			y2 = y;
 			       			endNode = i;
-			       			Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode,0);
+			       			Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode,0,arcNumber);
 			        		view.getArcs().add(arc);
 			        		
 			        		view.getCenterPanel().repaint();
-			        		
+			        		arcNumber++;
 			        		
 			       		}
 		        	}	
@@ -353,7 +536,7 @@ public class MainController {
 			
 			if (activateNode ==1) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + nodeNumber, nodeNumber);			
+					Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + nodeNumber, nodeNumber, false, false);			
 					view.getNodes().add(node);
 					view.getCenterPanel().repaint();
 					nodeNumber++;

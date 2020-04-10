@@ -37,16 +37,30 @@ public class MainView extends JFrame {
     private JPopupMenu arcPopUp;
     
     private JMenuItem nodeProperties;
+    private JMenuItem nodeAttacker;
+    private JMenuItem nodeTarget;
     private JMenuItem arcProperties;
     
     private JFrame nodeFrame;    
     private JFrame arcFrame;
+    private JFrame resultFrame;
     
     private JPanel arcPanel;
     private JPanel nodePanel;
+    private JPanel resultPanel;
     
     private JLabel lblVul;
+    private JLabel lblRisk;
+    private JLabel lblCost;
+    private JLabel lblProb;
+    private JLabel lblImpact;
+    
     private JTextField txtVul;
+    private JTextField txtRisk;
+    private JTextField txtCost;
+    private JTextField txtProb;
+    private JTextField txtImpact;
+    
     private JButton btnVul;
     
     private JLabel lblName;
@@ -165,11 +179,18 @@ public class MainView extends JFrame {
         arcFrame.setTitle("Arc");        
         //arcFrame.setLayout(null);
         
+        resultFrame = new JFrame();
+        resultFrame.setSize(300, 300);
+        resultFrame.setTitle("result");
         
         
         nodePopUp = new JPopupMenu("Node pop-up");
         nodeProperties = new JMenuItem("Properties");
+        nodeAttacker = new JMenuItem("Set as the Attacker");
+        nodeTarget = new JMenuItem("Set as the Target");
         nodePopUp.add(nodeProperties);
+        nodePopUp.add(nodeAttacker);
+        nodePopUp.add(nodeTarget);
         
         arcPopUp = new JPopupMenu("Arc pop-up");
         arcProperties = new JMenuItem("Properties"); 
@@ -179,13 +200,35 @@ public class MainView extends JFrame {
         
         lblVul = new JLabel("Vulnerability");
         txtVul = new JTextField();
-        txtVul.setPreferredSize(new Dimension(200, 24));
+        txtVul.setPreferredSize(new Dimension(40, 24));
+        lblRisk = new JLabel("Risk");
+        txtRisk = new JTextField();
+        txtRisk.setPreferredSize(new Dimension(40, 24));
+        lblCost = new JLabel("Cost");
+        txtCost = new JTextField();
+        txtCost.setPreferredSize(new Dimension(40, 24));
+        lblProb = new JLabel("Prob");
+        txtProb = new JTextField();
+        txtProb.setPreferredSize(new Dimension(40, 24));
+        lblImpact = new JLabel("Impact");
+        txtImpact = new JTextField();
+        txtImpact.setPreferredSize(new Dimension(40, 24));
+        
         btnVul = new JButton("Okay");
         
         
-        arcPanel.add(lblVul);
-        arcPanel.add(txtVul);
+        //arcPanel.add(lblVul);
+        //arcPanel.add(txtVul);
+        arcPanel.add(lblRisk);
+        arcPanel.add(txtRisk);
+        arcPanel.add(lblCost);
+        arcPanel.add(txtCost);
+        arcPanel.add(lblProb);
+        arcPanel.add(txtProb);
+        arcPanel.add(lblImpact);
+        arcPanel.add(txtImpact);
         arcPanel.add(btnVul);
+        
         
         arcFrame.getContentPane().add(arcPanel);
         
@@ -201,6 +244,9 @@ public class MainView extends JFrame {
         nodePanel.add(btnName);
         
         nodeFrame.getContentPane().add(nodePanel);
+        
+        resultPanel = new JPanel();
+        resultFrame.getContentPane().add(resultPanel);
         
         
     }
@@ -419,6 +465,72 @@ public class MainView extends JFrame {
 	}
 	public void setMntmAttackgraph(JMenuItem mntmAttackgraph) {
 		this.mntmAttackgraph = mntmAttackgraph;
+	}
+	public JFrame getResultFrame() {
+		return resultFrame;
+	}
+	public void setResultFrame(JFrame resultFrame) {
+		this.resultFrame = resultFrame;
+	}
+	public JPanel getResultPanel() {
+		return resultPanel;
+	}
+	public void setResultPanel(JPanel resultPanel) {
+		this.resultPanel = resultPanel;
+	}
+	public JMenuItem getNodeAttacker() {
+		return nodeAttacker;
+	}
+	public void setNodeAttacker(JMenuItem nodeAttacker) {
+		this.nodeAttacker = nodeAttacker;
+	}
+	public JMenuItem getNodeTarget() {
+		return nodeTarget;
+	}
+	public void setNodeTarget(JMenuItem nodeTarget) {
+		this.nodeTarget = nodeTarget;
+	}
+	public JLabel getLblRisk() {
+		return lblRisk;
+	}
+	public void setLblRisk(JLabel lblRisk) {
+		this.lblRisk = lblRisk;
+	}
+	public JLabel getLblCost() {
+		return lblCost;
+	}
+	public void setLblCost(JLabel lblCost) {
+		this.lblCost = lblCost;
+	}
+	public JLabel getLblProb() {
+		return lblProb;
+	}
+	public void setLblProb(JLabel lblProb) {
+		this.lblProb = lblProb;
+	}
+	public JLabel getLblImpact() {
+		return lblImpact;
+	}
+	public void setLblImpact(JLabel lblImpact) {
+		this.lblImpact = lblImpact;
+	}
+	public JTextField getTxtRisk() {
+		return txtRisk;
+	}
+	public void setTxtRisk(JTextField txtRisk) {
+		this.txtRisk = txtRisk;
+	}
+	public JTextField getTxtCost() {
+		return txtCost;
+	}
+	public void setTxtCost(JTextField txtCost) {
+		this.txtCost = txtCost;
+	}
+	public JTextField getTxtProb() {
+		return txtProb;
+	}
+	public void setTxtProb(JTextField txtProb) {
+		this.txtProb = txtProb;
 	}
 	
 }
