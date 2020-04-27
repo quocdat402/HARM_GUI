@@ -16,13 +16,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -60,6 +64,8 @@ public class MainController {
 	
 	private int nodePropertyInt;
 	private int arcPropertyInt;
+	
+	private List<String> lines;
 
 	
 	public MainController(MainModel m,MainView v) {
@@ -77,6 +83,7 @@ public class MainController {
 	
 	public void initController() {		
 		
+		lines = new ArrayList<>();
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter();
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter();
 		MoveMouseAdapter moveMouseAdapter = new MoveMouseAdapter();
@@ -308,13 +315,91 @@ public class MainController {
 //			e.printStackTrace();
 //		}
 		
-		String fromclient;
-    	String toclient;
+		
     	
-    	try {
-			ServerSocket server = new ServerSocket(5000);
-			System.out.println("Waiting for client on port 5000");
+    	try (Socket socket = new Socket("localhost", 5000)) {
 			
+    		OutputStream output = socket.getOutputStream();
+    		PrintWriter writer = new PrintWriter(output, true);
+    		writer.println(nodeNumber);
+    		
+    		for(int i = 0; i < view.getNodes().size(); i++) {
+				if(view.getNodes().get(i).isAttacker()) {
+					
+					writer.println(view.getNodes().get(i).getNumber());
+					
+				} else if(view.getNodes().get(i).isTarget()) {
+					
+					writer.println(view.getNodes().get(i).getNumber());
+					
+				}
+			}
+    		
+    		
+    		for(int i = 0; i < view.getArcs().size(); i++) {
+				writer.println(String.valueOf(view.getArcs().get(i).getInitNode()));
+						
+				writer.println(String.valueOf(view.getArcs().get(i).getEndNode()));
+			}
+    		
+    		writer.println("c");
+    		
+    		InputStream input = socket.getInputStream();
+    		
+    		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+    		
+    		String line;
+    		
+    		
+    		while((line = reader.readLine()) != null) {
+    			
+    			System.out.println(line);
+    			lines.add(line);
+    			
+    		}
+    		
+    	
+    		
+    	} catch (UnknownHostException ex) {
+    		
+    		System.out.println("Server not found: " + ex.getMessage());
+    		
+    	} catch (IOException ex) {
+    		
+    		System.out.println("I/O error: " + ex.getMessage());
+    		
+    	}
+    	
+//    	for(String lineTemp: lines) {
+//    		
+//			if(lineTemp.startsWith("Number")) {
+//				break;
+//			} else {			
+//				lines.remove(lineTemp);
+//			}
+//		}
+    	
+    	for(Iterator<String> iter = lines.iterator(); iter.hasNext();) {
+    		
+    		String lineTemp = iter.next();
+    		if(lineTemp.startsWith("Number")) {
+    			break;
+    		} else {
+    			iter.remove();
+    		}
+    		
+    	}
+    	
+    	for(String lineTemp: lines) {
+    	
+//    		view.getLblResults().setText(view.getLblResults().getText() + "\n" + lineTemp + "\n");
+//    		view.getTxtResults().setText(view.getLblResults().getText() + "\n" + lineTemp + "\n");
+    		JLabel labelTemp = new JLabel(lineTemp);
+    		view.getResultPanel().add(labelTemp);
+    	
+    	}
+    	
+    	view.getResultFrame().setVisible(true);
 //			String command = "python3 example3.py";
 //			try {
 //				Process p = Runtime.getRuntime().exec(command);
@@ -322,51 +407,50 @@ public class MainController {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-			List<String> toclientList = new ArrayList<String>();
 			
-			while(true) {
-				Socket connected = server.accept();
-				BufferedReader inFromUser = new BufferedReader(
-						new InputStreamReader(System.in));
-				BufferedReader inFromClient = new BufferedReader(
-						new InputStreamReader (connected.getInputStream()));
-				PrintWriter outToClient = new PrintWriter(connected.getOutputStream(), true);
-				
-				
-				
-				toclient = Integer.toString(nodeNumber);
-				outToClient.println(toclient);
-				toclient = Integer.toString(arcNumber);
-				outToClient.println(toclient);
-				for(int i = 0; i < view.getArcs().size(); i++) {
-					toclientList.add(String.valueOf(view.getArcs().get(i).getInitNode())
-							+ String.valueOf(view.getArcs().get(i).getEndNode()));
-				}
-				
-				for(int i = 0; i < view.getArcs().size(); i++) {
-					outToClient.println(toclientList.get(i));
-				}
-				while((fromclient = inFromClient.readLine()) != null) {
-					
-					System.out.println(fromclient);
-				}
-				connected.close();
-				
-				
-					
-				
-				
-			server.close();
-			}
-			
-			
-			
-
-			
-			
-		} catch (IOException e1) {
-			//System.err.println("Invalid Server");
-		}
+//			while(true) {
+//				Socket connected = server.accept();
+//				BufferedReader inFromUser = new BufferedReader(
+//						new InputStreamReader(System.in));
+//				BufferedReader inFromClient = new BufferedReader(
+//						new InputStreamReader (connected.getInputStream()));
+//				PrintWriter outToClient = new PrintWriter(connected.getOutputStream(), true);
+//				
+//				
+//				
+//				toclient = Integer.toString(nodeNumber);
+//				outToClient.println(toclient);
+//				toclient = Integer.toString(arcNumber);
+//				outToClient.println(toclient);
+//				for(int i = 0; i < view.getArcs().size(); i++) {
+//					toclientList.add(String.valueOf(view.getArcs().get(i).getInitNode())
+//							+ String.valueOf(view.getArcs().get(i).getEndNode()));
+//				}
+//				
+//				for(int i = 0; i < view.getArcs().size(); i++) {
+//					outToClient.println(toclientList.get(i));
+//				}
+//				while((fromclient = inFromClient.readLine()) != null) {
+//					
+//					System.out.println(fromclient);
+//				}
+//				connected.close();
+//				
+//				
+//					
+//				
+//				
+//			server.close();
+//			}
+//			
+//			
+//			
+//
+//			
+//			
+//		} catch (IOException e1) {
+//			//System.err.println("Invalid Server");
+//		}
 		
 		
 		
@@ -513,7 +597,7 @@ public class MainController {
 			       			}
 			       			y2 = y;
 			       			endNode = i;
-			       			Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode,0,arcNumber);
+			       			Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode,0,arcNumber,0,0,0,0);
 			        		view.getArcs().add(arc);
 			        		
 			        		view.getCenterPanel().repaint();

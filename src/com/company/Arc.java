@@ -17,9 +17,13 @@ public class Arc {
 	private int initNode;
 	private int endNode;
 	private double vulnerability;
+	private double risk;
+	private double cost;
+	private double probability;
+	private double impact;
 	private int number;
 	
-	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, double vulnerability, int number) {
+	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, double vulnerability, int number, int risk, int cost, int probability, int impact) {
 		super();
 		this.x1 = x1;
 		this.y1 = y1;
@@ -30,6 +34,10 @@ public class Arc {
 		this.endNode = endNode;
 		this.vulnerability = vulnerability;
 		this.number = number;
+		this.risk = risk;
+		this.cost = cost;
+		this.probability = probability;
+		this.impact = impact;
 	}
 	
 	public void drawLine(Graphics g) {
@@ -119,6 +127,38 @@ public class Arc {
 
 	public void setNumber(int number) {
 		this.number = number;
+	}
+
+	public double getRisk() {
+		return risk;
+	}
+
+	public void setRisk(double risk) {
+		this.risk = risk;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public double getProbability() {
+		return probability;
+	}
+
+	public void setProbability(double probability) {
+		this.probability = probability;
+	}
+
+	public double getImpact() {
+		return impact;
+	}
+
+	public void setImpact(double impact) {
+		this.impact = impact;
 	}
 
 }

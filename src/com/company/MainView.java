@@ -49,6 +49,10 @@ public class MainView extends JFrame {
     private JPanel nodePanel;
     private JPanel resultPanel;
     
+    private JLabel lblMetrics;
+    private JLabel lblResults;
+    private JTextField txtResults;
+    
     private JLabel lblVul;
     private JLabel lblRisk;
     private JLabel lblCost;
@@ -60,6 +64,7 @@ public class MainView extends JFrame {
     private JTextField txtCost;
     private JTextField txtProb;
     private JTextField txtImpact;
+    
     
     private JButton btnVul;
     
@@ -216,6 +221,8 @@ public class MainView extends JFrame {
         
         btnVul = new JButton("Okay");
         
+                
+        
         
         //arcPanel.add(lblVul);
         //arcPanel.add(txtVul);
@@ -246,6 +253,16 @@ public class MainView extends JFrame {
         nodeFrame.getContentPane().add(nodePanel);
         
         resultPanel = new JPanel();
+        
+        lblMetrics = new JLabel("---------------Analysis---------------\n");
+        //lblResults = new JLabel();
+        //txtResults = new JTextField();
+        
+        
+        resultPanel.add(lblMetrics);
+        //resultPanel.add(lblResults);
+        //resultPanel.add(txtResults);
+        
         resultFrame.getContentPane().add(resultPanel);
         
         
@@ -531,6 +548,24 @@ public class MainView extends JFrame {
 	}
 	public void setTxtProb(JTextField txtProb) {
 		this.txtProb = txtProb;
+	}
+	public JLabel getLblMetrics() {
+		return lblMetrics;
+	}
+	public void setLblMetrics(JLabel lblMetrics) {
+		this.lblMetrics = lblMetrics;
+	}
+	public JLabel getLblResults() {
+		return lblResults;
+	}
+	public void setLblResults(JLabel lblResults) {
+		this.lblResults = lblResults;
+	}
+	public JTextField getTxtResults() {
+		return txtResults;
+	}
+	public void setTxtResults(JTextField txtResults) {
+		this.txtResults = txtResults;
 	}
 	
 }
