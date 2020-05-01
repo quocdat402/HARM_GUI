@@ -72,29 +72,40 @@ public class MainController {
 	private List<String> lines;
 
 	private CommandStack stack;
-	
+
 	private Node deleteUndoNode;
 
 	private List<Arc> deleteUndoArcs;
-	
+
 	private Node moveUndoNode;
-	
+
 	private List<Arc> moveUndoArcs;
-	
+
 	private int moveNodeX;
 	private int moveNodeY;
-	
+
 	private int nodeIndex;
-	
+
 	private int moveCounter;
-	
+
 	private List<Node> moveUndoNodes;
-	
+
 	private List<Integer> moveUndoInteger;
-	
+
 	private Map<Integer, List<Integer>> moveUndoMap;
-	
-	
+
+	private Map<Integer, List<Integer>> moveRedoMap;
+
+	private int moveRedoCounter;
+
+	private List<Integer> moveUndoArcInteger;
+
+	private Map<Integer, List<Integer>> moveUndoArcMap;
+
+	private int moveArcCounter;
+
+	private int moveUndoArcCounter;
+
 	public MainController(MainModel m, MainView v) {
 
 		view = v;
@@ -117,15 +128,22 @@ public class MainController {
 
 		lines = new ArrayList<>();
 		moveUndoArcs = new ArrayList<>();
-		
+
 		deleteUndoArcs = new ArrayList<>();
-		
+
 		moveUndoNodes = new ArrayList<>();
-		
-		
+
 		moveCounter = 0;
-		
+
+		moveRedoCounter = 0;
+
+		moveArcCounter = 0;
+
 		moveUndoMap = new HashMap<>();
+
+		moveRedoMap = new HashMap<>();
+
+		moveUndoArcMap = new HashMap<>();
 
 		// Initialize all the mouse adapter
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter();
@@ -168,6 +186,12 @@ public class MainController {
 				view.getCenterPanel().repaint();
 				view.getArcs().clear();
 				view.getNodes().clear();
+				moveUndoMap.clear();
+
+				moveCounter = 0;
+
+				moveArcCounter = 0;
+
 				arcNumber = 0;
 				nodeNumber = 0;
 			}
@@ -907,19 +931,19 @@ public class MainController {
 		public void mouseReleased(MouseEvent e) {
 
 			for (int i = 0; i < view.getNodes().size(); i++) {
-				
+
 				int x = view.getNodes().get(i).getX() + 12;
-				
+
 				int y = view.getNodes().get(i).getY() + 12;
-				
+
 				int radius = view.getNodes().get(i).getDiameter() / 2;
 
 				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
 
 					if (e.isPopupTrigger()) {
-						
+
 						view.getNodePopUp().show(e.getComponent(), e.getX(), e.getY());
-						
+
 						nodePropertyInt = i;
 					}
 				}
@@ -958,22 +982,21 @@ public class MainController {
 	}
 
 	// Delete Node
-	private class DeleteNodeMouseAdapter extends MouseAdapter implements Command{
+	private class DeleteNodeMouseAdapter extends MouseAdapter implements Command {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			
 
 			ArrayList<Integer> arcArray = new ArrayList<Integer>();
 
 			if (activateDelete == 1) {
 
 				for (int i = 0; i < view.getNodes().size(); i++) {
-					
+
 					int x = view.getNodes().get(i).getX() + 12;
-					
+
 					int y = view.getNodes().get(i).getY() + 12;
-					
+
 					int radius = view.getNodes().get(i).getDiameter() / 2;
 
 					if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
@@ -984,9 +1007,9 @@ public class MainController {
 							if (view.getNodes().get(i).getNumber() == view.getArcs().get(j).getEndNode()) {
 
 								deleteUndoArcs.add(view.getArcs().get(j));
-								
+
 								view.getArcs().remove(j);
-								
+
 								view.getCenterPanel().repaint();
 
 							} else {
@@ -1002,9 +1025,9 @@ public class MainController {
 							if (view.getNodes().get(i).getNumber() == view.getArcs().get(k).getInitNode()) {
 
 								deleteUndoArcs.add(view.getArcs().get(k));
-								
+
 								view.getArcs().remove(k);
-								
+
 								view.getCenterPanel().repaint();
 
 							} else {
@@ -1013,13 +1036,13 @@ public class MainController {
 							}
 
 						}
-						
+
 						deleteUndoNode = view.getNodes().get(i);
 
 						view.getNodes().remove(i);
 
 						view.getCenterPanel().repaint();
-						
+
 						stack.doCommand(new DeleteNodeMouseAdapter());
 
 					}
@@ -1030,57 +1053,51 @@ public class MainController {
 		@Override
 		public void execute() {
 			// TODO Auto-generated method stub
-			
-			
-			
-			for(int i = 0; i < view.getNodes().size(); i++) {
-				
-				if(view.getNodes().get(i).getNumber() == deleteUndoNode.getNumber()) {
-					
+
+			for (int i = 0; i < view.getNodes().size(); i++) {
+
+				if (view.getNodes().get(i).getNumber() == deleteUndoNode.getNumber()) {
+
 					view.getNodes().remove(view.getNodes().get(i));
-					
+
 				}
-				
+
 			}
-			
-			for(int i = 0; i < view.getArcs().size(); i++) {
-				
-				for(int j = 0; j < deleteUndoArcs.size(); j++) {
-					
-					if(view.getArcs().get(i).getNumber() == deleteUndoArcs.get(j).getNumber()) {
-						
+
+			for (int i = 0; i < view.getArcs().size(); i++) {
+
+				for (int j = 0; j < deleteUndoArcs.size(); j++) {
+
+					if (view.getArcs().get(i).getNumber() == deleteUndoArcs.get(j).getNumber()) {
+
 						view.getArcs().remove(view.getArcs().get(i));
-						
+
 					}
-					
+
 				}
-				
-				
+
 			}
-			
+
 			System.out.println("Delete Node - Undo!");
-			
-			
+
 		}
 
 		@Override
 		public void undo() {
-			
+
 			System.out.println("Add Node - Undo!");
 			view.getNodes().add(deleteUndoNode.getNumber(), deleteUndoNode);
-			for(Arc arc : deleteUndoArcs) {
-				
+			for (Arc arc : deleteUndoArcs) {
+
 				System.out.println(arc.getNumber());
 				view.getArcs().add(arc);
-				
+
 			}
-			
+
 			view.getCenterPanel().repaint();
-			
+
 		}
 	}
-	
-	
 
 	private class GetInfoMouseAdapter extends MouseAdapter {
 
@@ -1127,38 +1144,40 @@ public class MainController {
 		return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 	}
 
-	
-	
 	// Move node
 	private class MoveMouseAdapter extends MouseAdapter implements Command {
-
-		
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 
 			if (activateMove == 1) {
 
+				moveUndoArcCounter = 0;
+
 				for (int i = 0; i < view.getNodes().size(); i++) {
-					
+
 					int x = view.getNodes().get(i).getX() + 12;
-					
+
 					int y = view.getNodes().get(i).getY() + 12;
-					
+
 					int radius = view.getNodes().get(i).getDiameter() / 2;
 
 					if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
 
 						moveUndoInteger = new ArrayList<>();
-						
+
 						moveNodeX = view.getNodes().get(i).getX();
 						moveNodeY = view.getNodes().get(i).getY();
-						
-						
-						
-						moveCounter++;
+
 						nodeIndex = i;
-						
+
+						moveUndoInteger.add(nodeIndex);
+						moveUndoInteger.add(moveNodeX);
+						moveUndoInteger.add(moveNodeY);
+
+						moveUndoMap.put(moveCounter, moveUndoInteger);
+
+						moveCounter++;
 
 					}
 				}
@@ -1172,16 +1191,14 @@ public class MainController {
 		public void mouseReleased(MouseEvent e) {
 
 			if (activateMove == 1) {
-				
+
 				view.getNodes().get(nodeIndex).setX(e.getX());
-				
+
 				view.getNodes().get(nodeIndex).setY(e.getY());
 
 				for (int i = 0; i < view.getArcs().size(); i++) {
 
 					if (nodeIndex == view.getArcs().get(i).getInitNode()) {
-
-						moveUndoArcs.add(view.getArcs().get(i));
 
 						if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
 
@@ -1203,8 +1220,6 @@ public class MainController {
 				for (int i = 0; i < view.getArcs().size(); i++) {
 
 					if (nodeIndex == view.getArcs().get(i).getEndNode()) {
-						
-						moveUndoArcs.add(view.getArcs().get(i));
 
 						if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
 
@@ -1235,34 +1250,31 @@ public class MainController {
 		public void mouseDragged(MouseEvent e) {
 
 			if (activateMove == 1) {
-				
+
 				view.getNodes().get(nodeIndex).setX(e.getX());
-				
+
 				view.getNodes().get(nodeIndex).setY(e.getY());
 
 				for (int i = 0; i < view.getArcs().size(); i++) {
 
 					if (nodeIndex == view.getArcs().get(i).getInitNode()) {
 
-						if (nodeIndex == view.getArcs().get(i).getInitNode()) {
+						if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
 
-							if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
+							view.getArcs().get(i).setX1(e.getX() + 24);
 
-								view.getArcs().get(i).setX1(e.getX() + 24);
+						} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
 
-							} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
+							view.getArcs().get(i).setX1(e.getX());
 
-								view.getArcs().get(i).setX1(e.getX());
+						} else {
 
-							} else {
+							view.getArcs().get(i).setX1(e.getX() - 12);
 
-								view.getArcs().get(i).setX1(e.getX() - 12);
-
-							}
-							view.getArcs().get(i).setY1(e.getY() + 12);
 						}
-
+						view.getArcs().get(i).setY1(e.getY() + 12);
 					}
+
 				}
 
 				for (int i = 0; i < view.getArcs().size(); i++) {
@@ -1293,31 +1305,178 @@ public class MainController {
 		@Override
 		public void execute() {
 			// TODO Auto-generated method stub
+
+			int nodeNumber;
+			int xLocation;
+			int yLocation;
+
+			nodeNumber = moveRedoMap.get(moveRedoCounter - 1).get(0);
+			xLocation = moveRedoMap.get(moveRedoCounter - 1).get(1);
+			yLocation = moveRedoMap.get(moveRedoCounter - 1).get(2);
+
+			// System.out.println(nodeNumber);
+
+			// System.out.println(moveRedoMap);
+			// System.out.println(moveRedoCounter);
+
+			for (int i = 0; i < view.getNodes().size(); i++) {
+
+				List<Integer> undoList = new ArrayList<>();
+
+				if (view.getNodes().get(i).getNumber() == nodeNumber) {
+
+					undoList.add(view.getNodes().get(i).getNumber());
+					undoList.add(view.getNodes().get(i).getX());
+					undoList.add(view.getNodes().get(i).getY());
+
+					view.getNodes().get(i).setX(xLocation);
+					view.getNodes().get(i).setY(yLocation);
+
+					moveUndoMap.put(moveRedoCounter, undoList);
+
+					moveRedoMap.remove(moveRedoCounter);
+
+					moveCounter++;
+					moveRedoCounter--;
+
+				}
+
+			}
+			
+			
+			for (int i = 0; i < view.getArcs().size(); i++) {
+
+				view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX() + 12);
+				view.getArcs().get(i).setY1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getY() + 12);
+				view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX() + 12);
+				view.getArcs().get(i).setY2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getY() + 12);
+				
+				if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX() + 24);
+
+				} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX());
+
+				} else {
+
+					view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX() - 12);
+
+				}
+				
+				if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX());
+
+				} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX() + 24);
+
+				} else {
+
+					view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX() + 12);
+
+				}
+				
+
+			}
+
 			System.out.println("Move - Redo!");
 
 		}
 
 		@Override
 		public void undo() {
-			
-			
+
 //			view.getNodes().get(nodeIndex).setX(moveNodeX);
 //			view.getNodes().get(nodeIndex).setY(moveNodeY);
-			
-			
-			System.out.println(moveNodeX);
-			
-			System.out.println(moveUndoNode.getX());
-			
-			
-			
-			
+
+//			
+//			System.out.println(moveNodeX);
+//			
+//			System.out.println(moveUndoNode.getX());
+
+			// System.out.println(moveUndoMap);
+
+			int nodeNumber;
+			int xLocation;
+			int yLocation;
+
+			// System.out.println(moveCounter);
+
+			nodeNumber = moveUndoMap.get(moveCounter - 1).get(0);
+			xLocation = moveUndoMap.get(moveCounter - 1).get(1);
+			yLocation = moveUndoMap.get(moveCounter - 1).get(2);
+
+			for (int i = 0; i < view.getNodes().size(); i++) {
+
+				List<Integer> redoList = new ArrayList<>();
+
+				if (view.getNodes().get(i).getNumber() == nodeNumber) {
+
+					redoList.add(view.getNodes().get(i).getNumber());
+					redoList.add(view.getNodes().get(i).getX());
+					redoList.add(view.getNodes().get(i).getY());
+
+					view.getNodes().get(i).setX(xLocation);
+					view.getNodes().get(i).setY(yLocation);
+
+					moveRedoMap.put(moveRedoCounter, redoList);
+
+					moveUndoMap.remove(moveCounter);
+					moveRedoCounter++;
+					moveCounter--;
+
+				}
+
+			}
+
+			for (int i = 0; i < view.getArcs().size(); i++) {
+
+				view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX() + 12);
+				view.getArcs().get(i).setY1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getY() + 12);
+				view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX() + 12);
+				view.getArcs().get(i).setY2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getY() + 12);
+				
+				if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX() + 24);
+
+				} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX());
+
+				} else {
+
+					view.getArcs().get(i).setX1(view.getNodes().get(view.getArcs().get(i).getInitNode()).getX() - 12);
+
+				}
+				
+				if (view.getArcs().get(i).getX2() > view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX());
+
+				} else if (view.getArcs().get(i).getX2() < view.getArcs().get(i).getX1()) {
+
+					view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX() + 24);
+
+				} else {
+
+					view.getArcs().get(i).setX2(view.getNodes().get(view.getArcs().get(i).getEndNode()).getX() + 12);
+
+				}
+				
+
+			}
+			System.out.println(moveUndoArcMap);
+			System.out.println(moveArcCounter);
+			System.out.println(moveUndoArcCounter);
 			System.out.println("Move - Undo!");
 
 		}
 	}
-	
-	
+
 	// Check the nodes are in the mouse pointer
 	public boolean isInsideEllipse(Point point) {
 		for (int i = 0; i < view.getNodes().size(); i++) {
