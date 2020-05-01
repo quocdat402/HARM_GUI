@@ -26,8 +26,15 @@ public class MainView extends JFrame {
     private JButton btnClear;
     private JButton btnArc;
     private JButton btnNode;
+    
     private List<Node> nodes;
     private List<Arc> arcs;
+    
+    private List<Arc> arcsUndo;
+    private List<Node> nodesUndo;
+    
+    
+    
     private JButton btnMove;
     private JButton btnDelete;
     private JButton btnUndo;
@@ -78,9 +85,22 @@ public class MainView extends JFrame {
     private JMenuItem mntmAttackgraph;
     
     private UndoManager undoManager = new UndoManager();
-
+    
+    private JFrame saveFrame;
+    private JFileChooser fileChooser;
+    
+    
+    /*
+     * Implements any representation of information of HARMs GUI.
+     */
     public MainView() {
     	
+    	
+    	//Open & Save frame
+    	saveFrame = new JFrame();
+    	fileChooser = new JFileChooser();
+    	
+    	//Main Panel
         contentPane = new JPanel();             
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
@@ -89,9 +109,14 @@ public class MainView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
         
+        //Initiate node and arc array
         nodes = new ArrayList<Node>();
         arcs = new ArrayList<Arc>();
 
+        arcsUndo = new ArrayList<Arc>();
+        nodesUndo = new ArrayList<Node>();
+        
+        //Menu navigation at the top
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
@@ -135,14 +160,17 @@ public class MainView extends JFrame {
         JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
 
+        //Menu Incons at the top.
         northPanel = new JPanel();
         
         btnUndo = new JButton("Undo");
         btnUndo.setBackground(Color.LIGHT_GRAY);
+        //btnUndo.setVisible(false);
         northPanel.add(btnUndo);
         
         btnRedo = new JButton("Redo");
         btnRedo.setBackground(Color.LIGHT_GRAY);
+        //btnRedo.setVisible(false);
         northPanel.add(btnRedo);
         
         btnNode = new JButton("Node");
@@ -150,8 +178,7 @@ public class MainView extends JFrame {
         northPanel.add(btnNode);
         
         btnArc = new JButton("Arc");
-        btnArc.setBackground(Color.LIGHT_GRAY);
-        
+        btnArc.setBackground(Color.LIGHT_GRAY);        
         northPanel.add(btnArc);
         
         btnMove = new JButton("Move");
@@ -161,6 +188,7 @@ public class MainView extends JFrame {
         btnDelete = new JButton("Delete");
         btnDelete.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnDelete);
+        
         btnClear = new JButton("Clear");
         btnClear.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnClear);
@@ -168,27 +196,30 @@ public class MainView extends JFrame {
         btnGetinfo = new JButton("GetInfo");
         btnGetinfo.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnGetinfo);
+        
         northPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
         contentPane.add(northPanel, BorderLayout.NORTH);
         centerPanel = new MyJPanel();
         centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP)); 
         contentPane.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(null);
-        
+                
+        //Node properties frame
         nodeFrame = new JFrame();
         nodeFrame.setSize(300, 300);
         nodeFrame.setTitle("Node");
         
+        //Arc properties frame
         arcFrame = new JFrame();
         arcFrame.setSize(300, 300);
-        arcFrame.setTitle("Arc");        
-        //arcFrame.setLayout(null);
+        arcFrame.setTitle("Arc");      
         
+        //Analysis of attack graph frame
         resultFrame = new JFrame();
         resultFrame.setSize(300, 300);
         resultFrame.setTitle("result");
         
-        
+        //Node pop up menu
         nodePopUp = new JPopupMenu("Node pop-up");
         nodeProperties = new JMenuItem("Properties");
         nodeAttacker = new JMenuItem("Set as the Attacker");
@@ -197,12 +228,11 @@ public class MainView extends JFrame {
         nodePopUp.add(nodeAttacker);
         nodePopUp.add(nodeTarget);
         
+        //Arc pop up menu
         arcPopUp = new JPopupMenu("Arc pop-up");
         arcProperties = new JMenuItem("Properties"); 
         arcPopUp.add(arcProperties);
-        
         arcPanel = new JPanel();
-        
         lblVul = new JLabel("Vulnerability");
         txtVul = new JTextField();
         txtVul.setPreferredSize(new Dimension(40, 24));
@@ -218,11 +248,7 @@ public class MainView extends JFrame {
         lblImpact = new JLabel("Impact");
         txtImpact = new JTextField();
         txtImpact.setPreferredSize(new Dimension(40, 24));
-        
         btnVul = new JButton("Okay");
-        
-                
-        
         
         //arcPanel.add(lblVul);
         //arcPanel.add(txtVul);
@@ -235,22 +261,19 @@ public class MainView extends JFrame {
         arcPanel.add(lblImpact);
         arcPanel.add(txtImpact);
         arcPanel.add(btnVul);
-        
-        
         arcFrame.getContentPane().add(arcPanel);
         
         nodePanel = new JPanel();
-        
         lblName = new JLabel("Name");
         txtName = new JTextField();
         txtName.setPreferredSize(new Dimension(200, 24));
         btnName = new JButton("Okay");
-        
         nodePanel.add(lblName);
         nodePanel.add(txtName);
         nodePanel.add(btnName);
         
         nodeFrame.getContentPane().add(nodePanel);
+        
         
         resultPanel = new JPanel();
         
@@ -268,7 +291,8 @@ public class MainView extends JFrame {
         
     }
     
-    private class MyJPanel extends JPanel implements StateEditable//Create your own JPanel and override paintComponentMethod.
+  //Create a JPanel and override paintComponentMethod.
+    private class MyJPanel extends JPanel implements StateEditable
     {
     	
     	UndoableEditSupport undoableEditSupport = new UndoableEditSupport(this);
@@ -318,6 +342,7 @@ public class MainView extends JFrame {
 		}
     }
     
+    //Setters and getters
 	public JPanel getNorthPanel() {
 		return northPanel;
 	}
@@ -567,5 +592,29 @@ public class MainView extends JFrame {
 	public void setTxtResults(JTextField txtResults) {
 		this.txtResults = txtResults;
 	}
-	
+	public JFrame getSaveFrame() {
+		return saveFrame;
+	}
+	public void setSaveFrame(JFrame saveFrame) {
+		this.saveFrame = saveFrame;
+	}
+	public JFileChooser getFileChooser() {
+		return fileChooser;
+	}
+	public void setFileChooser(JFileChooser filseChooser) {
+		this.fileChooser = filseChooser;
+	}
+	public List<Arc> getArcsUndo() {
+		return arcsUndo;
+	}
+	public void setArcsUndo(List<Arc> arcsUndo) {
+		this.arcsUndo = arcsUndo;
+	}
+	public List<Node> getNodesUndo() {
+		return nodesUndo;
+	}
+	public void setNodesUndo(List<Node> nodesUndo) {
+		this.nodesUndo = nodesUndo;
+	}
+
 }

@@ -2,8 +2,9 @@ package com.company;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class Node {
+public class Node implements Serializable{
 
 	private int x;
 	private int y;
@@ -14,6 +15,7 @@ public class Node {
 	private boolean attacker;
 	private boolean target;
 	
+	//All the infos about nodes
 	public Node(int x, int y, int diameter, Color color, String name, int number, boolean attacker,
 			boolean target) {
 		super();
@@ -67,6 +69,7 @@ public class Node {
 		g.drawString(name, x - 4, y + 40);
 		
 	}
+	
 
 	public String getName() {
 		return name;
