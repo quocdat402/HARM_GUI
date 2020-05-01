@@ -84,8 +84,6 @@ public class MainView extends JFrame {
     
     private JMenuItem mntmAttackgraph;
     
-    private UndoManager undoManager = new UndoManager();
-    
     private JFrame saveFrame;
     private JFileChooser fileChooser;
     

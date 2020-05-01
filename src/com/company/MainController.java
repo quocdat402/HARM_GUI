@@ -105,6 +105,8 @@ public class MainController {
 	private int moveArcCounter;
 
 	private int moveUndoArcCounter;
+	
+	private Arc deleteArc;
 
 	public MainController(MainModel m, MainView v) {
 
@@ -154,11 +156,15 @@ public class MainController {
 		GetInfoMouseAdapter getInforMouseAdapter = new GetInfoMouseAdapter();
 		NodeInfoMouseAdpater nodeInfoMouseAdpater = new NodeInfoMouseAdpater();
 		ArcInfoMouseAdapter arcInfoMouseAdapter = new ArcInfoMouseAdapter();
+		MouseHoverAdapter mouseHoverAdapter= new MouseHoverAdapter();
 
 		// Add mouse and action listener
 		view.getBtnArc().addMouseListener(arcMouseAdapter);
+		view.getCenterPanel().addMouseListener(mouseHoverAdapter);
+		view.getCenterPanel().addMouseMotionListener(mouseHoverAdapter);
 		view.getCenterPanel().addMouseListener(nodeMouseAdapter);
 		view.getCenterPanel().addMouseListener(arcMouseAdapter);
+		view.getCenterPanel().addMouseMotionListener(arcMouseAdapter);
 		view.getCenterPanel().addMouseListener(moveMouseAdapter);
 		view.getCenterPanel().addMouseMotionListener(moveMouseAdapter);
 		view.getCenterPanel().addMouseListener(deleteArcMouseAdapter);
@@ -725,6 +731,75 @@ public class MainController {
 		return activateGetInfo;
 
 	}
+	
+	private class MouseHoverAdapter extends MouseAdapter {
+		
+		public int hoverNodeIndex;
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			for (int i = 0; i < view.getNodes().size(); i++) {
+				int x = view.getNodes().get(i).getX() + 12;
+				int y = view.getNodes().get(i).getY() + 12;
+				int radius = view.getNodes().get(i).getDiameter() / 2;
+
+				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
+
+					hoverNodeIndex = i;
+					
+					view.getNodes().get(i).setColor(Color.CYAN);
+					view.getCenterPanel().repaint();
+					
+				}
+			}
+			
+			
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+			for (int i = 0; i < view.getNodes().size(); i++) {
+				int x = view.getNodes().get(i).getX() + 12;
+				int y = view.getNodes().get(i).getY() + 12;
+				int radius = view.getNodes().get(i).getDiameter() / 2;
+
+				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
+
+					hoverNodeIndex = i;
+					
+					view.getNodes().get(i).setColor(Color.CYAN);
+					view.getCenterPanel().repaint();
+					
+				}
+			}
+			
+			
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			
+			System.out.println("hi");
+			
+//			for (int i = 0; i < view.getNodes().size(); i++) {
+//				int x = view.getNodes().get(i).getX() + 12;
+//				int y = view.getNodes().get(i).getY() + 12;
+//				int radius = view.getNodes().get(i).getDiameter() / 2;
+//
+//				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
+//
+//					System.out.println("hi");
+//					
+//				}
+//			}
+			
+			
+		}
+		
+		
+	}
 
 	// Create an arc between nodes
 	private class ArcMouseAdapter extends MouseAdapter implements Command {
@@ -732,14 +807,17 @@ public class MainController {
 		private int initNode;
 		private int endNode;
 		private int x1, y1, x2, y2;
+		
 		Arc ArcRedo = null;
-
+		Arc arcTemp;
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
+			
+			
 
 			if (activateArc == 1) {
 
-				if (e.getButton() == MouseEvent.BUTTON1) {
 					for (int i = 0; i < view.getNodes().size(); i++) {
 						int x = view.getNodes().get(i).getX() + 12;
 						int y = view.getNodes().get(i).getY() + 12;
@@ -751,10 +829,27 @@ public class MainController {
 							y1 = y;
 							view.getCenterPanel().repaint();
 							initNode = i;
+							
+							arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, 0, arcNumber, 0, 0, 0, 0);
+							view.getArcs().add(arcTemp);
 						}
 					}
 				}
+			
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent e)  {
+			
+			if (activateArc == 1) {
+				
+					arcTemp.setX2(e.getX());
+					arcTemp.setY2(e.getY());					
+					view.getCenterPanel().repaint();				
 			}
+			
+			
+			
 		}
 
 		@Override
@@ -762,7 +857,7 @@ public class MainController {
 
 			if (activateArc == 1) {
 
-				if (e.getButton() == MouseEvent.BUTTON1) {
+				
 
 					for (int i = 0; i < view.getNodes().size(); i++) {
 						int x = view.getNodes().get(i).getX() + 12;
@@ -789,18 +884,32 @@ public class MainController {
 							}
 							y2 = y;
 							endNode = i;
+							
+							view.getArcs().remove(arcTemp);
+							
+							if(initNode == endNode) {
+								
+								
+							} else {
+								
+								Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, 0, arcNumber, 0, 0, 0, 0);
+								view.getArcs().add(arc);
 
-							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, 0, arcNumber, 0, 0, 0, 0);
-							view.getArcs().add(arc);
+								view.getCenterPanel().repaint();
+								arcNumber++;
 
+								stack.doCommand(new ArcMouseAdapter());
+								
+							}
+							
+							
+
+						} else {
+							view.getArcs().remove(arcTemp);
 							view.getCenterPanel().repaint();
-							arcNumber++;
-
-							stack.doCommand(new ArcMouseAdapter());
-
 						}
 					}
-				}
+				
 			}
 		}
 
@@ -834,6 +943,7 @@ public class MainController {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + nodeNumber, nodeNumber, false,
 							false);
+					
 					view.getNodes().add(node);
 					view.getCenterPanel().repaint();
 					nodeNumber++;
@@ -952,7 +1062,7 @@ public class MainController {
 	}
 
 	// Deleter Arc
-	private class DeleteArcMouseAdapter extends MouseAdapter {
+	private class DeleteArcMouseAdapter extends MouseAdapter implements Command {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -972,12 +1082,33 @@ public class MainController {
 								e.getX(), e.getY()) < distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2())
 										* 1.002) {
 
+							deleteArc = arc;
+							
 							view.getArcs().remove(i);
 							view.getCenterPanel().repaint();
+							
+							stack.doCommand(new DeleteArcMouseAdapter());
 						}
 					}
 				}
 			}
+		}
+
+		@Override
+		public void execute() {
+			
+			view.getArcs().remove(deleteArc);
+			
+			System.out.println("Delete - Redo!");
+			
+		}
+
+		@Override
+		public void undo() {
+			
+			view.getArcs().add(deleteArc.getNumber(), deleteArc);
+			
+			System.out.println("Delete - Undo!");			
 		}
 	}
 
@@ -1298,6 +1429,7 @@ public class MainController {
 
 					}
 				}
+				
 				view.getCenterPanel().repaint();
 			}
 		}

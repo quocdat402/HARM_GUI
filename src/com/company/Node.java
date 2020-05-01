@@ -63,8 +63,12 @@ public class Node implements Serializable{
 	
 	public void draw(Graphics g) {
 		
+		g.setColor(color.black);
+		g.fillOval(x - 2, y - 2, diameter+4, diameter+4);
+		
 		g.setColor(color);
 		g.fillOval(x, y, diameter, diameter);
+		
 		g.setColor(color.black);
 		g.drawString(name, x - 4, y + 40);
 		
