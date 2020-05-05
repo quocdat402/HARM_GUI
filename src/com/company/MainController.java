@@ -55,32 +55,44 @@ import com.company.*;
 
 public class MainController {
 
-	private MainView view;
+	private static MainView view;
 	private MainModel model;
-	private int activateNode;
-	private int activateArc;
-	private int activateMove;
-	private int activateDelete;
-	private int activateGetInfo;
+	
+	private static int activateNode;
+	private static int activateArc;
+	private static int activateMove;
+	private static int activateDelete;
+	private static int activateGetInfo;
 
-	private int nodeNumber;
-	private int arcNumber;
+	private static int nodeNumber;
+	private static int arcNumber;
 
-	private int nodePropertyInt;
-	private int arcPropertyInt;
+	private static int nodePropertyInt;
+	private static int arcPropertyInt;
 
 	private List<String> lines;
 
-	private CommandStack stack;
+	private static CommandStack stack;
 
-	private Node deleteUndoNode;
+	//DeleterArcMouseAdapater variables
+	
+	private static List<Arc> deleteArcs;
+	private static List<Arc> deleteArcsRedo;
 
-	private List<Arc> deleteUndoArcs;
-
+	//DeleteNodeMouseAdapater variables
+	private static List<Node> deleteNodes;
+	private static List<Node> deleteNodesRedo;
+	private static List<Arc> deleteNodesArcs;
+	private static List<Arc> deleteNodesArcsRedo;
+	private static int deleteNodesArcsCounter;
+	private static int deleteNodesRedoCounter;
+	private static List<Integer> counterList;
+	
+	//Move Undo Variables
 	private Node moveUndoNode;
 
 	private List<Arc> moveUndoArcs;
-
+	
 	private int moveNodeX;
 	private int moveNodeY;
 
@@ -106,7 +118,7 @@ public class MainController {
 
 	private int moveUndoArcCounter;
 	
-	private Arc deleteArc;
+	private static Arc deleteArc;
 
 	public MainController(MainModel m, MainView v) {
 
@@ -116,7 +128,8 @@ public class MainController {
 		initView();
 
 	}
-
+	
+	// Initialize all the variables
 	public void initView() {
 
 	}
@@ -125,13 +138,18 @@ public class MainController {
 	public void initController() {
 
 		stack = new CommandStack();
+		
+		view.getTxtVul().setText("0");
+		view.getTxtCost().setText("0");
+		view.getTxtRisk().setText("0");
+		view.getTxtImpact().setText("0");
+		view.getTxtProb().setText("0");
 
 		// initialize lines to send attack graph info to the engine
 
 		lines = new ArrayList<>();
 		moveUndoArcs = new ArrayList<>();
 
-		deleteUndoArcs = new ArrayList<>();
 
 		moveUndoNodes = new ArrayList<>();
 
@@ -146,6 +164,21 @@ public class MainController {
 		moveRedoMap = new HashMap<>();
 
 		moveUndoArcMap = new HashMap<>();
+		
+		deleteArcs = new ArrayList<>();
+		
+		deleteArcsRedo = new ArrayList<>();
+		
+		deleteNodes = new ArrayList<>();
+		
+		deleteNodesRedo = new ArrayList<>();
+		
+		deleteNodesArcs = new ArrayList<>();
+		deleteNodesArcsRedo = new ArrayList<>();
+		deleteNodesArcsCounter = 0;
+		deleteNodesRedoCounter = 0;
+		
+		counterList = new ArrayList<>();
 
 		// Initialize all the mouse adapter
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter();
@@ -154,14 +187,11 @@ public class MainController {
 		DeleteArcMouseAdapter deleteArcMouseAdapter = new DeleteArcMouseAdapter();
 		DeleteNodeMouseAdapter deleteNodeMouseAdapter = new DeleteNodeMouseAdapter();
 		GetInfoMouseAdapter getInforMouseAdapter = new GetInfoMouseAdapter();
-		NodeInfoMouseAdpater nodeInfoMouseAdpater = new NodeInfoMouseAdpater();
+		NodeInfoMouseAdapter nodeInfoMouseAdapter = new NodeInfoMouseAdapter();
 		ArcInfoMouseAdapter arcInfoMouseAdapter = new ArcInfoMouseAdapter();
-		MouseHoverAdapter mouseHoverAdapter= new MouseHoverAdapter();
 
 		// Add mouse and action listener
 		view.getBtnArc().addMouseListener(arcMouseAdapter);
-		view.getCenterPanel().addMouseListener(mouseHoverAdapter);
-		view.getCenterPanel().addMouseMotionListener(mouseHoverAdapter);
 		view.getCenterPanel().addMouseListener(nodeMouseAdapter);
 		view.getCenterPanel().addMouseListener(arcMouseAdapter);
 		view.getCenterPanel().addMouseMotionListener(arcMouseAdapter);
@@ -170,7 +200,7 @@ public class MainController {
 		view.getCenterPanel().addMouseListener(deleteArcMouseAdapter);
 		view.getCenterPanel().addMouseListener(deleteNodeMouseAdapter);
 		view.getCenterPanel().addMouseListener(getInforMouseAdapter);
-		view.getCenterPanel().addMouseListener(nodeInfoMouseAdpater);
+		view.getCenterPanel().addMouseListener(nodeInfoMouseAdapter);
 		view.getCenterPanel().addMouseListener(arcInfoMouseAdapter);
 		view.getMntmAttackgraph().addActionListener(e -> attackGraphAction());
 		view.getBtnNode().addActionListener(e -> activateNodeInt());
@@ -247,7 +277,7 @@ public class MainController {
 				if (view.getTxtName() == null) {
 
 				} else {
-
+					
 					view.getNodes().get(nodePropertyInt).setName(view.getTxtName().getText());
 					view.getCenterPanel().repaint();
 				}
@@ -273,6 +303,25 @@ public class MainController {
 
 		});
 
+	}
+	
+	public void clearAllInfo() {
+		
+		view.getCenterPanel().removeAll();
+		view.getCenterPanel().validate();
+		view.getCenterPanel().repaint();
+		view.getArcs().clear();
+		view.getNodes().clear();
+		moveUndoMap.clear();
+
+		moveCounter = 0;
+
+		moveArcCounter = 0;
+
+		arcNumber = 0;
+		nodeNumber = 0;
+		
+		
 	}
 
 	private void redoAction() {
@@ -405,7 +454,7 @@ public class MainController {
 	}
 
 	// Set up the attacker of the node
-	private void nodeAttacker() {
+	public void nodeAttacker() {
 
 		int AttackerSetting = 0;
 
@@ -420,12 +469,15 @@ public class MainController {
 		if (AttackerSetting == 1) {
 
 		} else {
+			
 			view.getNodes().get(nodePropertyInt).setAttacker(true);
+			view.getNodes().get(nodePropertyInt).setName("Attacker");
+			view.getCenterPanel().repaint();
 		}
 	}
 
 	// Set up the target of the node
-	private void nodeTarget() {
+	public void nodeTarget() {
 
 		int targetSetting = 0;
 
@@ -441,82 +493,35 @@ public class MainController {
 
 		} else {
 			view.getNodes().get(nodePropertyInt).setTarget(true);
+			view.getNodes().get(nodePropertyInt).setName("Target");
+			view.getCenterPanel().repaint();
 		}
 
 	}
 
 	// Analyze the result
 	private void attackGraphAction() {
-
-//		try {
-//			FileWriter arcInputs = new FileWriter("ArcInput.txt");
-//			FileWriter nodeInputs = new FileWriter("NodeInput.txt");
-//			FileWriter numberOfNodes = new FileWriter("numberOfNodes.txt");
-//			for(int i = 0; i < view.getArcs().size(); i++) {
-//				arcInputs.write(String.valueOf(view.getArcs().get(i).getInitNode()));
-//				arcInputs.write(String.valueOf(view.getArcs().get(i).getEndNode()) + "\n");
-//			}
-//			
-//			
-//			numberOfNodes.write(String.valueOf(nodeNumber));
-//			
-//			for(int i= 0; i< view.getNodes().size(); i++) {
-//				
-//				
-//				if(view.getNodes().get(i).isAttacker() == true) {
-//					
-//					
-//					nodeInputs.write("A");
-//					nodeInputs.write(String.valueOf((view.getNodes().get(i).getNumber())));
-//					nodeInputs.write(String.valueOf((view.getNodes().get(i).isAttacker())) + "\n");
-//				}
-//				if(view.getNodes().get(i).isTarget() == true) {
-//					
-//					nodeInputs.write("T");
-//					nodeInputs.write(String.valueOf((view.getNodes().get(i).getNumber())));
-//					nodeInputs.write(String.valueOf((view.getNodes().get(i).isTarget())) + "\n");
-//					
-//				}
-//				
-//			}
-//			
-//			numberOfNodes.close();
-//			arcInputs.close();
-//			nodeInputs.close();
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		
-//		
-//		view.getResultFrame().setVisible(true);
-//		String command = "python3 example3.py";
-//		try {
-//			Process p = Runtime.getRuntime().exec(command);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		
-//		try {
-//			File Outputs = new File("example.txt");
-//			Scanner myReader = new Scanner(Outputs);
-//			while(myReader.hasNextLine()) {
-//				String output = myReader.nextLine();
-//				System.out.println(output);
-//			}
-//			myReader.close();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		
+		boolean isAttacker = false;
+		boolean isTarget = false;
+		
+		for(Node node : view.getNodes()) {
+			
+			if(node.isTarget()) {
+				
+				isTarget = true;
+			
+			}
+			
+			if(node.isAttacker()) {
+				
+				isAttacker = true;
+				
+			}
+			
+		}
+		
+		
 
 		try (Socket socket = new Socket("localhost", 5000)) {
 
@@ -597,57 +602,6 @@ public class MainController {
 		}
 
 		view.getResultFrame().setVisible(true);
-//			String command = "python3 example3.py";
-//			try {
-//				Process p = Runtime.getRuntime().exec(command);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-
-//			while(true) {
-//				Socket connected = server.accept();
-//				BufferedReader inFromUser = new BufferedReader(
-//						new InputStreamReader(System.in));
-//				BufferedReader inFromClient = new BufferedReader(
-//						new InputStreamReader (connected.getInputStream()));
-//				PrintWriter outToClient = new PrintWriter(connected.getOutputStream(), true);
-//				
-//				
-//				
-//				toclient = Integer.toString(nodeNumber);
-//				outToClient.println(toclient);
-//				toclient = Integer.toString(arcNumber);
-//				outToClient.println(toclient);
-//				for(int i = 0; i < view.getArcs().size(); i++) {
-//					toclientList.add(String.valueOf(view.getArcs().get(i).getInitNode())
-//							+ String.valueOf(view.getArcs().get(i).getEndNode()));
-//				}
-//				
-//				for(int i = 0; i < view.getArcs().size(); i++) {
-//					outToClient.println(toclientList.get(i));
-//				}
-//				while((fromclient = inFromClient.readLine()) != null) {
-//					
-//					System.out.println(fromclient);
-//				}
-//				connected.close();
-//				
-//				
-//					
-//				
-//				
-//			server.close();
-//			}
-//			
-//			
-//			
-//
-//			
-//			
-//		} catch (IOException e1) {
-//			//System.err.println("Invalid Server");
-//		}
 
 	}
 
@@ -730,504 +684,6 @@ public class MainController {
 		}
 		return activateGetInfo;
 
-	}
-	
-	private class MouseHoverAdapter extends MouseAdapter {
-		
-		public int hoverNodeIndex;
-		
-		@Override
-		public void mousePressed(MouseEvent e) {
-			
-			for (int i = 0; i < view.getNodes().size(); i++) {
-				int x = view.getNodes().get(i).getX() + 12;
-				int y = view.getNodes().get(i).getY() + 12;
-				int radius = view.getNodes().get(i).getDiameter() / 2;
-
-				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-					hoverNodeIndex = i;
-					
-					view.getNodes().get(i).setColor(Color.CYAN);
-					view.getCenterPanel().repaint();
-					
-				}
-			}
-			
-			
-		}
-		
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			
-			for (int i = 0; i < view.getNodes().size(); i++) {
-				int x = view.getNodes().get(i).getX() + 12;
-				int y = view.getNodes().get(i).getY() + 12;
-				int radius = view.getNodes().get(i).getDiameter() / 2;
-
-				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-					hoverNodeIndex = i;
-					
-					view.getNodes().get(i).setColor(Color.CYAN);
-					view.getCenterPanel().repaint();
-					
-				}
-			}
-			
-			
-		}
-		
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			
-			System.out.println("hi");
-			
-//			for (int i = 0; i < view.getNodes().size(); i++) {
-//				int x = view.getNodes().get(i).getX() + 12;
-//				int y = view.getNodes().get(i).getY() + 12;
-//				int radius = view.getNodes().get(i).getDiameter() / 2;
-//
-//				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-//
-//					System.out.println("hi");
-//					
-//				}
-//			}
-			
-			
-		}
-		
-		
-	}
-
-	// Create an arc between nodes
-	private class ArcMouseAdapter extends MouseAdapter implements Command {
-
-		private int initNode;
-		private int endNode;
-		private int x1, y1, x2, y2;
-		
-		Arc ArcRedo = null;
-		Arc arcTemp;
-		
-		@Override
-		public void mousePressed(MouseEvent e) {
-			
-			
-
-			if (activateArc == 1) {
-
-					for (int i = 0; i < view.getNodes().size(); i++) {
-						int x = view.getNodes().get(i).getX() + 12;
-						int y = view.getNodes().get(i).getY() + 12;
-						int radius = view.getNodes().get(i).getDiameter() / 2;
-
-						if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-							x1 = x;
-							y1 = y;
-							view.getCenterPanel().repaint();
-							initNode = i;
-							
-							arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, 0, arcNumber, 0, 0, 0, 0);
-							view.getArcs().add(arcTemp);
-						}
-					}
-				}
-			
-		}
-		
-		@Override
-		public void mouseDragged(MouseEvent e)  {
-			
-			if (activateArc == 1) {
-				
-					arcTemp.setX2(e.getX());
-					arcTemp.setY2(e.getY());					
-					view.getCenterPanel().repaint();				
-			}
-			
-			
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-
-			if (activateArc == 1) {
-
-				
-
-					for (int i = 0; i < view.getNodes().size(); i++) {
-						int x = view.getNodes().get(i).getX() + 12;
-						int y = view.getNodes().get(i).getY() + 12;
-						int radius = view.getNodes().get(i).getDiameter() / 2;
-
-						if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-							x2 = x;
-							if (x2 < x1) {
-
-								x2 = x + 12;
-								x1 = x1 - 12;
-
-							} else if (x2 > x1) {
-
-								x2 = x - 12;
-								x1 = x1 + 12;
-
-							} else {
-
-								x2 = x;
-
-							}
-							y2 = y;
-							endNode = i;
-							
-							view.getArcs().remove(arcTemp);
-							
-							if(initNode == endNode) {
-								
-								
-							} else {
-								
-								Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, 0, arcNumber, 0, 0, 0, 0);
-								view.getArcs().add(arc);
-
-								view.getCenterPanel().repaint();
-								arcNumber++;
-
-								stack.doCommand(new ArcMouseAdapter());
-								
-							}
-							
-							
-
-						} else {
-							view.getArcs().remove(arcTemp);
-							view.getCenterPanel().repaint();
-						}
-					}
-				
-			}
-		}
-
-		@Override
-		public void execute() {
-
-			view.getArcs().add(ArcRedo);
-			System.out.println("Add Arc! - Undo");
-
-		}
-
-		@Override
-		public void undo() {
-			int undoArcIndex = view.getArcs().size() - 1;
-			ArcRedo = view.getArcs().get(undoArcIndex);
-			view.getArcs().remove(undoArcIndex);
-			System.out.println("Delete Arc! - Redo");
-		}
-
-	}
-
-	// Create a node
-	private class NodeMouseAdapter extends MouseAdapter implements Command {
-
-		Node nodeRedo = null;
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-			if (activateNode == 1) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + nodeNumber, nodeNumber, false,
-							false);
-					
-					view.getNodes().add(node);
-					view.getCenterPanel().repaint();
-					nodeNumber++;
-
-					stack.doCommand(new NodeMouseAdapter());
-
-				}
-			}
-		}
-
-		@Override
-		public void execute() {
-			// TODO Auto-generated method stub
-			view.getNodes().add(nodeRedo);
-			System.out.println("Add Node - Redo!");
-		}
-
-		@Override
-		public void undo() {
-			// TODO Auto-generated method stub
-
-			int undoNodeIndex = view.getNodes().size() - 1;
-			nodeRedo = view.getNodes().get(undoNodeIndex);
-			view.getNodes().remove(undoNodeIndex);
-			System.out.println("Remove Node - Undo!");
-		}
-	}
-
-	// Open arc pop-up menu
-	private class ArcInfoMouseAdapter extends MouseAdapter {
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-			for (int i = 0; i < view.getArcs().size(); i++) {
-
-				Arc arc = view.getArcs().get(i);
-
-				if (distance(arc.getX1(), arc.getY1(), e.getX(), e.getY()) + distance(arc.getX2(), arc.getY2(),
-						e.getX(), e.getY()) < distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
-
-					if (e.isPopupTrigger()) {
-						view.getArcPopUp().show(e.getComponent(), e.getX(), e.getY());
-						arcPropertyInt = i;
-					}
-
-				}
-
-			}
-
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-
-			for (int i = 0; i < view.getArcs().size(); i++) {
-
-				Arc arc = view.getArcs().get(i);
-
-				if (distance(arc.getX1(), arc.getY1(), e.getX(), e.getY()) + distance(arc.getX2(), arc.getY2(),
-						e.getX(), e.getY()) < distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
-
-					if (e.isPopupTrigger()) {
-						view.getArcPopUp().show(e.getComponent(), e.getX(), e.getY());
-						arcPropertyInt = i;
-					}
-				}
-			}
-		}
-	}
-
-	// Open node pop-up menu
-	private class NodeInfoMouseAdpater extends MouseAdapter {
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-			for (int i = 0; i < view.getNodes().size(); i++) {
-				int x = view.getNodes().get(i).getX() + 12;
-				int y = view.getNodes().get(i).getY() + 12;
-				int radius = view.getNodes().get(i).getDiameter() / 2;
-
-				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-					if (e.isPopupTrigger()) {
-						view.getNodePopUp().show(e.getComponent(), e.getX(), e.getY());
-						nodePropertyInt = i;
-
-					}
-				}
-			}
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-
-			for (int i = 0; i < view.getNodes().size(); i++) {
-
-				int x = view.getNodes().get(i).getX() + 12;
-
-				int y = view.getNodes().get(i).getY() + 12;
-
-				int radius = view.getNodes().get(i).getDiameter() / 2;
-
-				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-					if (e.isPopupTrigger()) {
-
-						view.getNodePopUp().show(e.getComponent(), e.getX(), e.getY());
-
-						nodePropertyInt = i;
-					}
-				}
-			}
-		}
-	}
-
-	// Deleter Arc
-	private class DeleteArcMouseAdapter extends MouseAdapter implements Command {
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-			undoArc();
-
-			if (activateDelete == 1) {
-
-				if (e.getButton() == MouseEvent.BUTTON1) {
-
-					// line detection
-					for (int i = 0; i < view.getArcs().size(); i++) {
-
-						Arc arc = view.getArcs().get(i);
-
-						if (distance(arc.getX1(), arc.getY1(), e.getX(), e.getY()) + distance(arc.getX2(), arc.getY2(),
-								e.getX(), e.getY()) < distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2())
-										* 1.002) {
-
-							deleteArc = arc;
-							
-							view.getArcs().remove(i);
-							view.getCenterPanel().repaint();
-							
-							stack.doCommand(new DeleteArcMouseAdapter());
-						}
-					}
-				}
-			}
-		}
-
-		@Override
-		public void execute() {
-			
-			view.getArcs().remove(deleteArc);
-			
-			System.out.println("Delete - Redo!");
-			
-		}
-
-		@Override
-		public void undo() {
-			
-			view.getArcs().add(deleteArc.getNumber(), deleteArc);
-			
-			System.out.println("Delete - Undo!");			
-		}
-	}
-
-	// Delete Node
-	private class DeleteNodeMouseAdapter extends MouseAdapter implements Command {
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-			ArrayList<Integer> arcArray = new ArrayList<Integer>();
-
-			if (activateDelete == 1) {
-
-				for (int i = 0; i < view.getNodes().size(); i++) {
-
-					int x = view.getNodes().get(i).getX() + 12;
-
-					int y = view.getNodes().get(i).getY() + 12;
-
-					int radius = view.getNodes().get(i).getDiameter() / 2;
-
-					if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-						int j = 0;
-						while (j < view.getArcs().size()) {
-
-							if (view.getNodes().get(i).getNumber() == view.getArcs().get(j).getEndNode()) {
-
-								deleteUndoArcs.add(view.getArcs().get(j));
-
-								view.getArcs().remove(j);
-
-								view.getCenterPanel().repaint();
-
-							} else {
-
-								j++;
-							}
-
-						}
-
-						int k = 0;
-						while (k < view.getArcs().size()) {
-
-							if (view.getNodes().get(i).getNumber() == view.getArcs().get(k).getInitNode()) {
-
-								deleteUndoArcs.add(view.getArcs().get(k));
-
-								view.getArcs().remove(k);
-
-								view.getCenterPanel().repaint();
-
-							} else {
-
-								k++;
-							}
-
-						}
-
-						deleteUndoNode = view.getNodes().get(i);
-
-						view.getNodes().remove(i);
-
-						view.getCenterPanel().repaint();
-
-						stack.doCommand(new DeleteNodeMouseAdapter());
-
-					}
-				}
-			}
-		}
-
-		@Override
-		public void execute() {
-			// TODO Auto-generated method stub
-
-			for (int i = 0; i < view.getNodes().size(); i++) {
-
-				if (view.getNodes().get(i).getNumber() == deleteUndoNode.getNumber()) {
-
-					view.getNodes().remove(view.getNodes().get(i));
-
-				}
-
-			}
-
-			for (int i = 0; i < view.getArcs().size(); i++) {
-
-				for (int j = 0; j < deleteUndoArcs.size(); j++) {
-
-					if (view.getArcs().get(i).getNumber() == deleteUndoArcs.get(j).getNumber()) {
-
-						view.getArcs().remove(view.getArcs().get(i));
-
-					}
-
-				}
-
-			}
-
-			System.out.println("Delete Node - Undo!");
-
-		}
-
-		@Override
-		public void undo() {
-
-			System.out.println("Add Node - Undo!");
-			view.getNodes().add(deleteUndoNode.getNumber(), deleteUndoNode);
-			for (Arc arc : deleteUndoArcs) {
-
-				System.out.println(arc.getNumber());
-				view.getArcs().add(arc);
-
-			}
-
-			view.getCenterPanel().repaint();
-
-		}
 	}
 
 	private class GetInfoMouseAdapter extends MouseAdapter {
@@ -1449,7 +905,7 @@ public class MainController {
 			// System.out.println(nodeNumber);
 
 			// System.out.println(moveRedoMap);
-			// System.out.println(moveRedoCounter);
+			System.out.println(moveRedoCounter);
 
 			for (int i = 0; i < view.getNodes().size(); i++) {
 
@@ -1534,9 +990,9 @@ public class MainController {
 			int nodeNumber;
 			int xLocation;
 			int yLocation;
-
-			// System.out.println(moveCounter);
-
+			System.out.println(moveUndoMap);
+			System.out.println(moveCounter);
+			System.out.println(moveUndoMap.get(moveCounter - 1).get(0));
 			nodeNumber = moveUndoMap.get(moveCounter - 1).get(0);
 			xLocation = moveUndoMap.get(moveCounter - 1).get(1);
 			yLocation = moveUndoMap.get(moveCounter - 1).get(2);
@@ -1601,9 +1057,10 @@ public class MainController {
 				
 
 			}
-			System.out.println(moveUndoArcMap);
-			System.out.println(moveArcCounter);
-			System.out.println(moveUndoArcCounter);
+			//System.out.println(moveUndoArcMap);
+			//System.out.println(moveArcCounter);
+			//ystem.out.println(moveUndoArcCounter);
+			//System.out.println(moveCounter);
 			System.out.println("Move - Undo!");
 
 		}
@@ -1624,34 +1081,186 @@ public class MainController {
 		return false;
 	}
 
-	private void undoArc() {
+	
 
-		view.getArcsUndo().clear();
+	
 
-		for (Arc arc : view.getArcs()) {
-
-			view.getArcsUndo().add(arc);
-
-		}
-
+	public static int getActivateNode() {
+		return activateNode;
 	}
 
-	// Get an info of node when each node is hovered
-	private void getNodeInfo() {
-
-		view.getCenterPanel().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				int x = view.getNodes().get(0).getX();
-				int y = view.getNodes().get(0).getY();
-				int radius = view.getNodes().get(0).getDiameter() / 2;
-
-				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
-
-				}
-			}
-		});
-
+	public void setActivateNode(int activateNode) {
+		MainController.activateNode = activateNode;
 	}
+
+	public static int getActivateArc() {
+		return activateArc;
+	}
+
+	public void setActivateArc(int activateArc) {
+		MainController.activateArc = activateArc;
+	}
+
+	public static int getActivateMove() {
+		return activateMove;
+	}
+
+	public void setActivateMove(int activateMove) {
+		MainController.activateMove = activateMove;
+	}
+
+	public static int getActivateDelete() {
+		return activateDelete;
+	}
+
+	public void setActivateDelete(int activateDelete) {
+		MainController.activateDelete = activateDelete;
+	}
+
+	public int getActivateGetInfo() {
+		return activateGetInfo;
+	}
+
+	public void setActivateGetInfo(int activateGetInfo) {
+		MainController.activateGetInfo = activateGetInfo;
+	}
+
+	public static int getNodePropertyInt() {
+		return nodePropertyInt;
+	}
+
+	public static void setNodePropertyInt(int nodePropertyInt) {
+		MainController.nodePropertyInt = nodePropertyInt;
+	}
+
+	public static MainView getView() {
+		return view;
+	}
+
+	public void setView(MainView view) {
+		MainController.view = view;
+	}
+
+	public MainModel getModel() {
+		return model;
+	}
+
+	public void setModel(MainModel model) {
+		this.model = model;
+	}
+
+	public static int getArcNumber() {
+		return arcNumber;
+	}
+
+	public static void setArcNumber(int arcNumber) {
+		MainController.arcNumber = arcNumber;
+	}
+
+	public static CommandStack getStack() {
+		return stack;
+	}
+
+	public static void setStack(CommandStack stack) {
+		MainController.stack = stack;
+	}
+
+	public static int getNodeNumber() {
+		return nodeNumber;
+	}
+
+	public static void setNodeNumber(int nodeNumber) {
+		MainController.nodeNumber = nodeNumber;
+	}
+
+	public static int getArcPropertyInt() {
+		return arcPropertyInt;
+	}
+
+	public static void setArcPropertyInt(int arcPropertyInt) {
+		MainController.arcPropertyInt = arcPropertyInt;
+	}
+
+	public static Arc getDeleteArc() {
+		return deleteArc;
+	}
+
+	public static void setDeleteArc(Arc deleteArc) {
+		MainController.deleteArc = deleteArc;
+	}
+	
+	public static List<Arc> getDeleteArcs() {
+		return deleteArcs;
+	}
+
+	public static void setDeleteArcs(List<Arc> deleteArcs) {
+		MainController.deleteArcs = deleteArcs;
+	}
+
+	public static List<Arc> getDeleteArcsRedo() {
+		return deleteArcsRedo;
+	}
+
+	public static void setDeleteArcsRedo(List<Arc> deleteArcsRedo) {
+		MainController.deleteArcsRedo = deleteArcsRedo;
+	}
+
+	public static List<Node> getDeleteNodes() {
+		return deleteNodes;
+	}
+
+	public static void setDeleteNodes(List<Node> deleteNodes) {
+		MainController.deleteNodes = deleteNodes;
+	}
+
+	public static List<Node> getDeleteNodesRedo() {
+		return deleteNodesRedo;
+	}
+
+	public static void setDeleteNodesRedo(List<Node> deleteNodesRedo) {
+		MainController.deleteNodesRedo = deleteNodesRedo;
+	}
+
+	public static List<Arc> getDeleteNodesArcs() {
+		return deleteNodesArcs;
+	}
+
+	public static void setDeleteNodesArcs(List<Arc> deleteNodesArcs) {
+		MainController.deleteNodesArcs = deleteNodesArcs;
+	}
+
+	public static List<Arc> getDeleteNodesArcsRedo() {
+		return deleteNodesArcsRedo;
+	}
+
+	public static void setDeleteNodesArcsRedo(List<Arc> deleteNodesArcsRedo) {
+		MainController.deleteNodesArcsRedo = deleteNodesArcsRedo;
+	}
+
+	public static int getDeleteNodesArcsCounter() {
+		return deleteNodesArcsCounter;
+	}
+
+	public static void setDeleteNodesArcsCounter(int deleteNodesArcsCounter) {
+		MainController.deleteNodesArcsCounter = deleteNodesArcsCounter;
+	}
+
+	public static int getDeleteNodesRedoCounter() {
+		return deleteNodesRedoCounter;
+	}
+
+	public static void setDeleteNodesRedoCounter(int deleteNodesRedoCounter) {
+		MainController.deleteNodesRedoCounter = deleteNodesRedoCounter;
+	}
+
+	public static List<Integer> getCounterList() {
+		return counterList;
+	}
+
+	public static void setCounterList(List<Integer> counterList) {
+		MainController.counterList = counterList;
+	}
+
+	
 
 }

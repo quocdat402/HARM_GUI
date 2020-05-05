@@ -248,8 +248,8 @@ public class MainView extends JFrame {
         txtImpact.setPreferredSize(new Dimension(40, 24));
         btnVul = new JButton("Okay");
         
-        //arcPanel.add(lblVul);
-        //arcPanel.add(txtVul);
+        arcPanel.add(lblVul);
+        arcPanel.add(txtVul);
         arcPanel.add(lblRisk);
         arcPanel.add(txtRisk);
         arcPanel.add(lblCost);
@@ -613,6 +613,12 @@ public class MainView extends JFrame {
 	}
 	public void setNodesUndo(List<Node> nodesUndo) {
 		this.nodesUndo = nodesUndo;
+	}
+	public JTextField getTxtImpact() {
+		return txtImpact;
+	}
+	public void setTxtImpact(JTextField txtImpact) {
+		this.txtImpact = txtImpact;
 	}
 
 }
