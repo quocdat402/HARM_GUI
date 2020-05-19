@@ -6,6 +6,11 @@ import java.io.Serializable;
 
 public class Node implements Serializable{
 
+	/**
+	 * add default serial number
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private int x;
 	private int y;
 	private int diameter;
@@ -15,7 +20,9 @@ public class Node implements Serializable{
 	private boolean attacker;
 	private boolean target;
 	
-	//All the infos about nodes
+	/**
+	 * Initialize all the information of Node
+	 */
 	public Node(int x, int y, int diameter, Color color, String name, int number, boolean attacker,
 			boolean target) {
 		super();
@@ -28,7 +35,29 @@ public class Node implements Serializable{
 		this.attacker = attacker;
 		this.target = target;
 	}
+	
+	/**
+	 * Draw a node on the centrepane
+	 */
+	public void draw(Graphics g) {
+		
+		/*
+		 * Draw a node
+		 */
+		g.setColor(color.black);
+		g.fillOval(x - 2, y - 2, diameter+4, diameter+4);
+		g.setColor(color);
+		g.fillOval(x, y, diameter, diameter);
+		
+		/*
+		 * Show the name of the node below the node
+		 */
+		g.setColor(color.black);
+		g.drawString(name, x - 4, y + 40);
+		
+	}
 
+	/*Getters and Setters*/
 	public int getX() {
 		return x;
 	}
@@ -60,21 +89,6 @@ public class Node implements Serializable{
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
-	public void draw(Graphics g) {
-		
-		g.setColor(color.black);
-		g.fillOval(x - 2, y - 2, diameter+4, diameter+4);
-		
-		g.setColor(color);
-		g.fillOval(x, y, diameter, diameter);
-		
-		g.setColor(color.black);
-		g.drawString(name, x - 4, y + 40);
-		
-	}
-	
-
 	public String getName() {
 		return name;
 	}

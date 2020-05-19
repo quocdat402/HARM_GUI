@@ -11,6 +11,11 @@ import java.io.Serializable;
 
 public class Arc implements Serializable {
 
+	/**
+	 * add default serial number
+	 */
+	private static final long serialVersionUID = 10L;
+	
 	private int x1;
 	private int x2;
 	private int y1;
@@ -26,7 +31,9 @@ public class Arc implements Serializable {
 	private double impact;
 	private int number;
 
-	// All the infos about arcs
+	/**
+	 * Initialize all the information of Arc
+	 */
 	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, double vulnerability, int number,
 			double risk, double cost, double probability, double impact) {
 		super();
@@ -45,16 +52,22 @@ public class Arc implements Serializable {
 		this.impact = impact;
 	}
 	
-	
-
+	/**
+	 * Draw the line on the centerpane.
+	 */
 	public void drawLine(Graphics g) {
+		/*Draw the line between two points (x1, y1), (x2, y2)*/
 		g.setColor(color);
 		drawArrow(g, x1, y1, x2, y2);
 
+		/*Show the value of vulnerability above the arc*/
 		g.setColor(color.black);
 		g.drawString(String.valueOf(vulnerability), (x1 + x2) / 2, (y1 + y2) / 2 + 25);
 	}
 
+	/**
+	 * Draw the arrow at the end of the line.
+	 */
 	void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
 		Graphics2D g = (Graphics2D) g1.create();
 
@@ -65,12 +78,13 @@ public class Arc implements Serializable {
 		at.concatenate(AffineTransform.getRotateInstance(angle));
 		g.transform(at);
 
-		// Draw horizontal arrow starting in (0, 0)
+		/*Draw horizontal arrow starting in (0, 0)*/
 		g.drawLine(0, 0, len, 0);
 		g.fillPolygon(new int[] { len, len - ARR_SIZE, len - ARR_SIZE, len }, new int[] { 0, -ARR_SIZE, ARR_SIZE, 0 },
 				4);
 	}
 
+	/*Getters and Setters*/
 	public int getInitNode() {
 		return initNode;
 	}
