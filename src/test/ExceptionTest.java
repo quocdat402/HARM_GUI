@@ -60,6 +60,22 @@ public class ExceptionTest {
 	}
 	
 	@Test
+	public void testNodeNegativePointException() {
+		
+		controller.clearAllInfo();	
+		MouseEvent e1 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, -1, -2, 1, false);
+
+		controller.setActivateNode(1);
+		
+		exception.expect(IllegalStateException.class);
+		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
+		nodeMouseAdapter.mousePressed(e1);
+		
+		controller.setActivateNode(0);
+		
+	}
+	
+	@Test
 	public void testUndoException() {
 		
 		controller.clearAllInfo();

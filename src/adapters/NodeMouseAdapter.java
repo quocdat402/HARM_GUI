@@ -39,6 +39,13 @@ public class NodeMouseAdapter extends MouseAdapter implements Command{
 				/*
 				 * Create a node and add it to List<Node>
 				 */
+				
+				if (e.getX() < 0 || e.getY() < 0) {
+					
+					throw new IllegalStateException("Can't create a Node");
+					
+				}
+				
 				Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + controller.getNodeNumber(), controller.getNodeNumber(), false,
 						false);
 				model.getNodes().add(node);
