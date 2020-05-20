@@ -2,11 +2,51 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>HARMs</groupId>
   <artifactId>HARMs</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
+  <dependencies>
+  
+ <dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-engine</artifactId>
+    <version>5.4.0</version>
+</dependency>
+</dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
+	    <plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-jar-plugin</artifactId>
+		    <configuration>
+		        <archive>
+		            <manifest>
+		                <addClasspath>true</addClasspath>
+		                <classpathPrefix>lib/</classpathPrefix>
+		                <mainClass>com.company.Main</mainClass>
+		            </manifest>
+		        </archive>
+		    </configuration>
+		</plugin>
       <plugin>
+      
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy</id>
+            <phase>install</phase>
+            <goals>
+                <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>
+                    ${project.build.directory}/lib
+                </outputDirectory>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+<plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
@@ -15,5 +55,7 @@
         </configuration>
       </plugin>
     </plugins>
+    
+    
   </build>
 </project>
