@@ -18,8 +18,10 @@ Graphical User Interface for HARMs
 
 ## Installation
 Install HARMs Engine at https://github.com/whistlebee/harmat
-    git clone https://github.com/Naehyung/HARMs
-    cd HARMs
-    mvn package
-    cd target
-    java -jar HARMs-0.0.1.jar
+```java
+git clone https://github.com/Naehyung/HARMs
+cd HARMs
+mvn package
+cd target
+java -jar HARMs-0.0.1.jar
+```
