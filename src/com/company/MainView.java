@@ -52,6 +52,7 @@ public class MainView extends JFrame {
     private JLabel lblResults;
     private JTextField txtResults;
     
+    private JLabel lblArc;
     private JLabel lblVul;
     private JLabel lblRisk;
     private JLabel lblCost;
@@ -74,7 +75,10 @@ public class MainView extends JFrame {
     private JMenuItem mntmOpen;
     private JMenuItem mntmSave;
     
+    private JMenuItem mntmMetrics;
     private JMenuItem mntmAttackgraph;
+    
+ 
     
     private JFrame saveFrame;
     private JFileChooser fileChooser;
@@ -124,9 +128,13 @@ public class MainView extends JFrame {
         JMenu mnView = new JMenu("View");
         menuBar.add(mnView);
         JMenu mnTools = new JMenu("Tools");
-        menuBar.add(mnTools);        
-        mntmAttackgraph = new JMenuItem("Attack Graph");
+        menuBar.add(mnTools);
+        mntmMetrics = new JMenuItem("Metrics");
+        mntmAttackgraph = new JMenuItem("Analysis");
+        
+        mnTools.add(mntmMetrics);
         mnTools.add(mntmAttackgraph); 
+        
         JMenu mnExtentions = new JMenu("Extentions");
         menuBar.add(mnExtentions);
         JMenu mnHelp = new JMenu("Help");
@@ -196,7 +204,7 @@ public class MainView extends JFrame {
         
         /*Arc properties Frame*/
         arcFrame = new JFrame();
-        arcFrame.setSize(300, 300);
+        arcFrame.setSize(200, 300);
         arcFrame.setTitle("Arc");      
         
         /*Analysis of attack graph Frame*/
@@ -218,23 +226,33 @@ public class MainView extends JFrame {
         arcProperties = new JMenuItem("Properties"); 
         arcPopUp.add(arcProperties);
         arcPanel = new JPanel();
+        arcPanel.setLayout(null);
+        lblArc = new JLabel("Arc");
+        lblArc.setBounds(30, 20, 150, 24);
         lblVul = new JLabel("Vulnerability");
+        lblVul.setBounds(20, 50, 80, 24);
         txtVul = new JTextField();
-        txtVul.setPreferredSize(new Dimension(40, 24));
+        txtVul.setBounds(100, 50, 40, 24);
         lblRisk = new JLabel("Risk");
+        lblRisk.setBounds(20, 80, 80, 24);
         txtRisk = new JTextField();
-        txtRisk.setPreferredSize(new Dimension(40, 24));
+        txtRisk.setBounds(100, 80, 40, 24);
         lblCost = new JLabel("Cost");
+        lblCost.setBounds(20, 110, 80, 24);
         txtCost = new JTextField();
-        txtCost.setPreferredSize(new Dimension(40, 24));
+        txtCost.setBounds(100, 110, 40, 24);
         lblProb = new JLabel("Prob");
+        lblProb.setBounds(20, 140, 80, 24);
         txtProb = new JTextField();
-        txtProb.setPreferredSize(new Dimension(40, 24));
+        txtProb.setBounds(100, 140, 40, 24);
         lblImpact = new JLabel("Impact");
+        lblImpact.setBounds(20, 170, 80 , 24);
         txtImpact = new JTextField();
-        txtImpact.setPreferredSize(new Dimension(40, 24));
+        txtImpact.setBounds(100, 170, 40, 24);
         btnVul = new JButton("Okay");
+        btnVul.setBounds(30, 200, 70, 24);
         
+        arcPanel.add(lblArc);
         arcPanel.add(lblVul);
         arcPanel.add(txtVul);
         arcPanel.add(lblRisk);
@@ -550,5 +568,17 @@ public class MainView extends JFrame {
 	}
 	public void setTxtImpact(JTextField txtImpact) {
 		this.txtImpact = txtImpact;
+	}
+	public JMenuItem getMntmMetrics() {
+		return mntmMetrics;
+	}
+	public void setMntmMetrics(JMenuItem mntmMetrics) {
+		this.mntmMetrics = mntmMetrics;
+	}
+	public JLabel getLblArc() {
+		return lblArc;
+	}
+	public void setLblArc(JLabel lblArc) {
+		this.lblArc = lblArc;
 	}
 }

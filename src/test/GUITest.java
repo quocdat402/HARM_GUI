@@ -24,6 +24,7 @@ public class GUITest {
 	
 	private FrameFixture window;
 	
+	//limitation
 	@BeforeClass
 	  public static void setUpOnce() {
 	    FailOnThreadViolationRepaintManager.install();

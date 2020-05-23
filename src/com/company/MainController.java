@@ -81,6 +81,9 @@ public class MainController {
 	private Arc deleteArc;
 	private final int portNumber = 5000;
 
+	private ResultView resultView;
+	private MetricsView metricsView;
+	
 	/**
 	 * MainController handles all the interfaces in the GUI
 	 */
@@ -95,6 +98,9 @@ public class MainController {
 	 * Initialize all the interfaces
 	 */
 	public void initController() {
+		
+		resultView = new ResultView();
+		
 
 		stack = new CommandStack();
 		view.getTxtVul().setText("0");
@@ -142,6 +148,7 @@ public class MainController {
 		view.getCenterPanel().addMouseListener(nodeInfoMouseAdapter);
 		view.getCenterPanel().addMouseListener(arcInfoMouseAdapter);
 		view.getMntmAttackgraph().addActionListener(e -> attackGraphAction());
+		view.getMntmMetrics().addActionListener(e-> metricsAction());
 		view.getBtnNode().addActionListener(e -> activateNodeInt());
 		view.getBtnArc().addActionListener(e -> activateArcInt());
 		view.getBtnMove().addActionListener(e -> activateMoveInt());
@@ -159,6 +166,12 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				view.getLblArc().setText("Arc Number: " + model.getArcs().get(arcPropertyInt).getNumber());
+				view.getTxtVul().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability()));
+				view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
+				view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
+				view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
+				view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
 				view.getArcFrame().setVisible(true);
 
 			}
@@ -202,6 +215,10 @@ public class MainController {
 				} else {
 
 					model.getArcs().get(arcPropertyInt).setVulnerability(Double.valueOf(view.getTxtVul().getText()));
+					model.getArcs().get(arcPropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
+					model.getArcs().get(arcPropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
+					model.getArcs().get(arcPropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
+					model.getArcs().get(arcPropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
 					view.getCenterPanel().repaint();
 				}
 
@@ -242,6 +259,13 @@ public class MainController {
 	public void undoAction() {
 		stack.undo();
 		view.getCenterPanel().repaint();
+	}
+	
+	public void metricsAction() {
+		
+		metricsView = new MetricsView(model);
+		metricsView.setVisible(true);
+		
 	}
 
 	/**
@@ -498,7 +522,8 @@ public class MainController {
 
 		}
 
-		view.getResultFrame().setVisible(true);
+		resultView.setVisible(true);
+		//view.getResultFrame().setVisible(true);
 
 	}
 
@@ -585,6 +610,8 @@ public class MainController {
 		return activateGetInfo;
 
 	}
+	
+	
 	
 	/*Setters and Getters*/
 	public int getActivateNode() {

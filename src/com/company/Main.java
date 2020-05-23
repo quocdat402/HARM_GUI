@@ -24,9 +24,7 @@ public class Main {
             }
         });
         
-        APIcaller call = new APIcaller();
-        
-        call.get();
+       
         
     }
 }

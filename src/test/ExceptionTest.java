@@ -22,8 +22,6 @@ public class ExceptionTest {
 	
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
-
-
 	
 	@Before
 	public void setUpTest() {
