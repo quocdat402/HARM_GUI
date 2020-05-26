@@ -24,8 +24,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="mongo-java-driver-2.7.1.jar"/>
-	<classpathentry kind="lib" path="/home/naehyung/eclipse-workspace/HARMs/assertj-core-3.16.1.jar"/>
-	<classpathentry kind="lib" path="/home/naehyung/eclipse-workspace/HARMs/assertj-swing-3.5.0.jar"/>
-	<classpathentry kind="lib" path="/home/naehyung/eclipse-workspace/HARMs/fest-assert-1.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

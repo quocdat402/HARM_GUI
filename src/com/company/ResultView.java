@@ -11,6 +11,8 @@ import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.AbstractListModel;
 import javax.swing.JTextPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ResultView extends JFrame {
 
@@ -32,6 +34,21 @@ public class ResultView extends JFrame {
 		contentPane.setLayout(null);
 		
 		list = new JList();
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				JList list = (JList)e.getSource();
+				if(e.getClickCount() == 2) {
+					
+					int index = list.locationToIndex(e.getPoint());
+					System.out.println(index);
+					
+				}
+				
+				
+			}
+		});
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Risk", "Cost", "Mean of attack path lengths", "Mode of attack path lengths", "Shortest attack path length", "Return of Attack", "Probability of Attack", "All Results"};
 			public int getSize() {
