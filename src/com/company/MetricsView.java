@@ -32,7 +32,13 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.Action;
+import javax.swing.JTextPane;
+import javax.swing.JList;
 
 public class MetricsView extends JFrame {
 
@@ -56,8 +62,10 @@ public class MetricsView extends JFrame {
 	private JButton btnProb;
 	private JPanel panel;
 	private JButton btnImpact;
-	
+
 	private MetricsController controller;
+	private JTextPane textPane;
+	private JList list;
 
 	/**
 	 * Create the frame.
@@ -66,57 +74,52 @@ public class MetricsView extends JFrame {
 
 		this.model = m;
 		controller = new MetricsController(model, this);
-		
+
 		nodeNames = new ArrayList<String>();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 258, 233);
+		setBounds(100, 100, 258, 185);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		
-		for(Node node: model.getNodes()) {
-			
+		for (Node node : model.getNodes()) {
+
 			nodeNames.add(node.getName());
-			
+
 		}
-		
+
 		nodeSize = model.getNodes().size();
 
 		table = new JTable(nodeSize, nodeSize);
-		//table = new JTable(mainModel);
+		// table = new JTable(mainModel);
 //		for (int i = 0; i < table.getRowCount(); i++) {
 //			table.setValueAt("A", i, 0);
 //		}
 
-		//table.setValueAt("A", 0, 2);
-		
+		// table.setValueAt("A", 0, 2);
+
 		JTableHeader th = table.getTableHeader();
 		TableColumnModel tcm = th.getColumnModel();
-		for(int i = 0; i < nodeSize; i++) {
-			
+		for (int i = 0; i < nodeSize; i++) {
+
 			TableColumn tc = tcm.getColumn(i);
 			tc.setHeaderValue(nodeNames.get(i));
-			
+
 		}
-		
+
 		th.repaint();
-		
-		
+
 		sorter = new TableRowSorter<TableModel>(table.getModel());
 		table.setRowSorter(sorter);
-		
-		
-		
-		tableModel = new DefaultTableModel() {			
-			
+
+		tableModel = new DefaultTableModel() {
+
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public int getColumnCount() {
-				
+
 				return 1;
 			}
 
@@ -140,8 +143,7 @@ public class MetricsView extends JFrame {
 				}
 			}
 		};
-		
-		
+
 		headerTable = new JTable(tableModel);
 		for (int i = 0; i < table.getRowCount(); i++) {
 			headerTable.setValueAt(model.getNodes().get(i).getName(), i, 0);
@@ -184,29 +186,60 @@ public class MetricsView extends JFrame {
 			}
 		});
 		scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(0, 0, 242, 113);
 		scrollPane.setRowHeaderView(headerTable);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		contentPane.setLayout(null);
 		getContentPane().add(scrollPane);
-		
+
 		panel = new JPanel();
-		contentPane.add(panel, BorderLayout.SOUTH);
-		
-		btnRisk = new JButton("Connection");
+		panel.setBounds(0, 112, 242, 33);
+		contentPane.add(panel);
+
+		btnRisk = new JButton("Check Arcs");
 		btnRisk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//table.setValueAt("A",0,0);
-				
-				for(Arc arc: model.getArcs()) {
-					
+
+				// table.setValueAt("A",0,0);
+
+				for (Arc arc : model.getArcs()) {
+
 					table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
-					
+
 				}
 			}
 		});
 		panel.add(btnRisk);
-		
+
+//		JPanel NodeInfo = new JPanel();
+//		NodeInfo.setBounds(0, 199, 242, 125);
+//		contentPane.add(NodeInfo);
+//		NodeInfo.setLayout(null);
+//
+//		textPane = new JTextPane();
+//		textPane.setBounds(71, 3, 159, 118);
+//		NodeInfo.add(textPane);
+//
+//		ArrayList<String> nodes = new ArrayList<String>();
+//		for (Node node : model.getNodes()) {
+//
+//			nodes.add(node.getName());
+//
+//		}
+//		JScrollPane scrollPane = new JScrollPane();
+//		scrollPane.setLocation(2, 3);
+//		scrollPane.setSize(65, 118);
+//
+//		NodeInfo.add(scrollPane);
+//
+//		list = new JList(nodes.toArray());
+//		list.setBounds(12, 5, 50, 110);
+//
+//
+//		scrollPane.setViewportView(list);
+		// NodeInfo.add(list);
+
 //		btnCost = new JButton("Cost");
 //		btnCost.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
@@ -292,5 +325,4 @@ public class MetricsView extends JFrame {
 	public void setTable(JTable table) {
 		this.table = table;
 	}
-	
 }

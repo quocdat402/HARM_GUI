@@ -392,21 +392,37 @@ public class MainController {
 		int AttackerSetting = 0;
 
 		for (int i = 0; i < model.getNodes().size(); i++) {
-			if (model.getNodes().get(i).isAttacker() == true) {
-				JOptionPane.showMessageDialog(null, "Attacker is already set");
-				AttackerSetting = 1;
+			
+			if( i == nodePropertyInt) {
+				
+				continue;
 			}
+			
+			if (model.getNodes().get(i).isAttacker() == true) {
+				
+				AttackerSetting = 1;
+				
+			} 
 
 		}
-
-		if (AttackerSetting == 1) {
-
-		} else {
+		
+		if(AttackerSetting == 1) {
+			
+			JOptionPane.showMessageDialog(null, "Attacker is already set");
+			
+		} else if(!(model.getNodes().get(nodePropertyInt).isAttacker())) {
 
 			model.getNodes().get(nodePropertyInt).setAttacker(true);
 			model.getNodes().get(nodePropertyInt).setName("Attacker");
 			view.getCenterPanel().repaint();
-		}
+		} else if((model.getNodes().get(nodePropertyInt).isAttacker())) {
+			
+			model.getNodes().get(nodePropertyInt).setAttacker(false);
+			model.getNodes().get(nodePropertyInt).setName("node " + model.getNodes().get(nodePropertyInt).getNumber());
+			view.getCenterPanel().repaint();
+			
+		}		
+		
 	}
 
 	/**
@@ -417,8 +433,14 @@ public class MainController {
 		int targetSetting = 0;
 
 		for (int i = 0; i < model.getNodes().size(); i++) {
+			
+			if( i == nodePropertyInt) {
+				
+				continue;
+			}
+			
 			if (model.getNodes().get(i).isTarget() == true) {
-				JOptionPane.showMessageDialog(null, "Target is already set");
+				
 				targetSetting = 1;
 			}
 
@@ -426,10 +448,20 @@ public class MainController {
 
 		if (targetSetting == 1) {
 
-		} else {
+			JOptionPane.showMessageDialog(null, "Target is already set");
+			
+		} else if(!(model.getNodes().get(nodePropertyInt).isTarget())) {
+
 			model.getNodes().get(nodePropertyInt).setTarget(true);
 			model.getNodes().get(nodePropertyInt).setName("Target");
 			view.getCenterPanel().repaint();
+			
+		} else if((model.getNodes().get(nodePropertyInt).isTarget())) {
+			
+			model.getNodes().get(nodePropertyInt).setTarget(false);
+			model.getNodes().get(nodePropertyInt).setName("node " + model.getNodes().get(nodePropertyInt).getNumber());
+			view.getCenterPanel().repaint();
+			
 		}
 
 	}

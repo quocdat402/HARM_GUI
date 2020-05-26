@@ -3,6 +3,8 @@ package adapters;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.SwingUtilities;
+
 import com.company.Arc;
 import com.company.MainController;
 import com.company.MainModel;
@@ -32,6 +34,8 @@ public class DeleteNodeMouseAdapter extends MouseAdapter implements Command {
 	public void mousePressed(MouseEvent e) {
 
 		controller.setDeleteNodesArcsCounter(0);
+		
+		if(SwingUtilities.isLeftMouseButton(e)) {
 		
 		if (controller.getActivateDelete() == 1) {
 			
@@ -126,6 +130,7 @@ public class DeleteNodeMouseAdapter extends MouseAdapter implements Command {
 			controller.getCounterList().add(controller.getDeleteNodesArcsCounter());
 		}
 		
+		}
 	}
 
 	/**

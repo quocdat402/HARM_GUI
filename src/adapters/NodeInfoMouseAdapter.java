@@ -36,7 +36,32 @@ public class NodeInfoMouseAdapter extends MouseAdapter {
 			 */
 			if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
 
+				if (model.getNodes().get(i).isAttacker()) {
+					
+					view.getNodeAttacker().setText("Unset from the attacker");
+					
+					
+					
+				} else {
+					
+					view.getNodeAttacker().setText("Set as the attacker");
+					
+				}
+				
+				if (model.getNodes().get(i).isTarget()) {
+					
+					view.getNodeTarget().setText("Unset from the target");
+					
+				} else {
+					
+					view.getNodeTarget().setText("Set as the Target");
+					
+				}
+				
 				if (e.isPopupTrigger()) {
+					
+					
+					
 					controller.getView().getNodePopUp().show(e.getComponent(), e.getX(), e.getY());
 					
 					controller.setNodePropertyInt(i);
