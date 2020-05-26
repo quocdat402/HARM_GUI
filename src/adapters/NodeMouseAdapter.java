@@ -47,7 +47,7 @@ public class NodeMouseAdapter extends MouseAdapter implements Command{
 				}
 				
 				Node node = new Node(e.getX(), e.getY(), 24, Color.white, "node " + controller.getNodeNumber(), controller.getNodeNumber(), false,
-						false, 0, 0, 0, 0, 0);
+						false, controller.getNodeNumber(), 0, 0, 0, 0);
 				model.getNodes().add(node);
 				view.getCenterPanel().repaint();
 				controller.setNodeNumber(controller.getNodeNumber() + 1);

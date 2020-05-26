@@ -117,16 +117,11 @@ public class MainView extends JFrame {
         mnFile.add(mntmOpen);
         mntmSave = new JMenuItem("Save");
         mnFile.add(mntmSave);
-        JMenuItem mntmSaveAs = new JMenuItem("Save As");
-        mnFile.add(mntmSaveAs);
         JSeparator separator = new JSeparator();
         mnFile.add(separator);
         JMenuItem mntmExit = new JMenuItem("Exit");
         mnFile.add(mntmExit);
-        JMenu mnOptions = new JMenu("Options");
-        menuBar.add(mnOptions);
-        JMenu mnView = new JMenu("View");
-        menuBar.add(mnView);
+        
         JMenu mnTools = new JMenu("Tools");
         menuBar.add(mnTools);
         mntmMetrics = new JMenuItem("Metrics");
@@ -135,10 +130,6 @@ public class MainView extends JFrame {
         mnTools.add(mntmMetrics);
         mnTools.add(mntmAttackgraph); 
         
-        JMenu mnExtentions = new JMenu("Extentions");
-        menuBar.add(mnExtentions);
-        JMenu mnHelp = new JMenu("Help");
-        menuBar.add(mnHelp);
 
         /*North Panel that contains buttons*/
         northPanel = new JPanel();
@@ -237,9 +228,8 @@ public class MainView extends JFrame {
         txtName = new JTextField();
         txtName.setBounds(100, 20, 80, 24);
         lblVul = new JLabel("Vulnerability");
-        lblVul.setBounds(20, 50, 80, 24);
-        txtVul = new JTextField();
-        txtVul.setBounds(100, 50, 40, 24);
+        lblVul.setBounds(20, 50, 150, 24);
+        
         lblRisk = new JLabel("Risk");
         lblRisk.setBounds(20, 80, 80, 24);
         txtRisk = new JTextField();
@@ -257,7 +247,7 @@ public class MainView extends JFrame {
         txtImpact = new JTextField();
         txtImpact.setBounds(100, 170, 40, 24);
         nodePanel.add(lblVul);
-        nodePanel.add(txtVul);
+        
         nodePanel.add(lblRisk);
         nodePanel.add(txtRisk);
         nodePanel.add(lblCost);

@@ -56,7 +56,7 @@ public class MainController {
 	private int nodePropertyInt;
 	private int arcPropertyInt;
 
-	private List<String> lines;
+	
 
 	private CommandStack stack;
 
@@ -81,7 +81,7 @@ public class MainController {
 	private int moveRedoCounter;
 	private int moveUndoArcCounter;
 	private Arc deleteArc;
-	private int portNumber;
+	private final int portNumber = 5022;
 
 	private ResultView resultView;
 	private MetricsView metricsView;
@@ -105,7 +105,6 @@ public class MainController {
 		
 
 		stack = new CommandStack();
-		view.getTxtVul().setText("0");
 		view.getTxtCost().setText("0");
 		view.getTxtRisk().setText("0");
 		view.getTxtImpact().setText("0");
@@ -114,7 +113,6 @@ public class MainController {
 		deleteNodesRedoCounter = 0;
 		moveCounter = 0;
 		moveRedoCounter = 0;
-		lines = new ArrayList<>();
 		moveUndoMap = new HashMap<>();
 		moveRedoMap = new HashMap<>();
 		deleteArcs = new ArrayList<>();
@@ -179,7 +177,7 @@ public class MainController {
 			public void actionPerformed(ActionEvent e) {
 
 				view.getTxtName().setText(model.getNodes().get(nodePropertyInt).getName());
-				view.getTxtVul().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getVulnerability()));
+				view.getLblVul().setText("Vulnerability " + String.valueOf(model.getNodes().get(nodePropertyInt).getVulnerability() + 1));
 				view.getTxtCost().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getCost()));
 				view.getTxtRisk().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getRisk()));
 				view.getTxtImpact().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getImpact()));
@@ -201,12 +199,16 @@ public class MainController {
 				} else {
 
 					model.getNodes().get(nodePropertyInt).setName(view.getTxtName().getText());
-					model.getNodes().get(nodePropertyInt).setVulnerability(Double.valueOf(view.getTxtVul().getText()));
 					model.getNodes().get(nodePropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
 					model.getNodes().get(nodePropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
 					model.getNodes().get(nodePropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
 					model.getNodes().get(nodePropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
+					view.getNodeFrame().setVisible(false);
+					
 					view.getCenterPanel().repaint();
+					
+					
+					
 				}
 
 			}
@@ -379,6 +381,9 @@ public class MainController {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		
+		nodeNumber = model.getNodes().size();
+		arcNumber = model.getArcs().size();
 
 		view.getCenterPanel().repaint();
 
@@ -473,9 +478,12 @@ public class MainController {
 
 		boolean isAttacker = false;
 		boolean isTarget = false;
+		boolean isVul = true;
 		
 		ResultView.getTextPane().setText("");
 
+		List<String> lines = new ArrayList<>();
+		
 		for (Node node : model.getNodes()) {
 
 			if (node.isTarget()) {
@@ -489,8 +497,16 @@ public class MainController {
 				isAttacker = true;
 
 			}
+			
+			if((node.getCost() == 0.0) || (node.getImpact() == 0.0) || (node.getProbability() == 0.0) || (node.getRisk() == 0.0)) {
+				
+				isVul = false;
+				
+			}
+			
 
 		}
+		
 		
 //		try {
 //			ServerSocket socket = new ServerSocket(0);
@@ -501,21 +517,20 @@ public class MainController {
 //			
 //		}
 		
-		portNumber = 5016;
 		
-		if(isTarget && isAttacker) {
+		if(isTarget && isAttacker && isVul) {
 			
-//			String command = "python3 example3.py " + String.valueOf(portNumber);
-//			try {
-//				Process p = Runtime.getRuntime().exec(command);
-//				//TimeUnit.MILLISECONDS.sleep(500);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} 
+			String command = "python3 example3.py";
+			try {
+				Process p = Runtime.getRuntime().exec(command);
+				TimeUnit.MILLISECONDS.sleep(500);
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 		
 
-		try (Socket socket = new Socket("localhost", 6666)) {
+		try (Socket socket = new Socket("localhost", portNumber)) {
 
 			OutputStream output = socket.getOutputStream();
 			PrintWriter writer = new PrintWriter(output, true);
@@ -594,10 +609,16 @@ public class MainController {
 
 		resultView.setVisible(true);
 		
-		} else {
+		} else if(!isAttacker || !isTarget){
 			
 			System.err.println("Attacker and target are not defined");
 			JOptionPane.showMessageDialog(null, "Attacker and target are not defined");
+		
+		} else if(!isVul) {
+			
+			System.err.println("Please set Vulnerabilities");
+			JOptionPane.showMessageDialog(null, "Please set Vulnerabilities");
+		
 		}
 		
 

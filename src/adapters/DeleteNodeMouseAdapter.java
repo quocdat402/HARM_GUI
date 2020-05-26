@@ -2,6 +2,10 @@ package adapters;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -33,6 +37,8 @@ public class DeleteNodeMouseAdapter extends MouseAdapter implements Command {
 	@Override
 	public void mousePressed(MouseEvent e) {
 
+		List<Integer> arcReset = new ArrayList<>();
+		
 		controller.setDeleteNodesArcsCounter(0);
 		
 		if(SwingUtilities.isLeftMouseButton(e)) {
@@ -106,14 +112,61 @@ public class DeleteNodeMouseAdapter extends MouseAdapter implements Command {
 					}
 					
 					controller.getDeleteNodes().add(model.getNodes().get(i));
-					
+				
 					model.getNodes().remove(i);
 					
-					for(int a = 0; a < model.getNodes().size(); a++) {
+					for(int a = i; a < model.getNodes().size(); a++) {
+						
+						arcReset.add(a);
+						arcReset.add(a+1);
+						
+						if(model.getNodes().get(a).isAttacker()) {
+							
+							model.getNodes().get(a).setNumber(a);
+							continue;
+							
+						}
+						
+						if(model.getNodes().get(a).isTarget()) {
+							
+							model.getNodes().get(a).setNumber(a);
+							continue;
+							
+						}
+						
+						
 						
 						model.getNodes().get(a).setName("node " + a);
 						model.getNodes().get(a).setNumber(a);
 						
+					}
+					
+					System.out.println(arcReset);
+					
+					Set<Integer> set = new HashSet<>(arcReset);
+					arcReset.clear();
+					arcReset.addAll(set);
+					
+					for(Integer arcInt : arcReset) {
+						
+						System.out.println(arcInt);
+						
+						for(Arc arc: model.getArcs()) {
+							
+							if(arc.getInitNode() == arcInt) {
+								
+								arc.setInitNode(arcInt = 1);
+								
+							}
+							
+							if(arc.getEndNode() == arcInt) {
+								
+								arc.setEndNode(arcInt - 1);
+								
+							}
+							
+						}
+												
 					}
 
 					controller.setNodeNumber(controller.getNodeNumber() - 1);

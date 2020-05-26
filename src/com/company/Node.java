@@ -20,7 +20,7 @@ public class Node implements Serializable{
 	private boolean attacker;
 	private boolean target;
 	
-	private double vulnerability;
+	private int vulnerability;
 	private double risk;
 	private double cost;
 	private double probability;
@@ -30,7 +30,7 @@ public class Node implements Serializable{
 	 * Initialize all the information of Node
 	 */
 	public Node(int x, int y, int diameter, Color color, String name, int number, boolean attacker,
-			boolean target, double vulnerability, 
+			boolean target, int vulnerability, 
 			double risk, double cost, double probability, double impact) {
 		super();
 		this.x = x;
@@ -133,11 +133,11 @@ public class Node implements Serializable{
 		this.target = target;
 	}
 
-	public double getVulnerability() {
+	public int getVulnerability() {
 		return vulnerability;
 	}
 
-	public void setVulnerability(double vulnerability) {
+	public void setVulnerability(int vulnerability) {
 		this.vulnerability = vulnerability;
 	}
 
