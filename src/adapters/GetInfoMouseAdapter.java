@@ -39,7 +39,7 @@ public class GetInfoMouseAdapter extends MouseAdapter {
 					System.out.println("X1 = " + arc.getX1() + ", Y1 = " + arc.getY1());
 					System.out.println("X2 = " + arc.getX2() + ", Y2 = " + arc.getY2());
 					System.out.println("InitNode = " + arc.getInitNode() + ", EndNode = " + arc.getEndNode());
-					System.out.println("Vulnerability = " + arc.getVulnerability());
+					
 					System.out.println("Index = " + i);
 				}
 

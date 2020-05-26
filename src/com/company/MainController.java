@@ -15,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -79,7 +81,7 @@ public class MainController {
 	private int moveRedoCounter;
 	private int moveUndoArcCounter;
 	private Arc deleteArc;
-	private final int portNumber = 5000;
+	private int portNumber;
 
 	private ResultView resultView;
 	private MetricsView metricsView;
@@ -166,12 +168,6 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				view.getLblArc().setText("Arc Number: " + model.getArcs().get(arcPropertyInt).getNumber());
-				view.getTxtVul().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability()));
-				view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
-				view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
-				view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
-				view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
 				view.getArcFrame().setVisible(true);
 
 			}
@@ -182,6 +178,13 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				view.getTxtName().setText(model.getNodes().get(nodePropertyInt).getName());
+				view.getTxtVul().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getVulnerability()));
+				view.getTxtCost().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getCost()));
+				view.getTxtRisk().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getRisk()));
+				view.getTxtImpact().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getImpact()));
+				view.getTxtProb().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getProbability()));
+				
 				view.getNodeFrame().setVisible(true);
 
 			}
@@ -198,6 +201,11 @@ public class MainController {
 				} else {
 
 					model.getNodes().get(nodePropertyInt).setName(view.getTxtName().getText());
+					model.getNodes().get(nodePropertyInt).setVulnerability(Double.valueOf(view.getTxtVul().getText()));
+					model.getNodes().get(nodePropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
+					model.getNodes().get(nodePropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
+					model.getNodes().get(nodePropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
+					model.getNodes().get(nodePropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
 					view.getCenterPanel().repaint();
 				}
 
@@ -214,11 +222,6 @@ public class MainController {
 
 				} else {
 
-					model.getArcs().get(arcPropertyInt).setVulnerability(Double.valueOf(view.getTxtVul().getText()));
-					model.getArcs().get(arcPropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
-					model.getArcs().get(arcPropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
-					model.getArcs().get(arcPropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
-					model.getArcs().get(arcPropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
 					view.getCenterPanel().repaint();
 				}
 
@@ -438,6 +441,8 @@ public class MainController {
 
 		boolean isAttacker = false;
 		boolean isTarget = false;
+		
+		ResultView.getTextPane().setText("");
 
 		for (Node node : model.getNodes()) {
 
@@ -454,14 +459,39 @@ public class MainController {
 			}
 
 		}
+		
+//		try {
+//			ServerSocket socket = new ServerSocket(0);
+//			portNumber = socket.getLocalPort();
+//			socket.close();
+//		} catch (IOException e) {
+//			
+//			
+//		}
+		
+		portNumber = 5016;
+		
+		if(isTarget && isAttacker) {
+			
+//			String command = "python3 example3.py " + String.valueOf(portNumber);
+//			try {
+//				Process p = Runtime.getRuntime().exec(command);
+//				//TimeUnit.MILLISECONDS.sleep(500);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} 
+		
 
-		try (Socket socket = new Socket("localhost", portNumber)) {
+		try (Socket socket = new Socket("localhost", 6666)) {
 
 			OutputStream output = socket.getOutputStream();
 			PrintWriter writer = new PrintWriter(output, true);
 			writer.println(nodeNumber);
+			writer.println(arcNumber);
 
 			for (int i = 0; i < model.getNodes().size(); i++) {
+				
 				if (model.getNodes().get(i).isAttacker()) {
 
 					writer.println(model.getNodes().get(i).getNumber());
@@ -474,9 +504,20 @@ public class MainController {
 			}
 
 			for (int i = 0; i < model.getArcs().size(); i++) {
+				
 				writer.println(String.valueOf(model.getArcs().get(i).getInitNode()));
-
 				writer.println(String.valueOf(model.getArcs().get(i).getEndNode()));
+			}
+			
+			
+			
+			for (int i = 0; i < model.getNodes().size(); i++) {
+				
+				writer.println(String.valueOf(model.getNodes().get(i).getRisk()));
+				writer.println(String.valueOf(model.getNodes().get(i).getCost()));
+				writer.println(String.valueOf(model.getNodes().get(i).getProbability()));
+				writer.println(String.valueOf(model.getNodes().get(i).getImpact()));
+				
 			}
 
 			writer.println("c");
@@ -493,6 +534,9 @@ public class MainController {
 				lines.add(line);
 
 			}
+			
+			
+			socket.close();
 
 		} catch (UnknownHostException ex) {
 
@@ -504,26 +548,26 @@ public class MainController {
 
 		}
 
-		for (Iterator<String> iter = lines.iterator(); iter.hasNext();) {
-
-			String lineTemp = iter.next();
-			if (lineTemp.startsWith("Number")) {
-				break;
-			} else {
-				iter.remove();
-			}
-
-		}
+		
 
 		for (String lineTemp : lines) {
 
 			JLabel labelTemp = new JLabel(lineTemp);
 			view.getResultPanel().add(labelTemp);
+			
+			
+			ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
 
 		}
 
 		resultView.setVisible(true);
-		//view.getResultFrame().setVisible(true);
+		
+		} else {
+			
+			System.err.println("Attacker and target are not defined");
+			JOptionPane.showMessageDialog(null, "Attacker and target are not defined");
+		}
+		
 
 	}
 

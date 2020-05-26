@@ -20,11 +20,18 @@ public class Node implements Serializable{
 	private boolean attacker;
 	private boolean target;
 	
+	private double vulnerability;
+	private double risk;
+	private double cost;
+	private double probability;
+	private double impact;
+	
 	/**
 	 * Initialize all the information of Node
 	 */
 	public Node(int x, int y, int diameter, Color color, String name, int number, boolean attacker,
-			boolean target) {
+			boolean target, double vulnerability, 
+			double risk, double cost, double probability, double impact) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -34,6 +41,11 @@ public class Node implements Serializable{
 		this.number = number;
 		this.attacker = attacker;
 		this.target = target;
+		this.vulnerability = vulnerability;
+		this.risk = risk;
+		this.cost = cost;
+		this.probability = probability;
+		this.impact = impact;
 	}
 	
 	/**
@@ -120,5 +132,47 @@ public class Node implements Serializable{
 	public void setTarget(boolean target) {
 		this.target = target;
 	}
+
+	public double getVulnerability() {
+		return vulnerability;
+	}
+
+	public void setVulnerability(double vulnerability) {
+		this.vulnerability = vulnerability;
+	}
+
+	public double getRisk() {
+		return risk;
+	}
+
+	public void setRisk(double risk) {
+		this.risk = risk;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public double getProbability() {
+		return probability;
+	}
+
+	public void setProbability(double probability) {
+		this.probability = probability;
+	}
+
+	public double getImpact() {
+		return impact;
+	}
+
+	public void setImpact(double impact) {
+		this.impact = impact;
+	}
+
+	
 	
 }

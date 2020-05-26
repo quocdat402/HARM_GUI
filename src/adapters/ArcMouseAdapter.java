@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.SwingUtilities;
+
 import com.company.Arc;
 import com.company.MainController;
 import com.company.MainModel;
@@ -41,6 +43,8 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
+		if(SwingUtilities.isLeftMouseButton(e)) {
+		
 		if (controller.getActivateArc() == 1 && !model.getNodes().isEmpty()) {
 				
 				for (int i = 0; i < model.getNodes().size(); i++) {
@@ -63,11 +67,13 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 						/*
 						 * Create a temporary arc for undo and redo function
 						 */
-						arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, 0, controller.getArcNumber(), 0, 0, 0, 0);
+						arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, controller.getArcNumber());
 						model.getArcs().add(arcTemp);
 					}
 				}
 			}
+		
+		}
 		
 	}
 	
@@ -77,6 +83,8 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 	@Override
 	public void mouseDragged(MouseEvent e)  {
 		
+		if(SwingUtilities.isLeftMouseButton(e)) {
+		
 		if (controller.getActivateArc() == 1 && !model.getNodes().isEmpty() && arcTemp != null) {
 			
 				arcTemp.setX2(e.getX());
@@ -85,7 +93,7 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 		}
 		
 		
-		
+		}
 	}
 	
 	/**
@@ -93,6 +101,8 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		
+		if(SwingUtilities.isLeftMouseButton(e)) {
 
 		if (controller.getActivateArc() == 1 && !model.getNodes().isEmpty()) {
 
@@ -140,7 +150,7 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 							/*
 							 * Create a new arc
 							 */
-							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, 0, controller.getArcNumber(), 0, 0, 0, 0);
+							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, controller.getArcNumber());
 							model.getArcs().add(arc);
 							view.getCenterPanel().repaint();
 							controller.setArcNumber(controller.getArcNumber() + 1);
@@ -158,6 +168,8 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 					}
 				}
 			
+		}
+		
 		}
 	}
 

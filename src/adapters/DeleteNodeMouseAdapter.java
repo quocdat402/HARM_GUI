@@ -104,6 +104,13 @@ public class DeleteNodeMouseAdapter extends MouseAdapter implements Command {
 					controller.getDeleteNodes().add(model.getNodes().get(i));
 					
 					model.getNodes().remove(i);
+					
+					for(int a = 0; a < model.getNodes().size(); a++) {
+						
+						model.getNodes().get(a).setName("node " + a);
+						model.getNodes().get(a).setNumber(a);
+						
+					}
 
 					controller.setNodeNumber(controller.getNodeNumber() - 1);
 					

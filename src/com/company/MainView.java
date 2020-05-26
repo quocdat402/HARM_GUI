@@ -227,8 +227,15 @@ public class MainView extends JFrame {
         arcPopUp.add(arcProperties);
         arcPanel = new JPanel();
         arcPanel.setLayout(null);
-        lblArc = new JLabel("Arc");
-        lblArc.setBounds(30, 20, 150, 24);
+        btnVul = new JButton("Okay");
+        btnVul.setBounds(30, 200, 70, 24);
+        
+        nodePanel = new JPanel();
+        nodePanel.setLayout(null);        
+        lblName = new JLabel("Name");
+        lblName.setBounds(20, 20, 80, 24);
+        txtName = new JTextField();
+        txtName.setBounds(100, 20, 80, 24);
         lblVul = new JLabel("Vulnerability");
         lblVul.setBounds(20, 50, 80, 24);
         txtVul = new JTextField();
@@ -249,28 +256,21 @@ public class MainView extends JFrame {
         lblImpact.setBounds(20, 170, 80 , 24);
         txtImpact = new JTextField();
         txtImpact.setBounds(100, 170, 40, 24);
-        btnVul = new JButton("Okay");
-        btnVul.setBounds(30, 200, 70, 24);
+        nodePanel.add(lblVul);
+        nodePanel.add(txtVul);
+        nodePanel.add(lblRisk);
+        nodePanel.add(txtRisk);
+        nodePanel.add(lblCost);
+        nodePanel.add(txtCost);
+        nodePanel.add(lblProb);
+        nodePanel.add(txtProb);
+        nodePanel.add(lblImpact);
+        nodePanel.add(txtImpact);
         
-        arcPanel.add(lblArc);
-        arcPanel.add(lblVul);
-        arcPanel.add(txtVul);
-        arcPanel.add(lblRisk);
-        arcPanel.add(txtRisk);
-        arcPanel.add(lblCost);
-        arcPanel.add(txtCost);
-        arcPanel.add(lblProb);
-        arcPanel.add(txtProb);
-        arcPanel.add(lblImpact);
-        arcPanel.add(txtImpact);
-        arcPanel.add(btnVul);
-        arcFrame.getContentPane().add(arcPanel);
         
-        nodePanel = new JPanel();
-        lblName = new JLabel("Name");
-        txtName = new JTextField();
-        txtName.setPreferredSize(new Dimension(200, 24));
+        
         btnName = new JButton("Okay");
+        btnName.setBounds(100,200,80,24);
         nodePanel.add(lblName);
         nodePanel.add(txtName);
         nodePanel.add(btnName);

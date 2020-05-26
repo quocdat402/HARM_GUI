@@ -65,9 +65,9 @@ public class UnitTest {
 		controller.clearAllInfo();
 		
 		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
-				false);
+				false,0,0,0,0,0);
 		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
-				false);
+				false,0,0,0,0,0);
 		
 		model.getNodes().add(node1);
 		model.getNodes().add(node2);
@@ -90,12 +90,12 @@ public class UnitTest {
 		controller.clearAllInfo();
 		
 		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
-				false);
+				false, 0, 0, 0, 0, 0);
 		
 		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
-				false);
+				false, 0, 0, 0, 0, 0);
 		
-		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1.2, 1, 1.5, 2.5, 3.5, 4.5);
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1);
 		model.getArcs().add(arc);
 		
 		assertEquals(node1.getNumber(), arc.getInitNode());
@@ -112,7 +112,7 @@ public class UnitTest {
 		controller.initController();
 		
 		Node node = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
-				false); 
+				false, 0, 0, 0, 0, 0); 
 		
 		model.getNodes().add(node);
 		assertEquals(500, node.getX());
@@ -131,7 +131,7 @@ public class UnitTest {
 		controller = new MainController(model, view);
 		controller.initController();
 		
-		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1.2, 1, 1.5, 2.5, 3.5, 4.5);
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1);
 		model.getArcs().add(arc);
 		
 		assertEquals(1, arc.getX1());
@@ -140,12 +140,7 @@ public class UnitTest {
 		assertEquals(4, arc.getY2());
 		assertEquals(0, arc.getInitNode());
 		assertEquals(1, arc.getEndNode());		
-		assertEquals(1.2, arc.getVulnerability(),0);
-		assertEquals(1, arc.getNumber());
-		assertEquals(1.5, arc.getRisk(),0);
-		assertEquals(2.5, arc.getCost(),0);
-		assertEquals(3.5, arc.getProbability(),0);
-		assertEquals(4.5, arc.getImpact(),0);
+		
 				
 	}
 

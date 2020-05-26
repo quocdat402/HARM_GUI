@@ -18,13 +18,13 @@ public class ResultView extends JFrame {
 	private JPanel contentPane;
 
 	private JList list;
-	private JTextPane textPane;
+	private static JTextPane textPane;
 	
 	/**
 	 * Create the frame.
 	 */
 	public ResultView() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -48,9 +48,17 @@ public class ResultView extends JFrame {
 		lblOutput.setBounds(372, 16, 57, 15);
 		contentPane.add(lblOutput);
 		
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		textPane.setEditable(false);
 		textPane.setBounds(199, 41, 373, 210);
 		contentPane.add(textPane);
+	}
+
+	public static JTextPane getTextPane() {
+		return textPane;
+	}
+
+	public static void setTextPane(JTextPane textPane) {
+		ResultView.textPane = textPane;
 	}
 }

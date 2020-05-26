@@ -1,5 +1,6 @@
 import harmat as hm
 import socket
+import sys
 
 
 #client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -7,7 +8,9 @@ import socket
 #client_socket.connect(("localhost", 5000))
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(("localhost", 5000))
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#s.bind(("localhost", int(sys.argv[1])))
+s.bind(("localhost", 6666))
 s.listen(1)
 end = "c"
 conn, addr = s.accept()
@@ -15,8 +18,9 @@ conn, addr = s.accept()
 datas=[];
 while 1:
     data = conn.recv(1024)
-    conn.sendall(data)
-    datas.append(data.decode('utf-8'))
+    #conn.sendall(data)
+    
+    datas = datas + (data.decode('utf-8').splitlines())
     if end in data.decode('utf-8'):
         break    
 
@@ -24,15 +28,24 @@ while 1:
 
 #dData = data.decode('utf-8').rstrip('\n')
 
+
+
+#if len(datas[0]) > 3:
+#    print("error");
+#    datas2 = datas[0].splitlines();
+#    del datas[0]
+#    datas = datas2 + datas
+
 print(datas)
 
 
 numberOfNodes = int(datas[0])
+numberOfArcs = int(datas[1])
 
 
 
 #numberOfArcs = int(dData[2])
-#print(numberOfArcs)
+print(numberOfNodes)
 #for x in range (4, 4+numberOfArcs*2, 3):
 #    print(dData[x])
 #    print(dData[x+1])
@@ -45,56 +58,40 @@ h = hm.Harm()
 # create the top layer of the harm
 # top_layer refers to the top layer of the harm
 h.top_layer = hm.AttackGraph()
+print(float(datas[4+numberOfNodes*2]))
 
 # we will create 5 nodes and connect them in some way
 # first we create some nodes
-hosts = [hm.Host("Host {}".format(i)) for i in range(numberOfNodes)]
+hosts = [hm.Host(str(i)) for i in range(numberOfNodes)]
 # then we will make a basic attack tree for each
 for host in hosts:
     host.lower_layer = hm.AttackTree()
     # We will make two vulnerabilities and give some metrics
     vulnerability1 = hm.Vulnerability('CVE-0000', values = {
-        'risk' : 9,
-        'cost' : 4,
-        'probability' : 0.2,
-        'impact' : 12
+        'risk' : float(datas[4+numberOfArcs*2 + (int(host.name)*4)]),
+        'cost' : float(datas[4+numberOfArcs*2+1 + (int(host.name)*4)]),
+        'probability' : float(datas[4+numberOfArcs*2+2 + (int(host.name)*4)]),
+        'impact' : float(datas[4+numberOfArcs*2+3 + (int(host.name)*4)])
     })
-    vulnerability2 = hm.Vulnerability('CVE-0001', values = {
-        'risk' : 1,
-        'cost' : 5,
-        'probability' : 0.2,
-        'impact' : 2
-    })
+    
     # basic_at creates just one OR gate and puts all vulnerabilites
     # the children nodes
-    host.lower_layer.basic_at([vulnerability1, vulnerability2])
+    host.lower_layer.basic_at([vulnerability1])
     
 
 
-hosts[int(datas[1])] = hm.Attacker()
-
-
+hosts[int(datas[2])] = hm.Attacker()
 
 # Now we will create an Attacker. This is not a physical node but it exists to describe
 # the potential entry points of attackers.
 #attacker = hm.Attacker() 
 
 
-#for x in range (4, 4+numberOfArcs*2, 3):
-#    print(int(dData[x])+int(dData[x+1]))
-#    print(int(dData[x]))
-#    print(int(dData[x+1]))
-#    h[0].add_edge(hosts[int(dData[x])], hosts[int(dData[x+1])]) 
-
-
-#f2 = open("NodeInput.txt", "r")
-#for x in f2:
-#    print(x)
-
-for x in range (3, len(datas)-1, 2):
+for x in range (4, len(datas)-1-(4*numberOfNodes), 2):
     print(int(datas[x]))
     print(int(datas[x+1]))
     h[0].add_edge(hosts[int(datas[x])], hosts[int(datas[x+1])])
+    
 # To add edges we simply use the add_edge function
 # here h[0] refers to the top layer
 # add_edge(A,B) creates a uni-directional from A -> B.
@@ -105,8 +102,8 @@ for x in range (3, len(datas)-1, 2):
 # h[0].add_edge(hosts[3], hosts[2])
 
 # Now we set the attacker and target
-h[0].source = hosts[int(datas[1])]
-h[0].target = hosts[int(datas[2])]
+h[0].source = hosts[int(datas[2])]
+h[0].target = hosts[int(datas[3])]
 
 # do some flow up
 h.flowup()

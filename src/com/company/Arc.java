@@ -24,18 +24,13 @@ public class Arc implements Serializable {
 	private final int ARR_SIZE = 4;
 	private int initNode;
 	private int endNode;
-	private double vulnerability;
-	private double risk;
-	private double cost;
-	private double probability;
-	private double impact;
+	
 	private int number;
 
 	/**
 	 * Initialize all the information of Arc
 	 */
-	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, double vulnerability, int number,
-			double risk, double cost, double probability, double impact) {
+	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, int number) {
 		super();
 		this.x1 = x1;
 		this.y1 = y1;
@@ -44,12 +39,6 @@ public class Arc implements Serializable {
 		this.color = color;
 		this.initNode = initNode;
 		this.endNode = endNode;
-		this.vulnerability = vulnerability;
-		this.number = number;
-		this.risk = risk;
-		this.cost = cost;
-		this.probability = probability;
-		this.impact = impact;
 	}
 	
 	/**
@@ -61,8 +50,8 @@ public class Arc implements Serializable {
 		drawArrow(g, x1, y1, x2, y2);
 
 		/*Show the value of vulnerability above the arc*/
-		g.setColor(color.black);
-		g.drawString(String.valueOf(vulnerability), (x1 + x2) / 2, (y1 + y2) / 2 + 25);
+		//g.setColor(color.black);
+		//g.drawString(String.valueOf(vulnerability), (x1 + x2) / 2, (y1 + y2) / 2 + 25);
 	}
 
 	/**
@@ -133,14 +122,6 @@ public class Arc implements Serializable {
 		this.y2 = y2;
 	}
 
-	public double getVulnerability() {
-		return vulnerability;
-	}
-
-	public void setVulnerability(double vulnerability) {
-		this.vulnerability = vulnerability;
-	}
-
 	public int getNumber() {
 		return number;
 	}
@@ -149,72 +130,6 @@ public class Arc implements Serializable {
 		this.number = number;
 	}
 
-	public double getRisk() {
-		return risk;
-	}
-
-	public void setRisk(double risk) {
-		this.risk = risk;
-	}
-
-	public double getCost() {
-		return cost;
-	}
-
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-
-	public double getProbability() {
-		return probability;
-	}
-
-	public void setProbability(double probability) {
-		this.probability = probability;
-	}
-
-	public double getImpact() {
-		return impact;
-	}
-
-	public void setImpact(double impact) {
-		this.impact = impact;
-	}
-
-	private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException {
-
-		x1 = aInputStream.readInt();
-		y1 = aInputStream.readInt();
-		x2 = aInputStream.readInt();
-		y2 = aInputStream.readInt();
-		initNode = aInputStream.readInt();
-		endNode = aInputStream.readInt();
-		vulnerability = aInputStream.readDouble();
-		number = aInputStream.readInt();
-		risk = aInputStream.readDouble();
-		cost = aInputStream.readDouble();
-		probability = aInputStream.readDouble();
-		impact = aInputStream.readDouble();
-	}
-
-	private void writeObject(ObjectOutputStream aOutputStream) throws IOException {
-
-		aOutputStream.writeInt(x1);
-		aOutputStream.writeInt(y1);
-		aOutputStream.writeInt(x2);
-		aOutputStream.writeInt(y2);
-		aOutputStream.writeInt(initNode);
-		aOutputStream.writeInt(endNode);
-		aOutputStream.writeDouble(vulnerability);
-		aOutputStream.writeInt(number);
-		aOutputStream.writeDouble(risk);
-		aOutputStream.writeDouble(cost);
-		aOutputStream.writeDouble(probability);
-		aOutputStream.writeDouble(impact);
-
-	}
-
-
-
+	
 
 }

@@ -192,7 +192,7 @@ public class MetricsView extends JFrame {
 		panel = new JPanel();
 		contentPane.add(panel, BorderLayout.SOUTH);
 		
-		btnRisk = new JButton("Risk");
+		btnRisk = new JButton("Connection");
 		btnRisk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -200,57 +200,57 @@ public class MetricsView extends JFrame {
 				
 				for(Arc arc: model.getArcs()) {
 					
-					table.setValueAt(arc.getRisk(), arc.getInitNode(), arc.getEndNode());
+					table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
 					
 				}
 			}
 		});
 		panel.add(btnRisk);
 		
-		btnCost = new JButton("Cost");
-		btnCost.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				for(Arc arc: model.getArcs()) {
-					
-					table.setValueAt(arc.getCost(), arc.getInitNode(), arc.getEndNode());
-					
-				}
-			}
-		});
-		panel.add(btnCost);
-		
-		btnProb = new JButton("Probability");
-		btnProb.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			
-				for(Arc arc: model.getArcs()) {
-					
-					table.setValueAt(arc.getProbability(), arc.getInitNode(), arc.getEndNode());
-					
-				}
-			
-			}
-		});
-		panel.add(btnProb);
-		
-		btnImpact = new JButton("Impact");
-		btnImpact.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				for(Arc arc: model.getArcs()) {
-					
-					table.setValueAt(arc.getImpact(), arc.getInitNode(), arc.getEndNode());
-					
-				}
-				
-			}
-		});
-		panel.add(btnImpact);
-		
-		this.pack();
-		this.setLocation(150, 150);
-		this.setVisible(true);
+//		btnCost = new JButton("Cost");
+//		btnCost.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				for(Arc arc: model.getArcs()) {
+//					
+//					table.setValueAt(arc.getCost(), arc.getInitNode(), arc.getEndNode());
+//					
+//				}
+//			}
+//		});
+//		panel.add(btnCost);
+//		
+//		btnProb = new JButton("Probability");
+//		btnProb.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//			
+//				for(Arc arc: model.getArcs()) {
+//					
+//					table.setValueAt(arc.getProbability(), arc.getInitNode(), arc.getEndNode());
+//					
+//				}
+//			
+//			}
+//		});
+//		panel.add(btnProb);
+//		
+//		btnImpact = new JButton("Impact");
+//		btnImpact.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				for(Arc arc: model.getArcs()) {
+//					
+//					table.setValueAt(arc.getImpact(), arc.getInitNode(), arc.getEndNode());
+//					
+//				}
+//				
+//			}
+//		});
+//		panel.add(btnImpact);
+//		
+//		this.pack();
+//		this.setLocation(150, 150);
+//		this.setVisible(true);
 	}
 
 	public JButton getBtnRisk() {
