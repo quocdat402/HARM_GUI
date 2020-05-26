@@ -140,6 +140,8 @@ e = "Shortest attack path length: " + str(h[0].shortest_path_length()) + "\n"
 ebytes = e.encode('utf-8')
 conn.send(ebytes)
 
+
+
 f = "Return of Attack: " + str(h[0].return_on_attack()) + "\n"
 fbytes = f.encode('utf-8')
 conn.send(fbytes)
@@ -147,6 +149,10 @@ conn.send(fbytes)
 g = "Probability of attack success: " + str(h[0].probability_attack_success()) + "\n"
 gbytes = g.encode('utf-8')
 conn.send(gbytes)
+
+h = "Standard Deviation of attack path lengths: " + str(h[0].stdev_path_length()) + "\n"
+hbytes = h.encode('utf-8')
+conn.send(hbytes)
 
 #conn.send("Cost: " + str(h.cost) + "\n")
 #conn.send("Mean of attack path lengths: " + str(h[0].mean_path_length()) + "\n")

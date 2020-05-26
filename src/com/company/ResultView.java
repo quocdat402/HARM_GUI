@@ -21,11 +21,17 @@ public class ResultView extends JFrame {
 
 	private JList list;
 	private static JTextPane textPane;
+	private MainModel model;
+	private MainController controller;
 	
 	/**
 	 * Create the frame.
 	 */
-	public ResultView() {
+	public ResultView(MainModel m, MainController c) {
+		
+		this.model = m;
+		this.controller = c;
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 300);
 		contentPane = new JPanel();
@@ -42,7 +48,113 @@ public class ResultView extends JFrame {
 				if(e.getClickCount() == 2) {
 					
 					int index = list.locationToIndex(e.getPoint());
-					System.out.println(index);
+					String Risk = new String();
+					String Cost = new String();
+					String Mean = new String();
+					String Mode = new String();
+					String Shortest = new String();
+					String Standard = new String();
+					String Prob = new String();
+					
+					for (String lineTemp : controller.getLines()) {
+						if(lineTemp.startsWith("Risk")) {
+							
+							Risk = lineTemp.split(": ")[1];
+							
+						} else if(lineTemp.startsWith("Cost")) {
+							
+							Cost = lineTemp.split(": ")[1];
+							
+						} else if(lineTemp.startsWith("Mean")) {
+							
+							Mean = lineTemp.split(": ")[1];
+							
+						} else if(lineTemp.startsWith("Mode")) {
+							
+							Mode = lineTemp.split(": ")[1];
+							
+						} else if(lineTemp.startsWith("Shortest")) {
+							
+							Shortest = lineTemp.split(": ")[1];
+							
+						} else if(lineTemp.startsWith("Standard")) {
+							
+							Standard = lineTemp.split(": ")[1];
+							
+						}
+					}
+					
+					switch(index) {
+					
+					
+					case 0:
+						
+						textPane.setText("");
+						
+						for(Node node: model.getNodes()) {
+							
+							textPane.setText(textPane.getText() + "\n" + "Node " + node.getNumber() + " Risk: " + node.getRisk());
+							
+						}
+						
+						textPane.setText(textPane.getText() + "\n" + "Total Risk: " + Risk);
+						
+						
+						break;					
+					case 1:
+						
+						textPane.setText("");
+						
+						
+						
+						for(Node node: model.getNodes()) {
+							
+							textPane.setText(textPane.getText() + "\n" + "Node " + node.getNumber() + " Cost: " + node.getCost());
+							
+						}
+						
+						textPane.setText(textPane.getText() + "\n" + "Total Cost: " + Cost);
+						
+						break;
+					case 2:
+						
+						textPane.setText("");
+						textPane.setText(textPane.getText() + "\n" + "Mean of attack path lengths: " + Mean);
+						textPane.setText(textPane.getText() + "\n" + "Mode of attack path lengths: " + Mode);
+						textPane.setText(textPane.getText() + "\n" + "Shortest attack path length: " + Shortest);
+						textPane.setText(textPane.getText() + "\n" + "Standard Deviaton of attack path length: " + Standard);
+						
+						break;			
+					case 3:
+						
+						break;
+						
+					case 4:
+						
+						textPane.setText("");
+						
+						for(Node node: model.getNodes()) {
+							
+							textPane.setText(textPane.getText() + "\n" + "Node " + node.getNumber() + " Probability: " + node.getProbability());
+							
+						}
+						
+						textPane.setText(textPane.getText() + "\n" + "Probability of Attack Success: " + Prob);
+						
+						
+						break;
+							
+					case 5:
+						
+						textPane.setText("");
+						for (String lineTemp : controller.getLines()) {
+
+						
+							ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
+
+						}
+						break;
+					}
 					
 				}
 				
@@ -50,7 +162,7 @@ public class ResultView extends JFrame {
 			}
 		});
 		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Risk", "Cost", "Mean of attack path lengths", "Mode of attack path lengths", "Shortest attack path length", "Return of Attack", "Probability of Attack", "All Results"};
+			String[] values = new String[] {"Risk", "Cost", "Attack lengths", "Return of Attack", "Probability", "All Results"};
 			public int getSize() {
 				return values.length;
 			}

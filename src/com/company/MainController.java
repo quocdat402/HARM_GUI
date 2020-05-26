@@ -56,7 +56,7 @@ public class MainController {
 	private int nodePropertyInt;
 	private int arcPropertyInt;
 
-	
+	private List<String> lines;
 
 	private CommandStack stack;
 
@@ -101,9 +101,9 @@ public class MainController {
 	 */
 	public void initController() {
 		
-		resultView = new ResultView();
+		resultView = new ResultView(model, this);
 		
-
+		lines = new ArrayList<>();
 		stack = new CommandStack();
 		view.getTxtCost().setText("0");
 		view.getTxtRisk().setText("0");
@@ -482,7 +482,7 @@ public class MainController {
 		
 		ResultView.getTextPane().setText("");
 
-		List<String> lines = new ArrayList<>();
+		lines.clear();
 		
 		for (Node node : model.getNodes()) {
 
@@ -608,6 +608,8 @@ public class MainController {
 		}
 
 		resultView.setVisible(true);
+		
+		
 		
 		} else if(!isAttacker || !isTarget){
 			
@@ -933,6 +935,14 @@ public class MainController {
 
 	public void setMoveRedoCounter(int moveRedoCounter) {
 		this.moveRedoCounter = moveRedoCounter;
+	}
+
+	public List<String> getLines() {
+		return lines;
+	}
+
+	public void setLines(List<String> lines) {
+		this.lines = lines;
 	}
 
 }
