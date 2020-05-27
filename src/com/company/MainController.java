@@ -507,20 +507,22 @@ public class MainController {
 
 		}
 		
+		int port = -1;
 		
-//		try {
-//			ServerSocket socket = new ServerSocket(0);
-//			portNumber = socket.getLocalPort();
-//			socket.close();
-//		} catch (IOException e) {
-//			
-//			
-//		}
+		
+		try {
+			ServerSocket socket = new ServerSocket(0);
+			port = socket.getLocalPort();
+			socket.close();
+		} catch (IOException e) {
+			
+			
+		}
 		
 		
 		if(isTarget && isAttacker && isVul) {
 			
-			String command = "python3 example3.py";
+			String[] command = {"python3", "example3.py",String.valueOf(port)};
 			try {
 				Process p = Runtime.getRuntime().exec(command);
 				TimeUnit.MILLISECONDS.sleep(700);
@@ -530,7 +532,7 @@ public class MainController {
 			} 
 		
 
-		try (Socket socket = new Socket("localhost", portNumber)) {
+		try (Socket socket = new Socket("localhost", port)) {
 
 			OutputStream output = socket.getOutputStream();
 			PrintWriter writer = new PrintWriter(output, true);

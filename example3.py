@@ -9,8 +9,8 @@ import sys
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-#s.bind(("localhost", int(sys.argv[1])))
-s.bind(("localhost", 5022))
+s.bind(("localhost", int(sys.argv[1])))
+#s.bind(("localhost", 5022))
 s.listen(1)
 end = "c"
 conn, addr = s.accept()
