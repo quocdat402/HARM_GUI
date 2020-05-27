@@ -3,7 +3,17 @@
   <groupId>HARMs</groupId>
   <artifactId>HARMs</artifactId>
   <version>0.0.1</version>
+  
+  
   <dependencies>
+  
+  <dependency>
+  	<groupId>junit</groupId>
+  	<artifactId>junit</artifactId>
+  	<version>4.13</version>
+	<scope>test</scope>  
+  
+  </dependency>
   
  <dependency>
     <groupId>org.junit.jupiter</groupId>

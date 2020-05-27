@@ -125,11 +125,8 @@ public class ResultView extends JFrame {
 						textPane.setText(textPane.getText() + "\n" + "Standard Deviaton of attack path length: " + Standard);
 						
 						break;			
+				
 					case 3:
-						
-						break;
-						
-					case 4:
 						
 						textPane.setText("");
 						
@@ -144,7 +141,7 @@ public class ResultView extends JFrame {
 						
 						break;
 							
-					case 5:
+					case 4:
 						
 						textPane.setText("");
 						for (String lineTemp : controller.getLines()) {
@@ -162,7 +159,7 @@ public class ResultView extends JFrame {
 			}
 		});
 		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Risk", "Cost", "Attack lengths", "Return of Attack", "Probability", "All Results"};
+			String[] values = new String[] {"Risk", "Cost", "Attack lengths", "Probability", "All Results"};
 			public int getSize() {
 				return values.length;
 			}

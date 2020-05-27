@@ -523,7 +523,7 @@ public class MainController {
 			String command = "python3 example3.py";
 			try {
 				Process p = Runtime.getRuntime().exec(command);
-				TimeUnit.MILLISECONDS.sleep(500);
+				TimeUnit.MILLISECONDS.sleep(700);
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
