@@ -166,6 +166,7 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				view.getLblArc().setText("Arc " + String.valueOf(model.getArcs().get(arcPropertyInt).getNumber()));
 				view.getLblVul().setText("Vulnerability " + String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability() + 1));
 				view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
 				view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
@@ -222,7 +223,8 @@ public class MainController {
 					model.getArcs().get(arcPropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
 					model.getArcs().get(arcPropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
 					
-
+					view.getArcFrame().setVisible(false);
+					
 					view.getCenterPanel().repaint();
 				
 

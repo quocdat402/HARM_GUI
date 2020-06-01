@@ -57,6 +57,16 @@ public class DeleteArcMouseAdapter extends MouseAdapter implements Command{
 						 */
 						model.getArcs().remove(i);
 						controller.setArcNumber(controller.getArcNumber() - 1);
+						
+						for(int a = 0; a < model.getArcs().size(); a++) {
+							
+							model.getArcs().get(a).setNumber(a);
+							
+							
+							
+						}
+						
+						
 						controller.getView().getCenterPanel().repaint();
 						
 						/*

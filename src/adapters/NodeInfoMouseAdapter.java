@@ -54,7 +54,7 @@ public class NodeInfoMouseAdapter extends MouseAdapter {
 					
 				} else {
 					
-					view.getNodeTarget().setText("Set as the Target");
+					view.getNodeTarget().setText("Set as the target");
 					
 				}
 				

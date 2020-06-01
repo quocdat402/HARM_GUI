@@ -2,6 +2,7 @@ package test;
 
 import org.junit.*;
 
+import com.company.Arc;
 import com.company.MainController;
 import com.company.MainModel;
 import com.company.MainView;
@@ -58,15 +59,11 @@ public class IntegrationTest {
 		attacker.setAttacker(true);
 		target.setTarget(true);	
 		
-//		attacker.setRisk(5);
-//		attacker.setCost(5);
-//		attacker.setProbability(0.2);
-//		attacker.setImpact(5);
-//		
-//		target.setRisk(5);
-//		target.setCost(5);
-//		target.setProbability(0.2);
-//		target.setImpact(5);
+		Arc arc = model.getArcs().get(0);
+		arc.setRisk(5);
+		arc.setCost(5);
+		arc.setProbability(0.2);
+		arc.setImpact(5);
 		
 		controller.attackGraphAction();
 		

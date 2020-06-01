@@ -150,10 +150,12 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 							/*
 							 * Create a new arc
 							 */
-							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, controller.getArcNumber(),controller.getArcNumber(), 0, 0, 0, 0);
+							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, controller.getArcNumber(), controller.getArcNumber(), 0, 0, 0, 0);
 							model.getArcs().add(arc);
-							view.getCenterPanel().repaint();
+							
 							controller.setArcNumber(controller.getArcNumber() + 1);
+							
+							view.getCenterPanel().repaint();
 							
 							/*
 							 * Add adding arc command into stack for undo and redo action

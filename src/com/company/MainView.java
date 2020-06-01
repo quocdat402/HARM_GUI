@@ -196,13 +196,8 @@ public class MainView extends JFrame {
         
         /*Arc properties Frame*/
         arcFrame = new JFrame();
-        arcFrame.setSize(200, 300);
+        arcFrame.setSize(170, 300);
         arcFrame.setTitle("Arc");      
-        
-        /*Analysis of attack graph Frame*/
-        resultFrame = new JFrame();
-        resultFrame.setSize(300, 300);
-        resultFrame.setTitle("result");
         
         /*Node pop up menu*/
         nodePopUp = new JPopupMenu("Node pop-up");
@@ -231,6 +226,9 @@ public class MainView extends JFrame {
         lblVul = new JLabel("Vulnerability");
         lblVul.setBounds(20, 50, 150, 24);
         
+        
+        lblArc = new JLabel("Arc");
+        lblArc.setBounds(20, 20, 80, 24);
         lblRisk = new JLabel("Risk");
         lblRisk.setBounds(20, 80, 80, 24);
         txtRisk = new JTextField();
@@ -251,6 +249,7 @@ public class MainView extends JFrame {
         txtImpact = new JTextField();
         txtImpact.setBounds(100, 170, 40, 24);
         
+        arcPanel.add(lblArc);
         arcPanel.add(lblVul);        
         arcPanel.add(lblRisk);
         arcPanel.add(txtRisk);

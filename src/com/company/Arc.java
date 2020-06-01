@@ -47,6 +47,7 @@ public class Arc implements Serializable {
 		this.color = color;
 		this.initNode = initNode;
 		this.endNode = endNode;
+		this.number = number;
 		this.vulnerability = vulnerability;
 		this.risk = risk;
 		this.cost = cost;
@@ -63,8 +64,8 @@ public class Arc implements Serializable {
 		drawArrow(g, x1, y1, x2, y2);
 
 		/*Show the value of vulnerability above the arc*/
-		//g.setColor(color.black);
-		//g.drawString(String.valueOf(vulnerability), (x1 + x2) / 2, (y1 + y2) / 2 + 25);
+		g.setColor(color.black);
+		g.drawString("Arc" + String.valueOf(number), (x1 + x2) / 2, (y1 + y2) / 2 + 25);
 	}
 
 	/**
@@ -172,7 +173,15 @@ public class Arc implements Serializable {
 	}
 
 	public void setProbability(double probability) {
-		this.probability = probability;
+		
+		if(probability > 1) {
+			
+			throw new IllegalArgumentException("Invalid Input Number");
+			
+		} else {
+			
+			this.probability = probability;
+		}
 	}
 
 	public double getImpact() {

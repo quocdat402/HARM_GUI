@@ -68,10 +68,8 @@ i = 0
 for host in hosts:
     
     if int(host.name) is int(datas[2]):
-        #print(int(host.name))
         continue
-    else:
-        print(int(host.name))
+    else:        
         host.lower_layer = hm.AttackTree()
         # We will make two vulnerabilities and give some metrics
         vulnerability1 = hm.Vulnerability('CVE-0000', values = {
