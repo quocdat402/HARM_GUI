@@ -16,6 +16,12 @@ Graphical User Interface for HARMs
 -	Save and load data
 -	Analayze data
 
+## How to use
+- Draw Attack Graph
+- Set an Attacker and Target
+- Set all vulnerabilities on Arc
+- Run analysis or metrics on Tools menu
+
 ## Usage Examples
 - Analysis<br />
 ![Analysis](./img/analysis.png)
