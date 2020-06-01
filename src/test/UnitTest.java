@@ -131,7 +131,7 @@ public class UnitTest {
 		controller = new MainController(model, view);
 		controller.initController();
 		
-		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 0, 0, 0, 0);
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 1, 1, 0.5, 1);
 		model.getArcs().add(arc);
 		
 		assertEquals(1, arc.getX1());
@@ -140,6 +140,7 @@ public class UnitTest {
 		assertEquals(4, arc.getY2());
 		assertEquals(0, arc.getInitNode());
 		assertEquals(1, arc.getEndNode());		
+		assertEquals(0, arc.getVulnerability());
 		
 				
 	}

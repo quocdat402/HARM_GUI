@@ -62,9 +62,8 @@ public class MetricsView extends JFrame {
 	private JButton btnProb;
 	private JPanel panel;
 	private JButton btnImpact;
-
-	private JTextPane textPane;
 	private JList list;
+	private JButton btnConnection;
 
 	/**
 	 * Create the frame.
@@ -76,7 +75,7 @@ public class MetricsView extends JFrame {
 		nodeNames = new ArrayList<String>();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 258, 185);
+		setBounds(100, 100, 557, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
@@ -184,7 +183,7 @@ public class MetricsView extends JFrame {
 			}
 		});
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 0, 242, 113);
+		scrollPane.setBounds(0, 0, 547, 200);
 		scrollPane.setRowHeaderView(headerTable);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -192,8 +191,21 @@ public class MetricsView extends JFrame {
 		getContentPane().add(scrollPane);
 
 		panel = new JPanel();
-		panel.setBounds(0, 112, 242, 33);
+		panel.setBounds(0, 199, 547, 33);
 		contentPane.add(panel);
+		
+		btnConnection = new JButton("Connection");
+		btnConnection.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				for (Arc arc : model.getArcs()) {
+					
+					table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
+
+				}
+			}
+		});
+		panel.add(btnConnection);
 
 		btnRisk = new JButton("Risk");
 		btnRisk.addActionListener(new ActionListener() {
@@ -209,16 +221,9 @@ public class MetricsView extends JFrame {
 				}
 			}
 		});
+		
+		
 		panel.add(btnRisk);
-
-		JPanel NodeInfo = new JPanel();
-		NodeInfo.setBounds(0, 199, 242, 125);
-		contentPane.add(NodeInfo);
-		NodeInfo.setLayout(null);
-
-		textPane = new JTextPane();
-		textPane.setBounds(71, 3, 159, 118);
-		NodeInfo.add(textPane);
 
 		ArrayList<String> nodes = new ArrayList<String>();
 		for (Node node : model.getNodes()) {
@@ -226,18 +231,12 @@ public class MetricsView extends JFrame {
 			nodes.add(node.getName());
 
 		}
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setLocation(2, 3);
-		scrollPane.setSize(65, 118);
 
-		NodeInfo.add(scrollPane);
-
-		list = new JList(nodes.toArray());
-		list.setBounds(12, 5, 50, 110);
-
-
-		scrollPane.setViewportView(list);
-		NodeInfo.add(list);
+//		list = new JList(nodes.toArray());
+//		list.setBounds(12, 5, 50, 110);
+//
+//
+		//scrollPane.setViewportView(list);
 
 		btnCost = new JButton("Cost");
 		btnCost.addActionListener(new ActionListener() {
@@ -280,7 +279,7 @@ public class MetricsView extends JFrame {
 		});
 		panel.add(btnImpact);
 		
-		this.pack();
+		//this.pack();
 		this.setLocation(150, 150);
 		this.setVisible(true);
 	}

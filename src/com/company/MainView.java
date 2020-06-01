@@ -9,7 +9,6 @@ import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
 import com.company.*;
-import com.sun.tools.javac.parser.ReferenceParser.ParseException;
 
 import java.awt.*;
 import java.util.ArrayList;
