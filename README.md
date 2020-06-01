@@ -16,6 +16,18 @@ Graphical User Interface for HARMs
 -	Save and load data
 -	Analayze data
 
+## How to use
+- Draw Attack Graph
+- Set an Attacker and Target
+- Set all vulnerabilities on Arc
+- Run analysis or metrics on Tools menu
+
+## Usage Examples
+- Analysis<br />
+![Analysis](./img/analysis.png)
+- Metrics<br />
+![Metrics](./img/metrics.png)
+
 ## Installation
 ### If you don't want to install JDK<br />
 1. Install HARMs Engine at https://github.com/whistlebee/harmat<br />
