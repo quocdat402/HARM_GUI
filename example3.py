@@ -64,19 +64,27 @@ print(float(datas[4+numberOfNodes*2]))
 # first we create some nodes
 hosts = [hm.Host(str(i)) for i in range(numberOfNodes)]
 # then we will make a basic attack tree for each
+i = 0
 for host in hosts:
-    host.lower_layer = hm.AttackTree()
-    # We will make two vulnerabilities and give some metrics
-    vulnerability1 = hm.Vulnerability('CVE-0000', values = {
-        'risk' : float(datas[4+numberOfArcs*2 + (int(host.name)*4)]),
-        'cost' : float(datas[4+numberOfArcs*2+1 + (int(host.name)*4)]),
-        'probability' : float(datas[4+numberOfArcs*2+2 + (int(host.name)*4)]),
-        'impact' : float(datas[4+numberOfArcs*2+3 + (int(host.name)*4)])
-    })
     
-    # basic_at creates just one OR gate and puts all vulnerabilites
-    # the children nodes
-    host.lower_layer.basic_at([vulnerability1])
+    if int(host.name) is int(datas[2]):
+        #print(int(host.name))
+        continue
+    else:
+        print(int(host.name))
+        host.lower_layer = hm.AttackTree()
+        # We will make two vulnerabilities and give some metrics
+        vulnerability1 = hm.Vulnerability('CVE-0000', values = {
+            'risk' : float(datas[4+numberOfArcs*2 + (i*4)]),
+            'cost' : float(datas[4+numberOfArcs*2+1 + (i*4)]),
+            'probability' : float(datas[4+numberOfArcs*2+2 + (i*4)]),
+            'impact' : float(datas[4+numberOfArcs*2+3 + (i*4)])
+        })
+        
+        # basic_at creates just one OR gate and puts all vulnerabilites
+        # the children nodes
+        host.lower_layer.basic_at([vulnerability1])
+        i+=1
     
 
 
@@ -87,7 +95,7 @@ hosts[int(datas[2])] = hm.Attacker()
 #attacker = hm.Attacker() 
 
 
-for x in range (4, len(datas)-1-(4*numberOfNodes), 2):
+for x in range (4, len(datas)-1-(4*numberOfArcs), 2):
     print(int(datas[x]))
     print(int(datas[x+1]))
     h[0].add_edge(hosts[int(datas[x])], hosts[int(datas[x+1])])

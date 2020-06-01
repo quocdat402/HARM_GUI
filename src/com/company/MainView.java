@@ -3,11 +3,13 @@ package com.company;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 import javax.swing.undo.StateEditable;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
 import com.company.*;
+import com.sun.tools.javac.parser.ReferenceParser.ParseException;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class MainView extends JFrame {
     private JTextField txtVul;
     private JTextField txtRisk;
     private JTextField txtCost;
-    private JTextField txtProb;
+    private JFormattedTextField txtProb;
     private JTextField txtImpact;
     
     
@@ -240,23 +242,26 @@ public class MainView extends JFrame {
         txtCost.setBounds(100, 110, 40, 24);
         lblProb = new JLabel("Prob");
         lblProb.setBounds(20, 140, 80, 24);
-        txtProb = new JTextField();
+        txtProb = new JFormattedTextField(getMaskFormatter("0.##"));
         txtProb.setBounds(100, 140, 40, 24);
+        
+        
+        
         lblImpact = new JLabel("Impact");
         lblImpact.setBounds(20, 170, 80 , 24);
         txtImpact = new JTextField();
         txtImpact.setBounds(100, 170, 40, 24);
-        nodePanel.add(lblVul);
         
-        nodePanel.add(lblRisk);
-        nodePanel.add(txtRisk);
-        nodePanel.add(lblCost);
-        nodePanel.add(txtCost);
-        nodePanel.add(lblProb);
-        nodePanel.add(txtProb);
-        nodePanel.add(lblImpact);
-        nodePanel.add(txtImpact);
-        
+        arcPanel.add(lblVul);        
+        arcPanel.add(lblRisk);
+        arcPanel.add(txtRisk);
+        arcPanel.add(lblCost);
+        arcPanel.add(txtCost);
+        arcPanel.add(lblProb);
+        arcPanel.add(txtProb);
+        arcPanel.add(lblImpact);
+        arcPanel.add(txtImpact);
+        arcPanel.add(btnVul);
         
         
         btnName = new JButton("Okay");
@@ -265,17 +270,24 @@ public class MainView extends JFrame {
         nodePanel.add(txtName);
         nodePanel.add(btnName);
         
+        arcFrame.getContentPane().add(arcPanel);        
         nodeFrame.getContentPane().add(nodePanel);        
-        resultPanel = new JPanel();        
-        lblMetrics = new JLabel("---------------Analysis---------------\n");
-        //lblResults = new JLabel();
-        //txtResults = new JTextField();
-        resultPanel.add(lblMetrics);
-        //resultPanel.add(lblResults);
-        //resultPanel.add(txtResults);        
-        resultFrame.getContentPane().add(resultPanel);
         
         
+    }
+    
+    private MaskFormatter getMaskFormatter(String format) {
+    	
+    	MaskFormatter mask = null;
+    	try {
+    		mask = new MaskFormatter(format);
+    		mask.setPlaceholderCharacter('0');
+    	} catch (java.text.ParseException ex) {
+    		ex.printStackTrace();
+    	}
+    	
+    	return mask;
+    	
     }
     
     /**
@@ -517,10 +529,10 @@ public class MainView extends JFrame {
 	public void setTxtCost(JTextField txtCost) {
 		this.txtCost = txtCost;
 	}
-	public JTextField getTxtProb() {
+	public JFormattedTextField getTxtProb() {
 		return txtProb;
 	}
-	public void setTxtProb(JTextField txtProb) {
+	public void setTxtProb(JFormattedTextField txtProb) {
 		this.txtProb = txtProb;
 	}
 	public JLabel getLblMetrics() {

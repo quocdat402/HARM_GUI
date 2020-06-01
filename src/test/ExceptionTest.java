@@ -10,6 +10,7 @@ import org.junit.rules.ExpectedException;
 import com.company.MainController;
 import com.company.MainModel;
 import com.company.MainView;
+import com.company.Node;
 
 import adapters.ArcMouseAdapter;
 import adapters.NodeMouseAdapter;
@@ -30,6 +31,46 @@ public class ExceptionTest {
 		model = new MainModel();
 		controller = new MainController(model, view);
 		controller.initController();
+		
+	}
+	
+	@Test
+	public void analysisTest() {	
+		
+		MouseEvent e1 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 322, 122, 1, false);
+		MouseEvent e2 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 496, 248, 1, false);
+		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
+		MouseEvent e4 = new MouseEvent(view.getCenterPanel(), 502, 1, 16, 509, 254, 1, false);
+		
+		controller.setActivateNode(1);		
+		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
+		nodeMouseAdapter.mousePressed(e1);
+		nodeMouseAdapter.mousePressed(e2);
+		controller.setActivateNode(0);
+		
+		controller.setActivateArc(1);
+		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
+		arcMouseAdapter.mousePressed(e3);
+		arcMouseAdapter.mouseReleased(e4);
+		controller.setActivateArc(0);
+		
+		Node attacker = model.getNodes().get(0);
+		Node target = model.getNodes().get(1);
+		
+		exception.expect(IllegalArgumentException.class);
+		controller.attackGraphAction();
+		
+		attacker.setAttacker(true);
+		target.setTarget(true);	
+		
+		
+//		attacker.setRisk(5);
+//		attacker.setCost(5);
+//		attacker.setProbability(0.2);
+//		attacker.setImpact(5);
+		
+		exception.expect(IllegalArgumentException.class);
+		controller.attackGraphAction();
 		
 	}
 	

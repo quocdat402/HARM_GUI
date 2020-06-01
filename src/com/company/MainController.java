@@ -165,6 +165,12 @@ public class MainController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				view.getLblVul().setText("Vulnerability " + String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability() + 1));
+				view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
+				view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
+				view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
+				view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
 
 				view.getArcFrame().setVisible(true);
 
@@ -177,11 +183,7 @@ public class MainController {
 			public void actionPerformed(ActionEvent e) {
 
 				view.getTxtName().setText(model.getNodes().get(nodePropertyInt).getName());
-				view.getLblVul().setText("Vulnerability " + String.valueOf(model.getNodes().get(nodePropertyInt).getVulnerability() + 1));
-				view.getTxtCost().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getCost()));
-				view.getTxtRisk().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getRisk()));
-				view.getTxtImpact().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getImpact()));
-				view.getTxtProb().setText(String.valueOf(model.getNodes().get(nodePropertyInt).getProbability()));
+				
 				
 				view.getNodeFrame().setVisible(true);
 
@@ -194,22 +196,16 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 
-				if (view.getTxtName() == null) {
+				
 
-				} else {
-
-					model.getNodes().get(nodePropertyInt).setName(view.getTxtName().getText());
-					model.getNodes().get(nodePropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
-					model.getNodes().get(nodePropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
-					model.getNodes().get(nodePropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
-					model.getNodes().get(nodePropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
+					model.getNodes().get(arcPropertyInt).setName(view.getTxtName().getText());
 					view.getNodeFrame().setVisible(false);
 					
 					view.getCenterPanel().repaint();
 					
 					
 					
-				}
+				
 
 			}
 
@@ -220,12 +216,15 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 
-				if (view.getTxtVul() == null) {
-
-				} else {
+				
+					model.getArcs().get(arcPropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
+					model.getArcs().get(arcPropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
+					model.getArcs().get(arcPropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
+					model.getArcs().get(arcPropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
+					
 
 					view.getCenterPanel().repaint();
-				}
+				
 
 			}
 
@@ -474,7 +473,7 @@ public class MainController {
 	/**
 	 * Connect to the engine, send data and receive the result.
 	 */
-	private void attackGraphAction() {
+	public void attackGraphAction() {
 
 		boolean isAttacker = false;
 		boolean isTarget = false;
@@ -498,13 +497,20 @@ public class MainController {
 
 			}
 			
-			if((node.getCost() == 0.0) || (node.getImpact() == 0.0) || (node.getProbability() == 0.0) || (node.getRisk() == 0.0)) {
+			
+			
+
+		}
+		
+		for (Arc arc : model.getArcs()) {
+			
+			if((arc.getCost() == 0.0) || (arc.getImpact() == 0.0) || (arc.getProbability() == 0.0) || (arc.getRisk() == 0.0)) {
 				
 				isVul = false;
 				
 			}
 			
-
+			
 		}
 		
 		int port = -1;
@@ -522,9 +528,18 @@ public class MainController {
 		
 		if(isTarget && isAttacker && isVul) {
 			
+			String systemProperties = "-Dkey=value";
 			String[] command = {"python3", "example3.py",String.valueOf(port)};
-			try {
+			try {				
 				Process p = Runtime.getRuntime().exec(command);
+				InputStreamConsumerThread inputConsumer = 
+						new InputStreamConsumerThread(p.getInputStream(), true);
+				InputStreamConsumerThread errorConsumer =
+						new InputStreamConsumerThread(p.getErrorStream(), true);
+				
+				inputConsumer.start();
+				errorConsumer.start();
+				
 				TimeUnit.MILLISECONDS.sleep(700);
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -542,10 +557,15 @@ public class MainController {
 			for (int i = 0; i < model.getNodes().size(); i++) {
 				
 				if (model.getNodes().get(i).isAttacker()) {
-
+										
 					writer.println(model.getNodes().get(i).getNumber());
 
-				} else if (model.getNodes().get(i).isTarget()) {
+				} 
+			}
+			
+			for (int i = 0; i < model.getNodes().size(); i++) {
+				
+				if (model.getNodes().get(i).isTarget()) {
 
 					writer.println(model.getNodes().get(i).getNumber());
 
@@ -560,12 +580,12 @@ public class MainController {
 			
 			
 			
-			for (int i = 0; i < model.getNodes().size(); i++) {
+			for (int i = 0; i < model.getArcs().size(); i++) {
 				
-				writer.println(String.valueOf(model.getNodes().get(i).getRisk()));
-				writer.println(String.valueOf(model.getNodes().get(i).getCost()));
-				writer.println(String.valueOf(model.getNodes().get(i).getProbability()));
-				writer.println(String.valueOf(model.getNodes().get(i).getImpact()));
+				writer.println(String.valueOf(model.getArcs().get(i).getRisk()));
+				writer.println(String.valueOf(model.getArcs().get(i).getCost()));
+				writer.println(String.valueOf(model.getArcs().get(i).getProbability()));
+				writer.println(String.valueOf(model.getArcs().get(i).getImpact()));
 				
 			}
 
@@ -601,8 +621,8 @@ public class MainController {
 
 		for (String lineTemp : lines) {
 
-			JLabel labelTemp = new JLabel(lineTemp);
-			view.getResultPanel().add(labelTemp);
+			//JLabel labelTemp = new JLabel(lineTemp);
+			//view.getResultPanel().add(labelTemp);
 			
 			
 			ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
@@ -617,12 +637,14 @@ public class MainController {
 			
 			System.err.println("Attacker and target are not defined");
 			JOptionPane.showMessageDialog(null, "Attacker and target are not defined");
-		
+			throw new IllegalArgumentException("Attacker and target are not defined");
+			
 		} else if(!isVul) {
 			
 			System.err.println("Please set Vulnerabilities");
 			JOptionPane.showMessageDialog(null, "Please set Vulnerabilities");
-		
+			throw new IllegalArgumentException("Please set Vulnerabilities");
+			
 		}
 		
 
@@ -945,6 +967,14 @@ public class MainController {
 
 	public void setLines(List<String> lines) {
 		this.lines = lines;
+	}
+
+	public ResultView getResultView() {
+		return resultView;
+	}
+
+	public void setResultView(ResultView resultView) {
+		this.resultView = resultView;
 	}
 
 }

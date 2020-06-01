@@ -26,11 +26,19 @@ public class Arc implements Serializable {
 	private int endNode;
 	
 	private int number;
+	
+	private int vulnerability;
+	private double risk;
+	private double cost;
+	private double probability;
+	private double impact;
 
 	/**
 	 * Initialize all the information of Arc
 	 */
-	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, int number) {
+	public Arc(int x1, int y1, int x2, int y2, Color color, int initNode, int endNode, int number,
+			int vulnerability, 
+			double risk, double cost, double probability, double impact) {
 		super();
 		this.x1 = x1;
 		this.y1 = y1;
@@ -39,6 +47,11 @@ public class Arc implements Serializable {
 		this.color = color;
 		this.initNode = initNode;
 		this.endNode = endNode;
+		this.vulnerability = vulnerability;
+		this.risk = risk;
+		this.cost = cost;
+		this.probability = probability;
+		this.impact = impact;
 	}
 	
 	/**
@@ -130,6 +143,45 @@ public class Arc implements Serializable {
 		this.number = number;
 	}
 
+	public int getVulnerability() {
+		return vulnerability;
+	}
+
+	public void setVulnerability(int vulnerability) {
+		this.vulnerability = vulnerability;
+	}
+
+	public double getRisk() {
+		return risk;
+	}
+
+	public void setRisk(double risk) {
+		this.risk = risk;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public double getProbability() {
+		return probability;
+	}
+
+	public void setProbability(double probability) {
+		this.probability = probability;
+	}
+
+	public double getImpact() {
+		return impact;
+	}
+
+	public void setImpact(double impact) {
+		this.impact = impact;
+	}
 	
 
 }

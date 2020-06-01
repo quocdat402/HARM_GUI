@@ -67,7 +67,7 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 						/*
 						 * Create a temporary arc for undo and redo function
 						 */
-						arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, controller.getArcNumber());
+						arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, controller.getArcNumber(),controller.getArcNumber(), 0, 0, 0, 0);
 						model.getArcs().add(arcTemp);
 					}
 				}
@@ -150,7 +150,7 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 							/*
 							 * Create a new arc
 							 */
-							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, controller.getArcNumber());
+							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, controller.getArcNumber(),controller.getArcNumber(), 0, 0, 0, 0);
 							model.getArcs().add(arc);
 							view.getCenterPanel().repaint();
 							controller.setArcNumber(controller.getArcNumber() + 1);

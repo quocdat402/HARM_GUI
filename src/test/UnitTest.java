@@ -65,9 +65,9 @@ public class UnitTest {
 		controller.clearAllInfo();
 		
 		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
-				false,0,0,0,0,0);
+				false);
 		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
-				false,0,0,0,0,0);
+				false);
 		
 		model.getNodes().add(node1);
 		model.getNodes().add(node2);
@@ -90,12 +90,12 @@ public class UnitTest {
 		controller.clearAllInfo();
 		
 		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
-				false, 0, 0, 0, 0, 0);
+				false);
 		
 		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
-				false, 0, 0, 0, 0, 0);
+				false);
 		
-		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1);
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 0, 0, 0, 0);
 		model.getArcs().add(arc);
 		
 		assertEquals(node1.getNumber(), arc.getInitNode());
@@ -112,7 +112,7 @@ public class UnitTest {
 		controller.initController();
 		
 		Node node = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
-				false, 0, 0, 0, 0, 0); 
+				false); 
 		
 		model.getNodes().add(node);
 		assertEquals(500, node.getX());
@@ -131,7 +131,7 @@ public class UnitTest {
 		controller = new MainController(model, view);
 		controller.initController();
 		
-		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1);
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 0, 0, 0, 0);
 		model.getArcs().add(arc);
 		
 		assertEquals(1, arc.getX1());

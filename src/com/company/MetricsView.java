@@ -63,7 +63,6 @@ public class MetricsView extends JFrame {
 	private JPanel panel;
 	private JButton btnImpact;
 
-	private MetricsController controller;
 	private JTextPane textPane;
 	private JList list;
 
@@ -73,7 +72,6 @@ public class MetricsView extends JFrame {
 	public MetricsView(MainModel m) {
 
 		this.model = m;
-		controller = new MetricsController(model, this);
 
 		nodeNames = new ArrayList<String>();
 
@@ -197,93 +195,94 @@ public class MetricsView extends JFrame {
 		panel.setBounds(0, 112, 242, 33);
 		contentPane.add(panel);
 
-		btnRisk = new JButton("Check Arcs");
+		btnRisk = new JButton("Risk");
 		btnRisk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				// table.setValueAt("A",0,0);
 
 				for (Arc arc : model.getArcs()) {
-
-					table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
+					
+					table.setValueAt(arc.getRisk(), arc.getInitNode(), arc.getEndNode());
+					//table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
 
 				}
 			}
 		});
 		panel.add(btnRisk);
 
-//		JPanel NodeInfo = new JPanel();
-//		NodeInfo.setBounds(0, 199, 242, 125);
-//		contentPane.add(NodeInfo);
-//		NodeInfo.setLayout(null);
-//
-//		textPane = new JTextPane();
-//		textPane.setBounds(71, 3, 159, 118);
-//		NodeInfo.add(textPane);
-//
-//		ArrayList<String> nodes = new ArrayList<String>();
-//		for (Node node : model.getNodes()) {
-//
-//			nodes.add(node.getName());
-//
-//		}
-//		JScrollPane scrollPane = new JScrollPane();
-//		scrollPane.setLocation(2, 3);
-//		scrollPane.setSize(65, 118);
-//
-//		NodeInfo.add(scrollPane);
-//
-//		list = new JList(nodes.toArray());
-//		list.setBounds(12, 5, 50, 110);
-//
-//
-//		scrollPane.setViewportView(list);
-		// NodeInfo.add(list);
+		JPanel NodeInfo = new JPanel();
+		NodeInfo.setBounds(0, 199, 242, 125);
+		contentPane.add(NodeInfo);
+		NodeInfo.setLayout(null);
 
-//		btnCost = new JButton("Cost");
-//		btnCost.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				for(Arc arc: model.getArcs()) {
-//					
-//					table.setValueAt(arc.getCost(), arc.getInitNode(), arc.getEndNode());
-//					
-//				}
-//			}
-//		});
-//		panel.add(btnCost);
-//		
-//		btnProb = new JButton("Probability");
-//		btnProb.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//			
-//				for(Arc arc: model.getArcs()) {
-//					
-//					table.setValueAt(arc.getProbability(), arc.getInitNode(), arc.getEndNode());
-//					
-//				}
-//			
-//			}
-//		});
-//		panel.add(btnProb);
-//		
-//		btnImpact = new JButton("Impact");
-//		btnImpact.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				for(Arc arc: model.getArcs()) {
-//					
-//					table.setValueAt(arc.getImpact(), arc.getInitNode(), arc.getEndNode());
-//					
-//				}
-//				
-//			}
-//		});
-//		panel.add(btnImpact);
-//		
-//		this.pack();
-//		this.setLocation(150, 150);
-//		this.setVisible(true);
+		textPane = new JTextPane();
+		textPane.setBounds(71, 3, 159, 118);
+		NodeInfo.add(textPane);
+
+		ArrayList<String> nodes = new ArrayList<String>();
+		for (Node node : model.getNodes()) {
+
+			nodes.add(node.getName());
+
+		}
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setLocation(2, 3);
+		scrollPane.setSize(65, 118);
+
+		NodeInfo.add(scrollPane);
+
+		list = new JList(nodes.toArray());
+		list.setBounds(12, 5, 50, 110);
+
+
+		scrollPane.setViewportView(list);
+		NodeInfo.add(list);
+
+		btnCost = new JButton("Cost");
+		btnCost.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				for(Arc arc: model.getArcs()) {
+					
+					table.setValueAt(arc.getCost(), arc.getInitNode(), arc.getEndNode());
+					
+				}
+			}
+		});
+		panel.add(btnCost);
+		
+		btnProb = new JButton("Probability");
+		btnProb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				for(Arc arc: model.getArcs()) {
+					
+					table.setValueAt(arc.getProbability(), arc.getInitNode(), arc.getEndNode());
+					
+				}
+			
+			}
+		});
+		panel.add(btnProb);
+		
+		btnImpact = new JButton("Impact");
+		btnImpact.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				for(Arc arc: model.getArcs()) {
+					
+					table.setValueAt(arc.getImpact(), arc.getInitNode(), arc.getEndNode());
+					
+				}
+				
+			}
+		});
+		panel.add(btnImpact);
+		
+		this.pack();
+		this.setLocation(150, 150);
+		this.setVisible(true);
 	}
 
 	public JButton getBtnRisk() {

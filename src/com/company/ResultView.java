@@ -91,9 +91,9 @@ public class ResultView extends JFrame {
 						
 						textPane.setText("");
 						
-						for(Node node: model.getNodes()) {
+						for(Arc arc: model.getArcs()) {
 							
-							textPane.setText(textPane.getText() + "\n" + "Node " + node.getNumber() + " Risk: " + node.getRisk());
+							textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Risk: " + arc.getRisk());
 							
 						}
 						
@@ -107,9 +107,9 @@ public class ResultView extends JFrame {
 						
 						
 						
-						for(Node node: model.getNodes()) {
+						for(Arc arc: model.getArcs()) {
 							
-							textPane.setText(textPane.getText() + "\n" + "Node " + node.getNumber() + " Cost: " + node.getCost());
+							textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Cost: " + arc.getCost());
 							
 						}
 						
@@ -130,9 +130,9 @@ public class ResultView extends JFrame {
 						
 						textPane.setText("");
 						
-						for(Node node: model.getNodes()) {
+						for(Arc arc: model.getArcs()) {
 							
-							textPane.setText(textPane.getText() + "\n" + "Node " + node.getNumber() + " Probability: " + node.getProbability());
+							textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Probability: " + arc.getProbability());
 							
 						}
 						
