@@ -16,6 +16,12 @@ Graphical User Interface for HARMs
 -	Save and load data
 -	Analayze data
 
+## Usage Examples
+- Analysis
+![Analysis](./img/analysis.png)
+- Metrics
+![Metrics](./img/metrics.png)
+
 ## Installation
 ### If you don't want to install JDK<br />
 1. Install HARMs Engine at https://github.com/whistlebee/harmat<br />
