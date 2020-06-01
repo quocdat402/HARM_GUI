@@ -17,9 +17,9 @@ Graphical User Interface for HARMs
 -	Analayze data
 
 ## Usage Examples
-- Analysis
+- Analysis<br />
 ![Analysis](./img/analysis.png)
-- Metrics
+- Metrics<br />
 ![Metrics](./img/metrics.png)
 
 ## Installation
