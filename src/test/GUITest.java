@@ -12,6 +12,8 @@ import org.junit.Test;
 import com.company.MainController;
 import com.company.MainModel;
 import com.company.MainView;
+import com.company.MetricsView;
+import com.company.ResultView;
 
 
 
@@ -23,8 +25,6 @@ public class GUITest {
 	private MainController controller;
 	
 	private FrameFixture MainWindow;
-	private FrameFixture Resultwindow;
-	private FrameFixture Metricswindow;
 	
 	//limitation
 	@BeforeClass
@@ -35,24 +35,21 @@ public class GUITest {
 	@Before
 	public void setUpTest() {
 		
-		//view = new MainView(model);
-		
 		model = GuiActionRunner.execute(() -> new MainModel());
 		view = GuiActionRunner.execute(() -> new MainView(model));
-		controller = GuiActionRunner.execute(() -> new MainController(model, view));
-		
-		//controller = new MainController(model, view);
-		//controller.initController();
-		
-		MainWindow = new FrameFixture(view);
+		controller = GuiActionRunner.execute(() -> new MainController(model, view));		
+		MainWindow = new FrameFixture(view);		
 		MainWindow.show();
-		
-		
 	
 	}
 	
+	/*
+	 * Test that GUI functions work as expected
+	 */
 	@Test
-	public void clickButtonTest() {
+	public void MainViewTest() {		
+		
+		MainWindow.button("ClearButton").click();
 		
 		MainWindow.button("NodeButton").click();
 		MainWindow.panel("centerPanel").click();

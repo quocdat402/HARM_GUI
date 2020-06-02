@@ -24,8 +24,17 @@ public class ResultView extends JFrame {
 	private MainModel model;
 	private MainController controller;
 	
+	String Risk = new String();
+	String Cost = new String();
+	String Mean = new String();
+	String Mode = new String();
+	String Shortest = new String();
+	String Standard = new String();
+	String Prob = new String();
+	
+	
 	/**
-	 * Create the frame.
+	 * Create the Resut frame.
 	 */
 	public ResultView(MainModel m, MainController c) {
 		
@@ -40,6 +49,7 @@ public class ResultView extends JFrame {
 		contentPane.setLayout(null);
 		
 		list = new JList();
+		
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -48,14 +58,8 @@ public class ResultView extends JFrame {
 				if(e.getClickCount() == 2) {
 					
 					int index = list.locationToIndex(e.getPoint());
-					String Risk = new String();
-					String Cost = new String();
-					String Mean = new String();
-					String Mode = new String();
-					String Shortest = new String();
-					String Standard = new String();
-					String Prob = new String();
 					
+					//Divide out put lines from the HARMs engine by Items(risk, cost, mean, mode...)
 					for (String lineTemp : controller.getLines()) {
 						if(lineTemp.startsWith("Risk")) {
 							
@@ -81,83 +85,21 @@ public class ResultView extends JFrame {
 							
 							Standard = lineTemp.split(": ")[1];
 							
+						} else if(lineTemp.startsWith("Probability")) {
+							
+							Prob = lineTemp.split(": ")[1];
+							
 						}
 					}
 					
-					switch(index) {
-					
-					
-					case 0:
-						
-						textPane.setText("");
-						
-						for(Arc arc: model.getArcs()) {
-							
-							textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Risk: " + arc.getRisk());
-							
-						}
-						
-						textPane.setText(textPane.getText() + "\n" + "Total Risk: " + Risk);
-						
-						
-						break;					
-					case 1:
-						
-						textPane.setText("");
-						
-						
-						
-						for(Arc arc: model.getArcs()) {
-							
-							textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Cost: " + arc.getCost());
-							
-						}
-						
-						textPane.setText(textPane.getText() + "\n" + "Total Cost: " + Cost);
-						
-						break;
-					case 2:
-						
-						textPane.setText("");
-						textPane.setText(textPane.getText() + "\n" + "Mean of attack path lengths: " + Mean);
-						textPane.setText(textPane.getText() + "\n" + "Mode of attack path lengths: " + Mode);
-						textPane.setText(textPane.getText() + "\n" + "Shortest attack path length: " + Shortest);
-						textPane.setText(textPane.getText() + "\n" + "Standard Deviaton of attack path length: " + Standard);
-						
-						break;			
-				
-					case 3:
-						
-						textPane.setText("");
-						
-						for(Arc arc: model.getArcs()) {
-							
-							textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Probability: " + arc.getProbability());
-							
-						}
-						
-						textPane.setText(textPane.getText() + "\n" + "Probability of Attack Success: " + Prob);
-						
-						
-						break;
-							
-					case 4:
-						
-						textPane.setText("");
-						for (String lineTemp : controller.getLines()) {
-
-						
-							ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
-
-						}
-						break;
-					}
+					listClickAction(index);
 					
 				}
 				
 				
 			}
 		});
+		//Add menus in the list
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Risk", "Cost", "Attack lengths", "Probability", "All Results"};
 			public int getSize() {
@@ -180,6 +122,81 @@ public class ResultView extends JFrame {
 		contentPane.add(textPane);
 	}
 
+	//When the user double click item in the list, the textPane shows related outputs.
+	public void listClickAction(int index) {
+		
+		switch(index) {					
+		
+		case 0:
+			
+			textPane.setText("");
+			
+			for(Arc arc: model.getArcs()) {
+				
+				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Risk: " + arc.getRisk());
+				
+			}
+			
+			textPane.setText(textPane.getText() + "\n" + "Total Risk: " + Risk);
+			
+			break;					
+		case 1:
+			
+			textPane.setText("");			
+			
+			for(Arc arc: model.getArcs()) {
+				
+				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Cost: " + arc.getCost());
+				
+			}
+			
+			textPane.setText(textPane.getText() + "\n" + "Total Cost: " + Cost);
+			
+			break;
+		case 2:
+			
+			textPane.setText("");
+			textPane.setText(textPane.getText() + "\n" + "Mean of attack path lengths: " + Mean);
+			textPane.setText(textPane.getText() + "\n" + "Mode of attack path lengths: " + Mode);
+			textPane.setText(textPane.getText() + "\n" + "Shortest attack path length: " + Shortest);
+			textPane.setText(textPane.getText() + "\n" + "Standard Deviaton of attack path length: " + Standard);
+			
+			break;			
+	
+		case 3:
+			
+			textPane.setText("");
+			
+			for(Arc arc: model.getArcs()) {
+				
+				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Probability: " + arc.getProbability());
+				
+			}
+			
+			textPane.setText(textPane.getText() + "\n" + "Probability of Attack Success: " + Prob);
+			
+			
+			break;
+				
+		case 4:
+			
+			textPane.setText("");
+			
+			for (String lineTemp : controller.getLines()) {
+			
+				ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
+
+			}
+			
+			break;
+		}
+		
+		
+	}
+	
+	/*
+	 * Getters and Setters
+	 */
 	public static JTextPane getTextPane() {
 		return textPane;
 	}

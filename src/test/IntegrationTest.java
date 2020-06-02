@@ -16,6 +16,7 @@ import adapters.NodeMouseAdapter;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
@@ -36,8 +37,14 @@ public class IntegrationTest {
 		
 	}
 	
+	
+	/*
+	 * Test all the functions in metrics frame.
+	 */
 	@Test
-	public void metricsTest() {
+	public void metricsFrameTest() {
+		
+		controller.clearAllInfo();
 		
 		MouseEvent e1 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 322, 122, 1, false);
 		MouseEvent e2 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 496, 248, 1, false);
@@ -92,8 +99,14 @@ public class IntegrationTest {
 		
 	}
 	
+	/*
+	 * Test analysis of attack graph returns right output 
+	 * and all the functions in ResultView return right value.
+	 */
 	@Test
 	public void analysisTest() {	
+		
+		controller.clearAllInfo();
 		
 		MouseEvent e1 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 322, 122, 1, false);
 		MouseEvent e2 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 496, 248, 1, false);
@@ -123,7 +136,9 @@ public class IntegrationTest {
 		arc.setProbability(0.2);
 		arc.setImpact(5);
 		
-		controller.attackGraphAction();
+		controller.setPort(controller.availablePort(controller.getPort()));
+		controller.openServer();
+		controller.openClient();
 		
 		assertEquals("\n" 
 				+ "Number of hosts: 2" + "\n"
@@ -136,9 +151,11 @@ public class IntegrationTest {
 				+ "Probability of attack success: 0.19999999999999996" + "\n"
 				+ "Standard Deviation of attack path lengths: 0", ResultView.getTextPane().getText());
 		
-		
 	}
 	
+	/*
+	 * Test multiple undo and redo functions
+	 */
 	@Test
 	public void testMultipleUndoRedo1() {
 		
@@ -185,6 +202,9 @@ public class IntegrationTest {
 		
 	}
 	
+	/*
+	 * Test signle redo and undo function
+	 */
 	@Test
 	public void testSimpleUndoRedo1() {
 		
@@ -206,6 +226,9 @@ public class IntegrationTest {
 		
 	}
 	
+	/*
+	 * Test "Clear All" functions
+	 */
 	@Test
 	public void testClearAll() {
 		controller.clearAllInfo();
@@ -235,6 +258,9 @@ public class IntegrationTest {
 		
 	}
 	
+	/*
+	 * Test moving nodes function with MouseAdapters
+	 */
 	@Test
 	public void testMoveNodes() {
 		
@@ -261,8 +287,9 @@ public class IntegrationTest {
 		
 	}
 	
-	
-	
+	/*
+	 * Test deleting nodes and arcs function with MouseAdapters
+	 */
 	@Test
 	public void testDeleteNodesandArcs() {
 		
@@ -294,6 +321,9 @@ public class IntegrationTest {
 		assertEquals(0, model.getArcs().size());
 	}
 	
+	/*
+	 * Test deleting nodes function with MouseAdapters
+	 */
 	@Test
 	public void testDeleteNodes() {
 		
@@ -315,6 +345,9 @@ public class IntegrationTest {
 		
 	}
 	
+	/*
+	 * Test adding nodes function with MouseAdapters
+	 */
 	@Test
 	public void testNodeMouseAdapter() {
 		
@@ -334,6 +367,9 @@ public class IntegrationTest {
 		
 	}
 	
+	/*
+	 * Test adding arcs function with MouseAdapters
+	 */
 	@Test
 	public void testArcMouseAdapter() {
 		
@@ -359,5 +395,27 @@ public class IntegrationTest {
 		assertEquals(0, model.getArcs().get(0).getNumber());
 		assertEquals(0, model.getArcs().get(0).getInitNode());
 		assertEquals(1, model.getArcs().get(0).getEndNode());
+	}
+	
+	/*
+	 * Test adding arc between two nodes
+	 */
+	@Test
+	public void testArcBetweenNodes() {
+				
+		controller.clearAllInfo();
+		
+		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
+				false);
+		
+		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
+				false);
+		
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 0, 0, 0, 0);
+		model.getArcs().add(arc);
+		
+		assertEquals(node1.getNumber(), arc.getInitNode());
+		assertEquals(node2.getNumber(), arc.getEndNode());
+		
 	}
 }

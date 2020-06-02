@@ -21,14 +21,18 @@ public class InputStreamConsumerThread extends Thread
     this.sysout=sysout;
   }
 
+  /*
+   * Start reading from the output and print them in the eclipse System
+   */
   public void run()
   {
-    try(BufferedReader br = new BufferedReader(new InputStreamReader(is)))
-    {
-      for (String line = br.readLine(); line != null; line = br.readLine())
-      {
-        if (sysout)
-          System.out.println(line);    
+	  
+    try(BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+    	
+      for(String line = br.readLine(); line != null; line = br.readLine()) {
+        if (sysout) {
+          System.out.println(line);   
+        }
         output.append(line).append("\n");
       }
     } catch (IOException e) {
@@ -36,7 +40,9 @@ public class InputStreamConsumerThread extends Thread
 		e.printStackTrace();
 	}
   }
-  public String getOutput(){
+  public String getOutput() {
+	  
     return output.toString();
+    
   }
 }

@@ -1,9 +1,14 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +27,7 @@ public class UnitTest {
 	private MainView view;
 	private MainModel model;
 	private MainController controller;
+	private boolean isConnected;
 	
 	@Before
 	public void setUpTest() {
@@ -33,6 +39,69 @@ public class UnitTest {
 		
 	}
 	
+	/*
+	 * Test that server works
+	 */
+	@Test
+	public void connectionTest() {
+		
+		MouseEvent e1 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 322, 122, 1, false);
+		MouseEvent e2 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 496, 248, 1, false);
+		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
+		MouseEvent e4 = new MouseEvent(view.getCenterPanel(), 502, 1, 16, 509, 254, 1, false);
+		
+		controller.setActivateNode(1);		
+		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
+		nodeMouseAdapter.mousePressed(e1);
+		nodeMouseAdapter.mousePressed(e2);
+		controller.setActivateNode(0);
+		
+		controller.setActivateArc(1);
+		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
+		arcMouseAdapter.mousePressed(e3);
+		arcMouseAdapter.mouseReleased(e4);
+		controller.setActivateArc(0);
+		
+		Node attacker = model.getNodes().get(0);
+		Node target = model.getNodes().get(1);
+		attacker.setAttacker(true);
+		target.setTarget(true);	
+		
+		Arc arc = model.getArcs().get(0);
+		
+		arc.setRisk(5);
+		arc.setCost(5);
+		arc.setProbability(0.2);
+		arc.setImpact(5);
+		
+		controller.setPort(controller.availablePort(controller.getPort()));
+		controller.openServer();
+	
+		isConnected = false;
+		
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e11) {
+			e11.printStackTrace();
+		}
+		try {
+			Socket socket = new Socket("localhost", controller.getPort());
+			isConnected = true;
+			socket.close();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		
+		assertTrue(isConnected);
+				
+	}
+	
+	
+	/*
+	 * Test activate methods in MainController class
+	 */
 	@Test
 	public void activateMethodTest() {
 		
@@ -59,6 +128,9 @@ public class UnitTest {
 		controller.setActivateNode(0);
 	}
 	
+	/*
+	 * Test to set attacker and target
+	 */
 	@Test
 	public void testAttakerTargetSetting() {
 				
@@ -84,25 +156,12 @@ public class UnitTest {
 		
 	}
 	
-	@Test
-	public void testArcBetweenNodes() {
-				
-		controller.clearAllInfo();
-		
-		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
-				false);
-		
-		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
-				false);
-		
-		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 0, 0, 0, 0);
-		model.getArcs().add(arc);
-		
-		assertEquals(node1.getNumber(), arc.getInitNode());
-		assertEquals(node2.getNumber(), arc.getEndNode());
-		
-	}
 	
+	
+	
+	/*
+	 * Test add a single node and check all the values on it.
+	 */
 	@Test
 	public void testAddNode() {
 		
@@ -123,6 +182,9 @@ public class UnitTest {
 		assertEquals(0, node.getNumber());
 	}
 	
+	/*
+	 * Test add a single arc and check all the values on it.
+	 */
 	@Test
 	public void testAddArc() {
 		

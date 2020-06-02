@@ -3,16 +3,17 @@ import socket
 import sys
 
 def main():
-    
+
+    #Open a server to communicate with GUI
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(("localhost", int(sys.argv[1])))
-    #s.bind(("localhost", 5022))
     s.listen(1)
     end = "c"
     conn, addr = s.accept()
 
     datas=[];
+    #Receive data from the Cient
     while 1:
         data = conn.recv(1024)
         #conn.sendall(data)
@@ -21,46 +22,23 @@ def main():
         if end in data.decode('utf-8'):
             break    
 
-    #print(data.decode('utf-8'))
+    #print(datas)
 
-    #dData = data.decode('utf-8').rstrip('\n')
-
-
-
-    #if len(datas[0]) > 3:
-    #    print("error");
-    #    datas2 = datas[0].splitlines();
-    #    del datas[0]
-    #    datas = datas2 + datas
-
-    print(datas)
-
-
+    #Set variables
     numberOfNodes = int(datas[0])
     numberOfArcs = int(datas[1])
-
-
-
-    #numberOfArcs = int(dData[2])
-    print(numberOfNodes)
-    #for x in range (4, 4+numberOfArcs*2, 3):
-    #    print(dData[x])
-    #    print(dData[x+1])
-
-
-
+   
     # initialise the harm
     h = hm.Harm()
 
     # create the top layer of the harm
     # top_layer refers to the top layer of the harm
     h.top_layer = hm.AttackGraph()
-    print(float(datas[4+numberOfNodes*2]))
+    #print(float(datas[4+numberOfNodes*2]))
 
-    # we will create 5 nodes and connect them in some way
-    # first we create some nodes
+    #Create nodes
     hosts = [hm.Host(str(i)) for i in range(numberOfNodes)]
-    # then we will make a basic attack tree for each
+    #Make basic attack tree on each node
     i = 0
     for host in hosts:
         
@@ -68,7 +46,7 @@ def main():
             continue
         else:        
             host.lower_layer = hm.AttackTree()
-            # We will make two vulnerabilities and give some metrics
+            #Make a vulnerability with some metrics
             vulnerability1 = hm.Vulnerability('CVE-0000', values = {
                 'risk' : float(datas[4+numberOfArcs*2 + (i*4)]),
                 'cost' : float(datas[4+numberOfArcs*2+1 + (i*4)]),
@@ -76,52 +54,30 @@ def main():
                 'impact' : float(datas[4+numberOfArcs*2+3 + (i*4)])
             })
             
-            # basic_at creates just one OR gate and puts all vulnerabilites
-            # the children nodes
             host.lower_layer.basic_at([vulnerability1])
             i+=1
         
 
-
+    #Set a attacker
     hosts[int(datas[2])] = hm.Attacker()
 
-    # Now we will create an Attacker. This is not a physical node but it exists to describe
-    # the potential entry points of attackers.
-    #attacker = hm.Attacker() 
-
-
+    #Add Arcs between nodes based on the data from the Client
     for x in range (4, len(datas)-1-(4*numberOfArcs), 2):
-        print(int(datas[x]))
-        print(int(datas[x+1]))
+        #print(int(datas[x]))
+        #print(int(datas[x+1]))
         h[0].add_edge(hosts[int(datas[x])], hosts[int(datas[x+1])])
-        
-    # To add edges we simply use the add_edge function
-    # here h[0] refers to the top layer
-    # add_edge(A,B) creates a uni-directional from A -> B.
-    # h[0].add_edge(attacker, hosts[0]) 
-    # h[0].add_edge(hosts[0], hosts[3])
-    # h[0].add_edge(hosts[1], hosts[0])
-    # h[0].add_edge(hosts[0], hosts[2])
-    # h[0].add_edge(hosts[3], hosts[2])
-
-    # Now we set the attacker and target
+   
+    #Set the attacker and target
     h[0].source = hosts[int(datas[2])]
     h[0].target = hosts[int(datas[3])]
 
-    # do some flow up
+    #Flow up
     h.flowup()
 
-    # Now we will run some metrics
+    #Run some metrics
     hm.HarmSummary(h).show()
 
-    #result = h.bayesian_method()
-    #print(result['total'])
-
-
-    #client_socket.send(("Number of hosts: " + str(numberOfNodes) + "\n").encode('utf-8'))
-
-    #client_socket.send(cedit)
-
+    #Send analysis to the Client
     a = "Number of hosts: " + str(numberOfNodes) + "\n"
     abytes = a.encode('utf-8')
     conn.send(abytes)
@@ -145,9 +101,7 @@ def main():
     e = "Shortest attack path length: " + str(h[0].shortest_path_length()) + "\n"
     ebytes = e.encode('utf-8')
     conn.send(ebytes)
-
-
-
+    
     f = "Return of Attack: " + str(h[0].return_on_attack()) + "\n"
     fbytes = f.encode('utf-8')
     conn.send(fbytes)
@@ -159,15 +113,6 @@ def main():
     h = "Standard Deviation of attack path lengths: " + str(h[0].stdev_path_length()) + "\n"
     hbytes = h.encode('utf-8')
     conn.send(hbytes)
-
-    #conn.send("Cost: " + str(h.cost) + "\n")
-    #conn.send("Mean of attack path lengths: " + str(h[0].mean_path_length()) + "\n")
-    #conn.send("Mode of attack path lengths: " + str(h[0].mode_path_length()) + "\n")
-    #conn.send("Shortest attack path length: " + str(h[0].shortest_path_length()) + "\n")
-    #conn.send("Return of Attack: " + str(h[0].return_on_attack()) + "\n")
-    #conn.send("Probability of attack success: " + str(h[0].probability_attack_success()) + "\n")
-
-
 
     conn.close()
     s.close();

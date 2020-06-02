@@ -242,9 +242,7 @@ public class MainView extends JFrame {
         lblProb = new JLabel("Prob");
         lblProb.setBounds(20, 140, 80, 24);
         txtProb = new JFormattedTextField(getMaskFormatter("0.##"));
-        txtProb.setBounds(100, 140, 40, 24);
-        
-        
+        txtProb.setBounds(100, 140, 40, 24);        
         
         lblImpact = new JLabel("Impact");
         lblImpact.setBounds(20, 170, 80 , 24);
@@ -263,7 +261,7 @@ public class MainView extends JFrame {
         arcPanel.add(txtImpact);
         arcPanel.add(btnVul);
         
-        
+        /*Node pop-up menu*/
         btnName = new JButton("Okay");
         btnName.setBounds(100,200,80,24);
         nodePanel.add(lblName);
@@ -276,6 +274,9 @@ public class MainView extends JFrame {
         
     }
     
+    /**
+     * Set the format of Text in JTextfield
+     */
     private MaskFormatter getMaskFormatter(String format) {
     	
     	MaskFormatter mask = null;
