@@ -18,6 +18,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.event.MouseEvent;
 
+import javax.swing.JTable;
+
 public class IntegrationTest {
 	
 	private MainView view;
@@ -31,6 +33,58 @@ public class IntegrationTest {
 		model = new MainModel();
 		controller = new MainController(model, view);
 		controller.initController();
+		
+	}
+	
+	@Test
+	public void metricsTest() {
+		
+		MouseEvent e1 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 322, 122, 1, false);
+		MouseEvent e2 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 496, 248, 1, false);
+		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
+		MouseEvent e4 = new MouseEvent(view.getCenterPanel(), 502, 1, 16, 509, 254, 1, false);
+		
+		controller.setActivateNode(1);		
+		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
+		nodeMouseAdapter.mousePressed(e1);
+		nodeMouseAdapter.mousePressed(e2);
+		controller.setActivateNode(0);
+		
+		controller.setActivateArc(1);
+		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
+		arcMouseAdapter.mousePressed(e3);
+		arcMouseAdapter.mouseReleased(e4);
+		controller.setActivateArc(0);
+		
+		controller.metricsAction();
+		controller.getMetricsView().setVisible(false);
+		JTable table = controller.getMetricsView().getTable();
+		
+		int rowCount = table.getRowCount();
+		
+		assertEquals(2, rowCount);
+		
+		Arc arc = model.getArcs().get(0);
+		arc.setRisk(5);
+		arc.setCost(4);
+		arc.setProbability(0.2);
+		arc.setImpact(3);
+		
+		controller.getMetricsView().riskAction();
+		double risk = (double) table.getValueAt(arc.getInitNode(), arc.getEndNode());
+		assertEquals(5, (int)risk);
+		
+		controller.getMetricsView().costAction();
+		double cost = (double) table.getValueAt(arc.getInitNode(), arc.getEndNode());
+		assertEquals(4, (int)cost);
+		
+		controller.getMetricsView().probAction();
+		double prob = (double) table.getValueAt(arc.getInitNode(), arc.getEndNode());
+		assertEquals(0.2, prob, 0.01);
+		
+		controller.getMetricsView().impactAction();
+		double impact = (double) table.getValueAt(arc.getInitNode(), arc.getEndNode());
+		assertEquals(3, (int)impact);
 		
 	}
 	

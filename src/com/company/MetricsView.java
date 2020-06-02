@@ -1,25 +1,19 @@
 package com.company;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.RowSorterEvent;
@@ -32,13 +26,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.Action;
-import javax.swing.JTextPane;
-import javax.swing.JList;
 
 public class MetricsView extends JFrame {
 
@@ -50,7 +37,6 @@ public class MetricsView extends JFrame {
 	private JScrollPane scrollPane;
 	private MainModel model;
 	private JTable table;
-	private DefaultTableModel mainModel;
 	private DefaultTableModel tableModel;
 	private TableRowSorter<TableModel> sorter;
 	private JTable headerTable;
@@ -62,7 +48,6 @@ public class MetricsView extends JFrame {
 	private JButton btnProb;
 	private JPanel panel;
 	private JButton btnImpact;
-	private JList list;
 	private JButton btnConnection;
 
 	/**
@@ -195,93 +180,75 @@ public class MetricsView extends JFrame {
 		contentPane.add(panel);
 		
 		btnConnection = new JButton("Connection");
-		btnConnection.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				for (Arc arc : model.getArcs()) {
-					
-					table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
-
-				}
-			}
-		});
+		btnConnection.addActionListener(e->connectionAction());
 		panel.add(btnConnection);
 
 		btnRisk = new JButton("Risk");
-		btnRisk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				// table.setValueAt("A",0,0);
-
-				for (Arc arc : model.getArcs()) {
-					
-					table.setValueAt(arc.getRisk(), arc.getInitNode(), arc.getEndNode());
-					//table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
-
-				}
-			}
-		});
-		
-		
+		btnRisk.addActionListener(e->riskAction());
 		panel.add(btnRisk);
-
-		ArrayList<String> nodes = new ArrayList<String>();
-		for (Node node : model.getNodes()) {
-
-			nodes.add(node.getName());
-
-		}
-
-//		list = new JList(nodes.toArray());
-//		list.setBounds(12, 5, 50, 110);
-//
-//
-		//scrollPane.setViewportView(list);
-
+		
 		btnCost = new JButton("Cost");
-		btnCost.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				for(Arc arc: model.getArcs()) {
-					
-					table.setValueAt(arc.getCost(), arc.getInitNode(), arc.getEndNode());
-					
-				}
-			}
-		});
+		btnCost.addActionListener(e->costAction());
 		panel.add(btnCost);
 		
 		btnProb = new JButton("Probability");
-		btnProb.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			
-				for(Arc arc: model.getArcs()) {
-					
-					table.setValueAt(arc.getProbability(), arc.getInitNode(), arc.getEndNode());
-					
-				}
-			
-			}
-		});
+		btnProb.addActionListener(e->probAction());
 		panel.add(btnProb);
 		
 		btnImpact = new JButton("Impact");
-		btnImpact.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				for(Arc arc: model.getArcs()) {
-					
-					table.setValueAt(arc.getImpact(), arc.getInitNode(), arc.getEndNode());
-					
-				}
-				
-			}
-		});
+		btnImpact.addActionListener(e->impactAction());
 		panel.add(btnImpact);
 		
 		//this.pack();
 		this.setLocation(150, 150);
 		this.setVisible(true);
+	}
+	
+	public void connectionAction() {
+		
+		for (Arc arc : model.getArcs()) {
+			
+			table.setValueAt(arc.getInitNode() + "->" + arc.getEndNode(), arc.getInitNode(), arc.getEndNode());
+
+		}
+	}
+	
+	public void riskAction() {
+
+		for (Arc arc : model.getArcs()) {
+			
+			table.setValueAt(arc.getRisk(), arc.getInitNode(), arc.getEndNode());
+			
+		}
+	}
+	
+	public void costAction() {
+		
+		for(Arc arc: model.getArcs()) {
+			
+			table.setValueAt(arc.getCost(), arc.getInitNode(), arc.getEndNode());
+			
+		}
+	}
+	
+	public void probAction() {
+		
+		for(Arc arc: model.getArcs()) {
+			
+			table.setValueAt(arc.getProbability(), arc.getInitNode(), arc.getEndNode());
+			
+		}
+	
+	}
+	
+	public void impactAction() {
+		
+		for(Arc arc: model.getArcs()) {
+			
+			table.setValueAt(arc.getImpact(), arc.getInitNode(), arc.getEndNode());
+			
+		}
+		
 	}
 
 	public JButton getBtnRisk() {
@@ -322,5 +289,13 @@ public class MetricsView extends JFrame {
 
 	public void setTable(JTable table) {
 		this.table = table;
+	}
+
+	public JTable getHeaderTable() {
+		return headerTable;
+	}
+
+	public void setHeaderTable(JTable headerTable) {
+		this.headerTable = headerTable;
 	}
 }

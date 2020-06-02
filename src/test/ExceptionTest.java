@@ -97,8 +97,7 @@ public class ExceptionTest {
 		attacker.setAttacker(true);
 		target.setTarget(true);	
 		
-		Arc arc = model.getArcs().get(0);
-		
+		Arc arc = model.getArcs().get(0);		
 		
 		arc.setRisk(5);
 		arc.setCost(5);
@@ -131,7 +130,6 @@ public class ExceptionTest {
 		arcMouseAdapter.mouseReleased(e3);
 		controller.setActivateArc(0);
 		
-	
 	}
 	
 	@Test

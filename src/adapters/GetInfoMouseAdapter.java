@@ -15,6 +15,9 @@ public class GetInfoMouseAdapter extends MouseAdapter {
 	private MainView view;
 	private MainController controller;
 	
+	/**
+	 * Get information of node or arc
+	 * */
 	public GetInfoMouseAdapter(MainModel m, MainView v, MainController c) {
 		
 		this.model = m;
@@ -31,7 +34,8 @@ public class GetInfoMouseAdapter extends MouseAdapter {
 			for (int i = 0; i < model.getArcs().size(); i++) {
 
 				Arc arc = model.getArcs().get(i);
-
+				
+				//check that arc is in mouse's pointer
 				if (distance(arc.getX1(), arc.getY1(), e.getX(), e.getY())
 						+ distance(arc.getX2(), arc.getY2(), e.getX(),
 								e.getY()) < distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
@@ -39,7 +43,6 @@ public class GetInfoMouseAdapter extends MouseAdapter {
 					System.out.println("X1 = " + arc.getX1() + ", Y1 = " + arc.getY1());
 					System.out.println("X2 = " + arc.getX2() + ", Y2 = " + arc.getY2());
 					System.out.println("InitNode = " + arc.getInitNode() + ", EndNode = " + arc.getEndNode());
-					
 					System.out.println("Number = " + arc.getNumber());
 				}
 
@@ -51,6 +54,7 @@ public class GetInfoMouseAdapter extends MouseAdapter {
 				int radius = model.getNodes().get(i).getDiameter() / 2;
 				Node node = model.getNodes().get(i);
 
+				//check that node is in mouse pointer
 				if (Math.pow(x - e.getX(), 2) + Math.pow(y - e.getY(), 2) <= Math.pow(radius, 2)) {
 
 					System.out.println("X = " + node.getX() + ", Y = " + node.getY());

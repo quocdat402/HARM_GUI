@@ -326,7 +326,9 @@ public class MoveMouseAdapter extends MouseAdapter implements Command {
 		 * Move the node to the previous position
 		 */
 		for (int i = 0; i < model.getNodes().size(); i++) {
-
+			
+			System.out.println(nodeNumber);
+			
 			List<Integer> redoList = new ArrayList<>();
 
 			if (model.getNodes().get(i).getNumber() == nodeNumber) {

@@ -20,13 +20,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import adapters.ArcInfoMouseAdapter;
@@ -81,7 +79,6 @@ public class MainController {
 	private int moveRedoCounter;
 	private int moveUndoArcCounter;
 	private Arc deleteArc;
-	private final int portNumber = 5022;
 
 	private ResultView resultView;
 	private MetricsView metricsView;
@@ -161,84 +158,61 @@ public class MainController {
 		view.getBtnUndo().addActionListener(e -> undoAction());
 		view.getBtnRedo().addActionListener(e -> redoAction());
 		view.getBtnClear().addActionListener(e -> clearAllInfo());
-		view.getArcProperties().addActionListener(new ActionListener() {
+		view.getMntmNew().addActionListener(e -> clearAllInfo());
+		view.getArcProperties().addActionListener(e->openArcProp());
+		view.getNodeProperties().addActionListener(e->openNodeProp());
+		view.getBtnName().addActionListener(e->nameButtonAction());		
+		view.getBtnVul().addActionListener(e->vulButtonAction());
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				view.getLblArc().setText("Arc " + String.valueOf(model.getArcs().get(arcPropertyInt).getNumber()));
-				view.getLblVul().setText("Vulnerability " + String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability() + 1));
-				view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
-				view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
-				view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
-				view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
-
-				view.getArcFrame().setVisible(true);
-
-			}
-		});
-
-		view.getNodeProperties().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				view.getTxtName().setText(model.getNodes().get(nodePropertyInt).getName());
-				
-				
-				view.getNodeFrame().setVisible(true);
-
-			}
-
-		});
-
-		view.getBtnName().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-
-				
-
-					model.getNodes().get(arcPropertyInt).setName(view.getTxtName().getText());
-					view.getNodeFrame().setVisible(false);
-					
-					view.getCenterPanel().repaint();
-					
-					
-					
-				
-
-			}
-
-		});
-
-		view.getBtnVul().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-
-				
-					model.getArcs().get(arcPropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
-					model.getArcs().get(arcPropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
-					model.getArcs().get(arcPropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
-					model.getArcs().get(arcPropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
-					
-					view.getArcFrame().setVisible(false);
-					
-					view.getCenterPanel().repaint();
-				
-
-			}
-
-		});
-
+	}
+	
+	public void vulButtonAction() {
+		
+		model.getArcs().get(arcPropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
+		model.getArcs().get(arcPropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
+		model.getArcs().get(arcPropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
+		model.getArcs().get(arcPropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
+		view.getArcFrame().setVisible(false);
+		view.getCenterPanel().repaint();
+		
+	}
+	
+	public void nameButtonAction() {
+		
+		model.getNodes().get(arcPropertyInt).setName(view.getTxtName().getText());
+		view.getNodeFrame().setVisible(false);
+		view.getCenterPanel().repaint();
+		
+	}
+	
+	public void openNodeProp() {
+		
+		view.getTxtName().setText(model.getNodes().get(nodePropertyInt).getName());
+		view.getLblNode().setText("Node Number: " + String.valueOf(model.getNodes().get(nodePropertyInt).getNumber()));
+		view.getNodeFrame().setVisible(true);
+	}
+	
+	/**
+	 * Open Arc properties menu with set-ups
+	 */
+	public void openArcProp() {
+		
+		view.getLblArc().setText("Arc Number: " + String.valueOf(model.getArcs().get(arcPropertyInt).getNumber()));
+		view.getLblVul().setText("Vulnerability " + String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability() + 1));
+		view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
+		view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
+		view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
+		view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
+		view.getArcFrame().setVisible(true);
+		
+		
 	}
 
 	/**
 	 * Clear all the data
 	 */
 	public void clearAllInfo() {
-
+		
 		view.getCenterPanel().removeAll();
 		view.getCenterPanel().validate();
 		view.getCenterPanel().repaint();
@@ -249,12 +223,14 @@ public class MainController {
 		arcNumber = 0;
 		nodeNumber = 0;
 		view.getCenterPanel().repaint();
+		
 	}
 
 	/**
 	 * Call the execute command in the stack.
 	 */
 	public void redoAction() {
+		
 		stack.redo();
 		view.getCenterPanel().repaint();
 	}
@@ -263,6 +239,7 @@ public class MainController {
 	 * Call the undo command in the stack.
 	 */
 	public void undoAction() {
+		
 		stack.undo();
 		view.getCenterPanel().repaint();
 	}
@@ -530,8 +507,7 @@ public class MainController {
 		
 		if(isTarget && isAttacker && isVul) {
 			
-			String systemProperties = "-Dkey=value";
-			String[] command = {"python3", "example3.py",String.valueOf(port)};
+			String[] command = {"python3", "Server.py",String.valueOf(port)};
 			try {				
 				Process p = Runtime.getRuntime().exec(command);
 				InputStreamConsumerThread inputConsumer = 
@@ -542,9 +518,9 @@ public class MainController {
 				inputConsumer.start();
 				errorConsumer.start();
 				
-				TimeUnit.MILLISECONDS.sleep(700);
+				TimeUnit.MILLISECONDS.sleep(1000);
 			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} 
 		
@@ -977,6 +953,14 @@ public class MainController {
 
 	public void setResultView(ResultView resultView) {
 		this.resultView = resultView;
+	}
+
+	public MetricsView getMetricsView() {
+		return metricsView;
+	}
+
+	public void setMetricsView(MetricsView metricsView) {
+		this.metricsView = metricsView;
 	}
 
 }

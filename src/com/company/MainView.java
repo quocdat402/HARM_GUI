@@ -47,12 +47,8 @@ public class MainView extends JFrame {
     
     private JPanel arcPanel;
     private JPanel nodePanel;
-    private JPanel resultPanel;
     
-    private JLabel lblMetrics;
-    private JLabel lblResults;
-    private JTextField txtResults;
-    
+    private JLabel lblNode;
     private JLabel lblArc;
     private JLabel lblVul;
     private JLabel lblRisk;
@@ -73,6 +69,7 @@ public class MainView extends JFrame {
     private JTextField txtName;
     private JButton btnName;
     
+    private JMenuItem mntmNew;
     private JMenuItem mntmOpen;
     private JMenuItem mntmSave;
     
@@ -112,7 +109,7 @@ public class MainView extends JFrame {
         setJMenuBar(menuBar);
         JMenu mnFile = new JMenu("File");
         menuBar.add(mnFile);
-        JMenuItem mntmNew = new JMenuItem("New");
+        mntmNew = new JMenuItem("New");
         mnFile.add(mntmNew);
         mntmOpen = new JMenuItem("Open");
         mnFile.add(mntmOpen);
@@ -191,7 +188,7 @@ public class MainView extends JFrame {
         
         /*Node properties Frame*/
         nodeFrame = new JFrame();
-        nodeFrame.setSize(300, 300);
+        nodeFrame.setSize(200, 150);
         nodeFrame.setTitle("Node");
         
         /*Arc properties Frame*/
@@ -220,15 +217,17 @@ public class MainView extends JFrame {
         nodePanel = new JPanel();
         nodePanel.setLayout(null);        
         lblName = new JLabel("Name");
-        lblName.setBounds(20, 20, 80, 24);
+        lblName.setBounds(20, 50, 80, 24);
         txtName = new JTextField();
-        txtName.setBounds(100, 20, 80, 24);
+        txtName.setBounds(100, 50, 80, 24);
         lblVul = new JLabel("Vulnerability");
         lblVul.setBounds(20, 50, 150, 24);
         
+        lblNode = new JLabel("Node");
+        lblNode.setBounds(20, 20, 120, 24);
         
         lblArc = new JLabel("Arc");
-        lblArc.setBounds(20, 20, 80, 24);
+        lblArc.setBounds(20, 20, 100, 24);
         lblRisk = new JLabel("Risk");
         lblRisk.setBounds(20, 80, 80, 24);
         txtRisk = new JTextField();
@@ -267,7 +266,7 @@ public class MainView extends JFrame {
         nodePanel.add(lblName);
         nodePanel.add(txtName);
         nodePanel.add(btnName);
-        
+        nodePanel.add(lblNode); 
         arcFrame.getContentPane().add(arcPanel);        
         nodeFrame.getContentPane().add(nodePanel);        
         
@@ -473,12 +472,7 @@ public class MainView extends JFrame {
 	public void setResultFrame(JFrame resultFrame) {
 		this.resultFrame = resultFrame;
 	}
-	public JPanel getResultPanel() {
-		return resultPanel;
-	}
-	public void setResultPanel(JPanel resultPanel) {
-		this.resultPanel = resultPanel;
-	}
+	
 	public JMenuItem getNodeAttacker() {
 		return nodeAttacker;
 	}
@@ -533,24 +527,8 @@ public class MainView extends JFrame {
 	public void setTxtProb(JFormattedTextField txtProb) {
 		this.txtProb = txtProb;
 	}
-	public JLabel getLblMetrics() {
-		return lblMetrics;
-	}
-	public void setLblMetrics(JLabel lblMetrics) {
-		this.lblMetrics = lblMetrics;
-	}
-	public JLabel getLblResults() {
-		return lblResults;
-	}
-	public void setLblResults(JLabel lblResults) {
-		this.lblResults = lblResults;
-	}
-	public JTextField getTxtResults() {
-		return txtResults;
-	}
-	public void setTxtResults(JTextField txtResults) {
-		this.txtResults = txtResults;
-	}
+	
+	
 	public JFrame getSaveFrame() {
 		return saveFrame;
 	}
@@ -580,5 +558,21 @@ public class MainView extends JFrame {
 	}
 	public void setLblArc(JLabel lblArc) {
 		this.lblArc = lblArc;
+	}
+
+	public JLabel getLblNode() {
+		return lblNode;
+	}
+
+	public void setLblNode(JLabel lblNode) {
+		this.lblNode = lblNode;
+	}
+
+	public JMenuItem getMntmNew() {
+		return mntmNew;
+	}
+
+	public void setMntmNew(JMenuItem mntmNew) {
+		this.mntmNew = mntmNew;
 	}
 }
