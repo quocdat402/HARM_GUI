@@ -82,7 +82,6 @@ public class MainController {
 
 	private ResultView resultView;
 	private MetricsView metricsView;
-	private PropertyView propertyView;
 	
 	/**
 	 * MainController handles all the interfaces in the GUI
@@ -164,7 +163,6 @@ public class MainController {
 		view.getNodeProperties().addActionListener(e->openNodeProp());
 		view.getBtnName().addActionListener(e->nameButtonAction());		
 		view.getBtnVul().addActionListener(e->vulButtonAction());
-		view.getMntmProperty().addActionListener(e->propertyAction());
 
 	}
 	
@@ -253,12 +251,7 @@ public class MainController {
 		
 	}
 	
-	public void propertyAction() {
-		
-		propertyView = new PropertyView(model);
-		propertyView.setVisible(true);
-		
-	}
+	
 
 	/**
 	 * Save the data
