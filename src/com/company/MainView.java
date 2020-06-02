@@ -73,6 +73,7 @@ public class MainView extends JFrame {
     private JMenuItem mntmOpen;
     private JMenuItem mntmSave;
     
+    private JMenuItem mntmProperty;
     private JMenuItem mntmMetrics;
     private JMenuItem mntmAttackgraph;
     
@@ -124,7 +125,9 @@ public class MainView extends JFrame {
         menuBar.add(mnTools);
         mntmMetrics = new JMenuItem("Metrics");
         mntmAttackgraph = new JMenuItem("Analysis");
+        mntmProperty = new JMenuItem("Data Property");
         
+        mnTools.add(mntmProperty);
         mnTools.add(mntmMetrics);
         mnTools.add(mntmAttackgraph); 
         
