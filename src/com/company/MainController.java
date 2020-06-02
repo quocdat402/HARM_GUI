@@ -98,8 +98,8 @@ public class MainController {
 	 */
 	public void initController() {
 		
+		//Initialize Variables
 		resultView = new ResultView(model, this);
-		
 		lines = new ArrayList<>();
 		stack = new CommandStack();
 		view.getTxtCost().setText("0");

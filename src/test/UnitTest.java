@@ -33,7 +33,6 @@ public class UnitTest {
 		
 	}
 	
-	
 	@Test
 	public void activateMethodTest() {
 		
@@ -132,7 +131,7 @@ public class UnitTest {
 		controller = new MainController(model, view);
 		controller.initController();
 		
-		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 1, 1, 0.5, 1);
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 5, 4, 0.5, 3);
 		model.getArcs().add(arc);
 		
 		assertEquals(1, arc.getX1());
@@ -142,6 +141,10 @@ public class UnitTest {
 		assertEquals(0, arc.getInitNode());
 		assertEquals(1, arc.getEndNode());		
 		assertEquals(0, arc.getVulnerability());
+		assertEquals(5, arc.getRisk(), 0.1);
+		assertEquals(4, arc.getCost(), 0.1);
+		assertEquals(0.5, arc.getProbability(), 0.01);
+		assertEquals(3, arc.getImpact(), 0.1);
 		
 				
 	}

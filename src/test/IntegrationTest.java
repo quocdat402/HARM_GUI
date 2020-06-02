@@ -70,6 +70,10 @@ public class IntegrationTest {
 		arc.setProbability(0.2);
 		arc.setImpact(3);
 		
+		controller.getMetricsView().connectionAction();
+		String connection = (String)table.getValueAt(arc.getInitNode(), arc.getEndNode());
+		assertEquals("0->1", connection);
+		
 		controller.getMetricsView().riskAction();
 		double risk = (double) table.getValueAt(arc.getInitNode(), arc.getEndNode());
 		assertEquals(5, (int)risk);
