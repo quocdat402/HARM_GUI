@@ -82,6 +82,7 @@ public class MainController {
 
 	private ResultView resultView;
 	private MetricsView metricsView;
+	private PropertyView propertyView;
 	
 	/**
 	 * MainController handles all the interfaces in the GUI
@@ -248,6 +249,13 @@ public class MainController {
 		
 		metricsView = new MetricsView(model);
 		metricsView.setVisible(true);
+		
+	}
+	
+	public void propertyAction() {
+		
+		propertyView = new PropertyView(model);
+		propertyView.setVisible(true);
 		
 	}
 
