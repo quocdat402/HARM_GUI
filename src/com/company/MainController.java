@@ -164,6 +164,7 @@ public class MainController {
 		view.getNodeProperties().addActionListener(e->openNodeProp());
 		view.getBtnName().addActionListener(e->nameButtonAction());		
 		view.getBtnVul().addActionListener(e->vulButtonAction());
+		view.getMntmProperty().addActionListener(e->propertyAction());
 
 	}
 	

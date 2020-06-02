@@ -578,4 +578,12 @@ public class MainView extends JFrame {
 	public void setMntmNew(JMenuItem mntmNew) {
 		this.mntmNew = mntmNew;
 	}
+
+	public JMenuItem getMntmProperty() {
+		return mntmProperty;
+	}
+
+	public void setMntmProperty(JMenuItem mntmProperty) {
+		this.mntmProperty = mntmProperty;
+	}
 }
