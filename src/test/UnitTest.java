@@ -32,6 +32,7 @@ public class UnitTest {
 	@Before
 	public void setUpTest() {
 		
+		//Initialize the classes to do Test
 		view = new MainView(model);
 		model = new MainModel();
 		controller = new MainController(model, view);
@@ -50,35 +51,40 @@ public class UnitTest {
 		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
 		MouseEvent e4 = new MouseEvent(view.getCenterPanel(), 502, 1, 16, 509, 254, 1, false);
 		
+		//Create a node
 		controller.setActivateNode(1);		
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
 		nodeMouseAdapter.mousePressed(e1);
 		nodeMouseAdapter.mousePressed(e2);
 		controller.setActivateNode(0);
 		
+		//Create a arc
 		controller.setActivateArc(1);
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
 		arcMouseAdapter.mousePressed(e3);
 		arcMouseAdapter.mouseReleased(e4);
 		controller.setActivateArc(0);
 		
+		//Set Attacker and target
 		Node attacker = model.getNodes().get(0);
 		Node target = model.getNodes().get(1);
 		attacker.setAttacker(true);
 		target.setTarget(true);	
 		
+		//Set vulnerability
 		Arc arc = model.getArcs().get(0);
-		
 		arc.setRisk(5);
 		arc.setCost(5);
 		arc.setProbability(0.2);
 		arc.setImpact(5);
 		
+		//Open Server
 		controller.setPort(controller.availablePort(controller.getPort()));
 		controller.openServer();
 	
 		isConnected = false;
 		
+		//Create new socket client check that server is opened.
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e11) {
@@ -136,6 +142,7 @@ public class UnitTest {
 				
 		controller.clearAllInfo();
 		
+		//Create nodes
 		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
 				false);
 		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
@@ -143,12 +150,12 @@ public class UnitTest {
 		
 		model.getNodes().add(node1);
 		model.getNodes().add(node2);
-		
+	
 		controller.setNodePropertyInt(0);
-		controller.nodeAttacker();
 		
+		//Set Attacker and Target
+		controller.nodeAttacker();		
 		assertEquals("Attacker", node1.getName());
-		
 		controller.setNodePropertyInt(1);
 		controller.nodeTarget();
 		
@@ -170,6 +177,7 @@ public class UnitTest {
 		controller = new MainController(model, view);
 		controller.initController();
 		
+		//Create a Node
 		Node node = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
 				false); 
 		
@@ -193,6 +201,7 @@ public class UnitTest {
 		controller = new MainController(model, view);
 		controller.initController();
 		
+		//Create a Arc
 		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 5, 4, 0.5, 3);
 		model.getArcs().add(arc);
 		
@@ -209,6 +218,30 @@ public class UnitTest {
 		assertEquals(3, arc.getImpact(), 0.1);
 		
 				
+	}
+	
+	/*
+	 * Test adding arc between two nodes
+	 */
+	@Test
+	public void testArcBetweenNodes() {
+				
+		controller.clearAllInfo();
+		
+		//Create nodes
+		Node node1 = new Node(500, 400, 24, Color.white, "node " + 0, 0, false,
+				false);
+		
+		Node node2 = new Node(500, 400, 24, Color.white, "node " + 1, 1, false,
+				false);
+		
+		//Create an arc
+		Arc arc = new Arc(1, 2, 3, 4, Color.black, 0, 1, 1, 0, 0, 0, 0, 0);
+		model.getArcs().add(arc);
+		
+		assertEquals(node1.getNumber(), arc.getInitNode());
+		assertEquals(node2.getNumber(), arc.getEndNode());
+		
 	}
 
 }

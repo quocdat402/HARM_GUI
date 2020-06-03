@@ -29,6 +29,7 @@ public class CommandStack {
 	        return nextPointer > 0;
 	    }
 
+	    //Perform undo function
 	    public void undo() {
 	        if(canUndo()) {
 	            nextPointer--;
@@ -44,6 +45,7 @@ public class CommandStack {
 	        return nextPointer < commands.size();
 	    }
 
+	    //Perform redo function
 	    public void redo() {
 	        if(canRedo()) {
 	        	Command commandToDo = commands.get(nextPointer);

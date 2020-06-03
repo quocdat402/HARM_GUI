@@ -1,13 +1,8 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
 
 import java.awt.event.MouseEvent;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,6 +30,7 @@ public class ExceptionTest {
 	@Before
 	public void setUpTest() {
 		
+		//Initialize the classes to do Test
 		view = new MainView(model);
 		model = new MainModel();
 		controller = new MainController(model, view);
@@ -42,6 +38,9 @@ public class ExceptionTest {
 		
 	}	
 	
+	/*
+	 * Test that the system throws exception when connection is refused
+	 */
 	@Test
 	public void connectionRefuseTest() {	
 		
@@ -52,23 +51,27 @@ public class ExceptionTest {
 		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
 		MouseEvent e4 = new MouseEvent(view.getCenterPanel(), 502, 1, 16, 509, 254, 1, false);
 		
+		//Create a node
 		controller.setActivateNode(1);		
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
 		nodeMouseAdapter.mousePressed(e1);
 		nodeMouseAdapter.mousePressed(e2);
 		controller.setActivateNode(0);
 		
+		//Create a arc
 		controller.setActivateArc(1);
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
 		arcMouseAdapter.mousePressed(e3);
 		arcMouseAdapter.mouseReleased(e4);
 		controller.setActivateArc(0);
 		
+		//Set an attacker and target
 		Node attacker = model.getNodes().get(0);
 		Node target = model.getNodes().get(1);
 		attacker.setAttacker(true);
 		target.setTarget(true);	
 		
+		//Set a vulnerability
 		Arc arc = model.getArcs().get(0);
 		arc.setRisk(5);
 		arc.setCost(5);
@@ -92,18 +95,21 @@ public class ExceptionTest {
 		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
 		MouseEvent e4 = new MouseEvent(view.getCenterPanel(), 502, 1, 16, 509, 254, 1, false);
 		
+		//Create a node
 		controller.setActivateNode(1);		
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
 		nodeMouseAdapter.mousePressed(e1);
 		nodeMouseAdapter.mousePressed(e2);
 		controller.setActivateNode(0);
 		
+		//Create an arc
 		controller.setActivateArc(1);
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
 		arcMouseAdapter.mousePressed(e3);
 		arcMouseAdapter.mouseReleased(e4);
 		controller.setActivateArc(0);
 		
+		//Set an attacker and target
 		Node attacker = model.getNodes().get(0);
 		Node target = model.getNodes().get(1);
 		attacker.setAttacker(true);
@@ -129,12 +135,14 @@ public class ExceptionTest {
 		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
 		MouseEvent e4 = new MouseEvent(view.getCenterPanel(), 502, 1, 16, 509, 254, 1, false);
 		
+		//Create a node
 		controller.setActivateNode(1);		
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
 		nodeMouseAdapter.mousePressed(e1);
 		nodeMouseAdapter.mousePressed(e2);
 		controller.setActivateNode(0);
 		
+		//Create a arc
 		controller.setActivateArc(1);
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
 		arcMouseAdapter.mousePressed(e3);
@@ -144,14 +152,17 @@ public class ExceptionTest {
 		Node attacker = model.getNodes().get(0);
 		Node target = model.getNodes().get(1);
 		
+		//IllegalArgumentException Exception throws
 		exception.expect(IllegalArgumentException.class);
 		controller.attackGraphAction();
 		
+		//Set an attacker and target
 		attacker.setAttacker(true);
 		target.setTarget(true);	
 		
 		Arc arc = model.getArcs().get(0);		
 		
+		//Set Vulnerability
 		arc.setRisk(5);
 		arc.setCost(5);
 		arc.setProbability(0.2);
@@ -174,11 +185,13 @@ public class ExceptionTest {
 		MouseEvent e2 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 337, 132, 1, false);
 		MouseEvent e3 = new MouseEvent(view.getCenterPanel(), 501, 1, 16, 335, 130, 1, false);
 		
+		//Create a node
 		controller.setActivateNode(1);
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
 		nodeMouseAdapter.mousePressed(e1);
 		controller.setActivateNode(0);
 				
+		//Create a arc on same node
 		controller.setActivateArc(1);
 		ArcMouseAdapter arcMouseAdapter = new ArcMouseAdapter(model, view, controller);
 		arcMouseAdapter.mousePressed(e2);
@@ -202,6 +215,7 @@ public class ExceptionTest {
 		controller.setActivateNode(1);
 		
 		exception.expect(IllegalStateException.class);
+		//Create a node on negative pointer and throws exception
 		NodeMouseAdapter nodeMouseAdapter = new NodeMouseAdapter(model, view, controller);
 		nodeMouseAdapter.mousePressed(e1);
 		
