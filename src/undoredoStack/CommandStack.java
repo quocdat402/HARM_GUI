@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Executing actions and performing undo/redo
+ */
 public class CommandStack {
 	 private List<Command> commands = Collections.emptyList();
 	    private int nextPointer = 0;
@@ -20,20 +23,18 @@ public class CommandStack {
 	        commands = newList;
 	        nextPointer++;
 
-	        // Do the command here, or return it to whatever called this to be done, or maybe it has already been done by now or something
-	        // (I can only guess on what your code currently looks like...)
-	        //command.execute();
 	    }
 
 	    public boolean canUndo() {
 	        return nextPointer > 0;
 	    }
 
+	    //Perform undo function
 	    public void undo() {
 	        if(canUndo()) {
 	            nextPointer--;
 	            Command commandToUndo = commands.get(nextPointer);
-	            // Undo the command, or return it to whatever called this to be undone, or something
+	            //Do undo comman
 	            commandToUndo.undo();
 	         } else {
 	             throw new IllegalStateException("Cannot undo");
@@ -44,11 +45,12 @@ public class CommandStack {
 	        return nextPointer < commands.size();
 	    }
 
+	    //Perform redo function
 	    public void redo() {
 	        if(canRedo()) {
 	        	Command commandToDo = commands.get(nextPointer);
 	            nextPointer++;
-	            // Do the command, or return it to whatever called this to be re-done, or something
+	            //Do redo command
 	            commandToDo.execute();
 	        } else {
 	            throw new IllegalStateException("Cannot redo");

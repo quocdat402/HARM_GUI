@@ -83,6 +83,8 @@ public class MainController {
 	private ResultView resultView;
 	private MetricsView metricsView;
 	
+	private int port;
+	
 	/**
 	 * MainController handles all the interfaces in the GUI
 	 */
@@ -99,6 +101,7 @@ public class MainController {
 	public void initController() {
 		
 		//Initialize Variables
+		port = -1;
 		resultView = new ResultView(model, this);
 		lines = new ArrayList<>();
 		stack = new CommandStack();
@@ -166,6 +169,9 @@ public class MainController {
 
 	}
 	
+	/**
+	 * Actions when okay button in ArcProperty is clicked
+	 */
 	public void vulButtonAction() {
 		
 		model.getArcs().get(arcPropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
@@ -177,6 +183,9 @@ public class MainController {
 		
 	}
 	
+	/**
+	 * Actions when okay button in NodeProperty is clicked
+	 */
 	public void nameButtonAction() {
 		
 		model.getNodes().get(arcPropertyInt).setName(view.getTxtName().getText());
@@ -185,6 +194,9 @@ public class MainController {
 		
 	}
 	
+	/**
+	 * Open Node property pop-up menu with set-up text
+	 */
 	public void openNodeProp() {
 		
 		view.getTxtName().setText(model.getNodes().get(nodePropertyInt).getName());
@@ -193,7 +205,7 @@ public class MainController {
 	}
 	
 	/**
-	 * Open Arc properties menu with set-ups
+	 * Open Arc properties pop-up menu with set-up text
 	 */
 	public void openArcProp() {
 		
@@ -461,9 +473,9 @@ public class MainController {
 		boolean isVul = true;
 		
 		ResultView.getTextPane().setText("");
-
-		lines.clear();
+		lines.clear();		
 		
+		//Check that attacker and target are set
 		for (Node node : model.getNodes()) {
 
 			if (node.isTarget()) {
@@ -478,11 +490,9 @@ public class MainController {
 
 			}
 			
-			
-			
-
 		}
 		
+		//Check that all the vulnerabilities are set
 		for (Arc arc : model.getArcs()) {
 			
 			if((arc.getCost() == 0.0) || (arc.getImpact() == 0.0) || (arc.getProbability() == 0.0) || (arc.getRisk() == 0.0)) {
@@ -491,128 +501,39 @@ public class MainController {
 				
 			}
 			
-			
 		}
 		
-		int port = -1;
-		
-		
-		try {
-			ServerSocket socket = new ServerSocket(0);
-			port = socket.getLocalPort();
-			socket.close();
-		} catch (IOException e) {
-			
-			
-		}
-		
+		port = availablePort(port);
 		
 		if(isTarget && isAttacker && isVul) {
 			
-			String[] command = {"python3", "Server.py",String.valueOf(port)};
-			try {				
-				Process p = Runtime.getRuntime().exec(command);
-				InputStreamConsumerThread inputConsumer = 
-						new InputStreamConsumerThread(p.getInputStream(), true);
-				InputStreamConsumerThread errorConsumer =
-						new InputStreamConsumerThread(p.getErrorStream(), true);
+			//Create a server Thread
+			Thread serverThread = new Thread() {
+				@Override
+				public void run() {
+				//Connect with server by executing server.py
 				
-				inputConsumer.start();
-				errorConsumer.start();
-				
-				TimeUnit.MILLISECONDS.sleep(1000);
-			} catch (IOException | InterruptedException e) {
-				
-				e.printStackTrace();
-			} 
-		
-
-		try (Socket socket = new Socket("localhost", port)) {
-
-			OutputStream output = socket.getOutputStream();
-			PrintWriter writer = new PrintWriter(output, true);
-			writer.println(nodeNumber);
-			writer.println(arcNumber);
-
-			for (int i = 0; i < model.getNodes().size(); i++) {
-				
-				if (model.getNodes().get(i).isAttacker()) {
-										
-					writer.println(model.getNodes().get(i).getNumber());
-
-				} 
-			}
+					openServer();
+					
+					}
+				};
 			
-			for (int i = 0; i < model.getNodes().size(); i++) {
+			//Create a client thread
+			Thread clientThread = new Thread(){
 				
-				if (model.getNodes().get(i).isTarget()) {
-
-					writer.println(model.getNodes().get(i).getNumber());
-
+				@Override
+				public void run() {
+							
+					openClient();
 				}
-			}
-
-			for (int i = 0; i < model.getArcs().size(); i++) {
 				
-				writer.println(String.valueOf(model.getArcs().get(i).getInitNode()));
-				writer.println(String.valueOf(model.getArcs().get(i).getEndNode()));
-			}
+			};
 			
-			
-			
-			for (int i = 0; i < model.getArcs().size(); i++) {
-				
-				writer.println(String.valueOf(model.getArcs().get(i).getRisk()));
-				writer.println(String.valueOf(model.getArcs().get(i).getCost()));
-				writer.println(String.valueOf(model.getArcs().get(i).getProbability()));
-				writer.println(String.valueOf(model.getArcs().get(i).getImpact()));
-				
-			}
-
-			writer.println("c");
-
-			InputStream input = socket.getInputStream();
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-			String line;
-
-			while ((line = reader.readLine()) != null) {
-
-				System.out.println(line);
-				lines.add(line);
-
-			}
-			
-			
-			socket.close();
-
-		} catch (UnknownHostException ex) {
-
-			System.out.println("Server not found: " + ex.getMessage());
-
-		} catch (IOException ex) {
-
-			System.out.println("I/O error: " + ex.getMessage());
-
-		}
-
+			//Run server and client Thread
+			serverThread.start();
+			clientThread.start();
 		
-
-		for (String lineTemp : lines) {
-
-			//JLabel labelTemp = new JLabel(lineTemp);
-			//view.getResultPanel().add(labelTemp);
-			
-			
-			ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
-
-		}
-
-		resultView.setVisible(true);
-		
-		
-		
+		//Exceptions and Error messages when required values are not set up
 		} else if(!isAttacker || !isTarget){
 			
 			System.err.println("Attacker and target are not defined");
@@ -629,7 +550,144 @@ public class MainController {
 		
 
 	}
+	
+	/**
+	 * Get available port
+	 */
+	public int availablePort(int port) {
+		
+		try {
+			ServerSocket socket = new ServerSocket(0);
+			port = socket.getLocalPort();
+			socket.close();
+		} catch (IOException e) {
+			
+			
+		}
+		
+		return port;
+		
+	}
+	
+	/**
+	 * Open client
+	 */
+	public void openClient() {
+		
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//Open client's socket
+		try (Socket socket = new Socket("localhost", port)) {
 
+			OutputStream output = socket.getOutputStream();
+			PrintWriter writer = new PrintWriter(output, true);
+			
+			//Send number of Nodes to server
+			writer.println(nodeNumber);
+			//Send number of Arcs to server
+			writer.println(arcNumber);
+			//Send attacker node information to server
+			for (int i = 0; i < model.getNodes().size(); i++) {
+				
+				if (model.getNodes().get(i).isAttacker()) {
+										
+					writer.println(model.getNodes().get(i).getNumber());
+
+				} 
+			}
+			//Send target node information to server
+			for (int i = 0; i < model.getNodes().size(); i++) {
+				
+				if (model.getNodes().get(i).isTarget()) {
+
+					writer.println(model.getNodes().get(i).getNumber());
+
+				}
+			}
+			//Send arcs information to server
+			for (int i = 0; i < model.getArcs().size(); i++) {
+				
+				writer.println(String.valueOf(model.getArcs().get(i).getInitNode()));
+				writer.println(String.valueOf(model.getArcs().get(i).getEndNode()));
+			}										
+			//Send all the vulnerabilities on arc to server
+			for (int i = 0; i < model.getArcs().size(); i++) {
+				
+				writer.println(String.valueOf(model.getArcs().get(i).getRisk()));
+				writer.println(String.valueOf(model.getArcs().get(i).getCost()));
+				writer.println(String.valueOf(model.getArcs().get(i).getProbability()));
+				writer.println(String.valueOf(model.getArcs().get(i).getImpact()));
+				
+			}
+
+			//Send end signal to server
+			writer.println("c");
+
+			InputStream input = socket.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+			//Read output from the server
+			String line;
+			while ((line = reader.readLine()) != null) {
+
+				System.out.println(line);
+				lines.add(line);
+
+			}			
+			
+			socket.close();
+
+		} catch (UnknownHostException ex) {
+
+			System.out.println("Server not found: " + ex.getMessage());
+			view.getResultFrame().setVisible(false);
+
+		} catch (IOException ex) {
+			
+			ex.printStackTrace();
+			System.out.println("I/O error: " + ex.getMessage());
+			view.getResultFrame().setVisible(false);
+			
+		}
+		
+		//Set up the output's text on Analysis textPane in ResultView
+		for (String lineTemp : lines) {
+
+			ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
+
+		}
+
+		resultView.setVisible(true);
+		
+	}
+
+	/**
+	 * Open server
+	 */
+	public void openServer() {
+		
+		String[] command = {"python3", "Server.py",String.valueOf(port)};
+		try {				
+			Process p = Runtime.getRuntime().exec(command);
+			InputStreamConsumerThread inputConsumer = 
+					new InputStreamConsumerThread(p.getInputStream(), true);
+			InputStreamConsumerThread errorConsumer =
+					new InputStreamConsumerThread(p.getErrorStream(), true);
+			
+			inputConsumer.start();
+			errorConsumer.start();
+			
+			//TimeUnit.MILLISECONDS.sleep(1000);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		} 		
+	}
+	
 	/**
 	 * Prevents interfaces from running simultaneously
 	 */
@@ -963,6 +1021,14 @@ public class MainController {
 
 	public void setMetricsView(MetricsView metricsView) {
 		this.metricsView = metricsView;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }

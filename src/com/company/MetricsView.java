@@ -51,7 +51,7 @@ public class MetricsView extends JFrame {
 	private JButton btnConnection;
 
 	/**
-	 * Create the frame.
+	 * Create the metrics frame.
 	 */
 	public MetricsView(MainModel m) {
 
@@ -72,15 +72,9 @@ public class MetricsView extends JFrame {
 		}
 
 		nodeSize = model.getNodes().size();
-
+		
+		//Create table
 		table = new JTable(nodeSize, nodeSize);
-		// table = new JTable(mainModel);
-//		for (int i = 0; i < table.getRowCount(); i++) {
-//			table.setValueAt("A", i, 0);
-//		}
-
-		// table.setValueAt("A", 0, 2);
-
 		JTableHeader th = table.getTableHeader();
 		TableColumnModel tcm = th.getColumnModel();
 		for (int i = 0; i < nodeSize; i++) {
@@ -89,12 +83,13 @@ public class MetricsView extends JFrame {
 			tc.setHeaderValue(nodeNames.get(i));
 
 		}
-
 		th.repaint();
-
+		
+		//Sort the row by their name
 		sorter = new TableRowSorter<TableModel>(table.getModel());
 		table.setRowSorter(sorter);
 
+		//Settings for table (column count, row count, column, row)
 		tableModel = new DefaultTableModel() {
 
 			private static final long serialVersionUID = 1L;
@@ -126,6 +121,7 @@ public class MetricsView extends JFrame {
 			}
 		};
 
+		//Create sub table has titled row
 		headerTable = new JTable(tableModel);
 		for (int i = 0; i < table.getRowCount(); i++) {
 			headerTable.setValueAt(model.getNodes().get(i).getName(), i, 0);
@@ -134,6 +130,8 @@ public class MetricsView extends JFrame {
 		headerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		headerTable.setPreferredScrollableViewportSize(new Dimension(50, 0));
 		headerTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+		
+		//Add feature which color of font and cell changed when user clicks the cell
 		headerTable.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
 
 			@Override
@@ -167,6 +165,8 @@ public class MetricsView extends JFrame {
 				tableModel.fireTableRowsUpdated(0, tableModel.getRowCount() - 1);
 			}
 		});
+		
+		//Add scrollpane to table
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 0, 547, 200);
 		scrollPane.setRowHeaderView(headerTable);
@@ -179,6 +179,7 @@ public class MetricsView extends JFrame {
 		panel.setBounds(0, 199, 547, 33);
 		contentPane.add(panel);
 		
+		//Buttons at the bottom of the frame
 		btnConnection = new JButton("Connection");
 		btnConnection.addActionListener(e->connectionAction());
 		panel.add(btnConnection);
@@ -199,11 +200,11 @@ public class MetricsView extends JFrame {
 		btnImpact.addActionListener(e->impactAction());
 		panel.add(btnImpact);
 		
-		//this.pack();
 		this.setLocation(150, 150);
 		this.setVisible(true);
 	}
 	
+	//Shows connections between nodes when connection button is clicked
 	public void connectionAction() {
 		
 		for (Arc arc : model.getArcs()) {
@@ -213,6 +214,7 @@ public class MetricsView extends JFrame {
 		}
 	}
 	
+	//Shows value of Risks when Risk button is clicked
 	public void riskAction() {
 
 		for (Arc arc : model.getArcs()) {
@@ -222,6 +224,7 @@ public class MetricsView extends JFrame {
 		}
 	}
 	
+	//Shows value of Costs when Cost button is clicked
 	public void costAction() {
 		
 		for(Arc arc: model.getArcs()) {
@@ -231,6 +234,7 @@ public class MetricsView extends JFrame {
 		}
 	}
 	
+	//Shows value of Probability when Probability button is clicked
 	public void probAction() {
 		
 		for(Arc arc: model.getArcs()) {
@@ -241,6 +245,7 @@ public class MetricsView extends JFrame {
 	
 	}
 	
+	//Shows value of Impact when impact button is clicked
 	public void impactAction() {
 		
 		for(Arc arc: model.getArcs()) {
@@ -251,6 +256,9 @@ public class MetricsView extends JFrame {
 		
 	}
 
+	/*
+	 * Getters and Setters
+	 */
 	public JButton getBtnRisk() {
 		return btnRisk;
 	}

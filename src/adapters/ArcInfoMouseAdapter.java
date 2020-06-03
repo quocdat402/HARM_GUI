@@ -13,8 +13,9 @@ public class ArcInfoMouseAdapter extends MouseAdapter {
 	private MainModel model;
 	private MainView view;
 	private MainController controller;
+	
 	/**
-	 * 
+	 * Initialize ArcInfoMouseAdapter
 	 */
 	public ArcInfoMouseAdapter(MainModel m, MainView v, MainController c) {
 		

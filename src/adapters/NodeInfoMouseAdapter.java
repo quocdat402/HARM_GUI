@@ -58,8 +58,7 @@ public class NodeInfoMouseAdapter extends MouseAdapter {
 					
 				}
 				
-				if (e.isPopupTrigger()) {
-					
+				if (e.isPopupTrigger()) {					
 					
 					
 					controller.getView().getNodePopUp().show(e.getComponent(), e.getX(), e.getY());

@@ -18,10 +18,9 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 	
 	private int initNode;
 	private int endNode;
-	private int x1, y1, x2, y2;
+	private int x1, y1, x2, y2;	
 	
-	private int test = 0;
-	
+	//Temporary Arcs for redo and undo
 	Arc ArcRedo = null;
 	Arc arcTemp = null;
 	
@@ -43,6 +42,9 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
+		/*
+		 * Check that mouse left button is clicked
+		 */
 		if(SwingUtilities.isLeftMouseButton(e)) {
 		
 		if (controller.getActivateArc() == 1 && !model.getNodes().isEmpty()) {
@@ -67,7 +69,7 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 						/*
 						 * Create a temporary arc for undo and redo function
 						 */
-						arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, controller.getArcNumber(),controller.getArcNumber(), 0, 0, 0, 0);
+						arcTemp = new Arc(x1, y1, x1, y1, Color.black, initNode, endNode, controller.getArcNumber(),0, 0, 0, 0, 0);
 						model.getArcs().add(arcTemp);
 					}
 				}
@@ -83,6 +85,9 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 	@Override
 	public void mouseDragged(MouseEvent e)  {
 		
+		/*
+		 * Check that mouse left button is clicked
+		 */
 		if(SwingUtilities.isLeftMouseButton(e)) {
 		
 		if (controller.getActivateArc() == 1 && !model.getNodes().isEmpty() && arcTemp != null) {
@@ -102,6 +107,9 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		
+		/*
+		 * Check that mouse left button is clicked
+		 */
 		if(SwingUtilities.isLeftMouseButton(e)) {
 
 		if (controller.getActivateArc() == 1 && !model.getNodes().isEmpty()) {
@@ -150,7 +158,7 @@ public class ArcMouseAdapter extends MouseAdapter implements Command{
 							/*
 							 * Create a new arc
 							 */
-							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, controller.getArcNumber(), controller.getArcNumber(), 0, 0, 0, 0);
+							Arc arc = new Arc(x1, y1, x2, y2, Color.black, initNode, endNode, controller.getArcNumber(), 0, 0, 0, 0, 0);
 							model.getArcs().add(arc);
 							
 							controller.setArcNumber(controller.getArcNumber() + 1);
