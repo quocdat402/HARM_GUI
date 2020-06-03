@@ -29,7 +29,7 @@ Graphical User Interface for HARMs
 ![Metrics](./img/metrics.png)
 
 ## Installation
-### Windows, Linux
+### Windows, Linux and MACOS
 1. Install HARMs Engine at https://github.com/whistlebee/harmat<br />
 2. Download and Run the program from command line
 ```java
