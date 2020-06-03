@@ -31,7 +31,7 @@ Graphical User Interface for HARMs
 ## Installation
 ### If you don't want to install JDK<br />
 1. Install HARMs Engine at https://github.com/whistlebee/harmat<br />
-2. Downalond <a id="raw-url" href="https://raw.githubusercontent.com/Naehyung/HARMs/master/HARMs.exe">HARMs.exe</a><br />
+2. Downalond <a id="raw-url" href="https://raw.githubusercontent.com/Naehyung/HARMs/master/HARMs-0.0.1.exe">HARMs.exe</a><br />
 3. Run it by double click HARMs.exe
 ### If you have installed the JDK<br />
 1. Install HARMs Engine at https://github.com/whistlebee/harmat<br />
