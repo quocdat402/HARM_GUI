@@ -693,12 +693,17 @@ public class MainController {
 	 */
 	public int activateNodeInt() {
 		if (activateNode == 0) {
-			if (activateArc == 1 || activateMove == 1 || activateDelete == 1 || activateGetInfo == 1) {
-
-			} else {
-				activateNode = 1;
-				view.getBtnNode().setBackground(Color.yellow);
-			}
+			activateArc = 0;
+			activateMove = 0;
+			activateDelete = 0;
+			activateGetInfo = 0;
+			view.getBtnArc().setBackground(Color.LIGHT_GRAY);
+			view.getBtnMove().setBackground(Color.LIGHT_GRAY);
+			view.getBtnDelete().setBackground(Color.LIGHT_GRAY);
+			view.getBtnGetinfo().setBackground(Color.LIGHT_GRAY);
+			
+			activateNode = 1;
+			view.getBtnNode().setBackground(Color.yellow);
 		} else if (activateNode == 1) {
 			activateNode = 0;
 			view.getBtnNode().setBackground(Color.LIGHT_GRAY);
@@ -708,68 +713,82 @@ public class MainController {
 
 	public int activateArcInt() {
 		if (activateArc == 0) {
-			if (activateNode == 1 || activateMove == 1 || activateDelete == 1 || activateGetInfo == 1) {
-
-			} else {
-				activateArc = 1;
-				view.getBtnArc().setBackground(Color.yellow);
-			}
-
+			activateNode = 0;
+			activateMove = 0;
+			activateDelete = 0;
+			activateGetInfo = 0;
+			view.getBtnNode().setBackground(Color.LIGHT_GRAY);
+			view.getBtnMove().setBackground(Color.LIGHT_GRAY);
+			view.getBtnDelete().setBackground(Color.LIGHT_GRAY);
+			view.getBtnGetinfo().setBackground(Color.LIGHT_GRAY);
+			
+			activateArc = 1;
+			view.getBtnArc().setBackground(Color.yellow);
 		} else if (activateArc == 1) {
 			activateArc = 0;
 			view.getBtnArc().setBackground(Color.LIGHT_GRAY);
 		}
 		return activateArc;
 	}
-
+	
 	public int activateMoveInt() {
 		if (activateMove == 0) {
-			if (activateNode == 1 || activateArc == 1 || activateDelete == 1 || activateGetInfo == 1) {
-
-			} else {
-				activateMove = 1;
-				view.getBtnMove().setBackground(Color.yellow);
-			}
-
+			activateNode = 0;
+			activateArc = 0;
+			activateDelete = 0;
+			activateGetInfo = 0;
+			view.getBtnNode().setBackground(Color.LIGHT_GRAY);
+			view.getBtnArc().setBackground(Color.LIGHT_GRAY);
+			view.getBtnDelete().setBackground(Color.LIGHT_GRAY);
+			view.getBtnGetinfo().setBackground(Color.LIGHT_GRAY);
+			
+			activateMove = 1;
+			view.getBtnMove().setBackground(Color.yellow);
 		} else if (activateMove == 1) {
 			activateMove = 0;
 			view.getBtnMove().setBackground(Color.LIGHT_GRAY);
 		}
 		return activateMove;
-
 	}
-
+	
 	public int activateDeleteInt() {
-
 		if (activateDelete == 0) {
-			if (activateNode == 1 || activateArc == 1 || activateMove == 1 || activateGetInfo == 1) {
-
-			} else {
-				activateDelete = 1;
-				view.getBtnDelete().setBackground(Color.yellow);
-			}
+			activateNode = 0;
+			activateArc = 0;
+			activateMove = 0;
+			activateGetInfo = 0;
+			view.getBtnNode().setBackground(Color.LIGHT_GRAY);
+			view.getBtnArc().setBackground(Color.LIGHT_GRAY);
+			view.getBtnMove().setBackground(Color.LIGHT_GRAY);
+			view.getBtnGetinfo().setBackground(Color.LIGHT_GRAY);
+			
+			activateDelete = 1;
+			view.getBtnDelete().setBackground(Color.yellow);
 		} else if (activateDelete == 1) {
 			activateDelete = 0;
 			view.getBtnDelete().setBackground(Color.LIGHT_GRAY);
 		}
 		return activateDelete;
 	}
-
+	
 	public int activateGetInfoInt() {
-
 		if (activateGetInfo == 0) {
-			if (activateNode == 1 || activateArc == 1 || activateMove == 1 || activateDelete == 1) {
-
-			} else {
-				activateGetInfo = 1;
-				view.getBtnGetinfo().setBackground(Color.yellow);
-			}
+			activateNode = 0;
+			activateArc = 0;
+			activateMove = 0;
+			activateDelete = 0;
+			view.getBtnNode().setBackground(Color.LIGHT_GRAY);
+			view.getBtnArc().setBackground(Color.LIGHT_GRAY);
+			view.getBtnMove().setBackground(Color.LIGHT_GRAY);
+			view.getBtnDelete().setBackground(Color.LIGHT_GRAY);
+			
+			activateGetInfo = 1;
+			view.getBtnGetinfo().setBackground(Color.yellow);
 		} else if (activateGetInfo == 1) {
 			activateGetInfo = 0;
 			view.getBtnGetinfo().setBackground(Color.LIGHT_GRAY);
 		}
 		return activateGetInfo;
-
 	}
 	
 	
