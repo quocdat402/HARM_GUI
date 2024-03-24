@@ -2,6 +2,8 @@ package com.company;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.io.Serializable;
 
 public class Node implements Serializable{
@@ -10,6 +12,8 @@ public class Node implements Serializable{
 	 * add default serial number
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static final double SELECTION_THRESHOLD = 25;
 	
 	private int x;
 	private int y;
@@ -56,15 +60,23 @@ public class Node implements Serializable{
 	 * Draw a node on the centrepane
 	 */
 	public void draw(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		updateColor(); // Update the color before drawing
 		
-		g.setColor(color.black);
-		g.fillOval(x - 2, y - 2, diameter+4, diameter+4);
-		g.setColor(color);
-		g.fillOval(x, y, diameter, diameter);
+		int x = this.x - diameter/2;
+		int y = this.y - diameter/2;
 		
-		g.setColor(color.black);
-		g.drawString(name, x - 4, y + 40);
+		g2d.setColor(color.black);
+		g2d.fillOval(x - 2, y - 2, diameter + 4, diameter + 4);
+		g2d.setColor(color);
+		g2d.fillOval(x, y, diameter, diameter);
+		
+		g2d.setColor(color.black);
+		g2d.drawString(name, this.x - 4, this.y + diameter/2 + 15);
+		
+		g2d.dispose();
 	}
 	
 
