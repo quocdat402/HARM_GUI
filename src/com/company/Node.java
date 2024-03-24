@@ -38,26 +38,35 @@ public class Node implements Serializable{
 		
 	}
 	
+	/*
+	 * Update the color based on the type of node
+	 */
+
+	 public void updateColor() {
+		if (isAttacker()) {
+			setColor(new Color(232, 90, 90));
+		} else if (isTarget()) {
+			setColor(new Color(90, 232, 102));
+		} else {
+			setColor(Color.WHITE);
+		}
+	}
+
 	/**
 	 * Draw a node on the centrepane
 	 */
 	public void draw(Graphics g) {
+		updateColor(); // Update the color before drawing
 		
-		/*
-		 * Draw a node
-		 */
 		g.setColor(color.black);
 		g.fillOval(x - 2, y - 2, diameter+4, diameter+4);
 		g.setColor(color);
 		g.fillOval(x, y, diameter, diameter);
 		
-		/*
-		 * Show the name of the node below the node
-		 */
 		g.setColor(color.black);
 		g.drawString(name, x - 4, y + 40);
-		
 	}
+	
 
 	/*Getters and Setters*/
 	public int getX() {

@@ -2,9 +2,6 @@ package adapters;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.company.Arc;
 import com.company.MainController;
 import com.company.MainModel;

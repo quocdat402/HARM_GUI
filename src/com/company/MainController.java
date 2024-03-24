@@ -385,82 +385,60 @@ public class MainController {
 	 * Set up the attacker of the node
 	 */
 	public void nodeAttacker() {
-
 		int AttackerSetting = 0;
-
+	
 		for (int i = 0; i < model.getNodes().size(); i++) {
-			
-			if( i == nodePropertyInt) {
-				
+			if (i == nodePropertyInt) {
 				continue;
 			}
-			
-			if (model.getNodes().get(i).isAttacker() == true) {
-				
+			if (model.getNodes().get(i).isAttacker()) {
 				AttackerSetting = 1;
-				
-			} 
-
+			}
 		}
 		
-		if(AttackerSetting == 1) {
-			
+		if (AttackerSetting == 1) {
 			JOptionPane.showMessageDialog(null, "Attacker is already set");
-			
-		} else if(!(model.getNodes().get(nodePropertyInt).isAttacker())) {
-
+		} else if (!model.getNodes().get(nodePropertyInt).isAttacker()) {
 			model.getNodes().get(nodePropertyInt).setAttacker(true);
 			model.getNodes().get(nodePropertyInt).setName("Attacker");
+			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
 			view.getCenterPanel().repaint();
-		} else if((model.getNodes().get(nodePropertyInt).isAttacker())) {
-			
+		} else if (model.getNodes().get(nodePropertyInt).isAttacker()) {
 			model.getNodes().get(nodePropertyInt).setAttacker(false);
 			model.getNodes().get(nodePropertyInt).setName("node " + model.getNodes().get(nodePropertyInt).getNumber());
+			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
 			view.getCenterPanel().repaint();
-			
-		}		
-		
+		}
 	}
 
 	/**
 	 * Set up the target of the node
 	 */
 	public void nodeTarget() {
-
 		int targetSetting = 0;
-
+	
 		for (int i = 0; i < model.getNodes().size(); i++) {
-			
-			if( i == nodePropertyInt) {
-				
+			if (i == nodePropertyInt) {
 				continue;
 			}
-			
-			if (model.getNodes().get(i).isTarget() == true) {
-				
+			if (model.getNodes().get(i).isTarget()) {
 				targetSetting = 1;
 			}
-
 		}
-
+	
 		if (targetSetting == 1) {
-
 			JOptionPane.showMessageDialog(null, "Target is already set");
-			
-		} else if(!(model.getNodes().get(nodePropertyInt).isTarget())) {
-
+		} else if (!model.getNodes().get(nodePropertyInt).isTarget()) {
 			model.getNodes().get(nodePropertyInt).setTarget(true);
 			model.getNodes().get(nodePropertyInt).setName("Target");
+			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
 			view.getCenterPanel().repaint();
-			
-		} else if((model.getNodes().get(nodePropertyInt).isTarget())) {
-			
+		} else if (model.getNodes().get(nodePropertyInt).isTarget()) {
 			model.getNodes().get(nodePropertyInt).setTarget(false);
 			model.getNodes().get(nodePropertyInt).setName("node " + model.getNodes().get(nodePropertyInt).getNumber());
+			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
 			view.getCenterPanel().repaint();
-			
 		}
-
 	}
 
 	/**
