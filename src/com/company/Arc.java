@@ -3,7 +3,6 @@ package com.company;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -61,25 +60,12 @@ public class Arc implements Serializable {
 	 */
 	public void drawLine(Graphics g) {
 		/*Draw the line between two points (x1, y1), (x2, y2)*/
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		g2d.setColor(color);
-		drawArrow(g2d, x1, y1, x2, y2);
-		
-		int textX = (x1 + x2) / 2;
-		int textY = (y1 + y2) / 2;
-		double dx = x2 - x1;
-		double dy = y2 - y1;
-		double angle = Math.atan2(dy, dx);
-		
-		AffineTransform oldTransform = g2d.getTransform();
-		g2d.translate(textX, textY);
-		g2d.rotate(angle);
+		g.setColor(color);
+		drawArrow(g, x1, y1, x2, y2);
+
+		/*Show the value of vulnerability above the arc*/
+		g.setColor(color.black);
 		g.drawString("Arc" + String.valueOf(number), (x1 + x2) / 2, (y1 + y2) / 2 + 25);
-		g2d.setTransform(oldTransform);
-    
-    	g2d.dispose();
 	}
 
 	/**
@@ -87,6 +73,7 @@ public class Arc implements Serializable {
 	 */
 	void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
 		Graphics2D g = (Graphics2D) g1.create();
+
 		double dx = x2 - x1, dy = y2 - y1;
 		double angle = Math.atan2(dy, dx);
 		int len = (int) Math.sqrt(dx * dx + dy * dy);

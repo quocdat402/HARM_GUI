@@ -33,7 +33,8 @@ public class ArcInfoMouseAdapter extends MouseAdapter {
 
 		for (int i = 0; i < model.getArcs().size(); i++) {
 
-			Arc arc = model.getArcs().get(i);		
+			Arc arc = model.getArcs().get(i);
+			
 			/*
 			 * Check that user's mouse pointer is on any one of the arc the centrepane
 			 */

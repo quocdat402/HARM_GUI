@@ -12,8 +12,6 @@ public class Node implements Serializable{
 	 * add default serial number
 	 */
 	private static final long serialVersionUID = 1L;
-
-	public static final double SELECTION_THRESHOLD = 25;
 	
 	private int x;
 	private int y;
@@ -60,23 +58,18 @@ public class Node implements Serializable{
 	 * Draw a node on the centrepane
 	 */
 	public void draw(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
 		updateColor(); // Update the color before drawing
-		
-		int x = this.x - diameter/2;
-		int y = this.y - diameter/2;
+	
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		g2d.setColor(color.black);
 		g2d.fillOval(x - 2, y - 2, diameter + 4, diameter + 4);
 		g2d.setColor(color);
 		g2d.fillOval(x, y, diameter, diameter);
-		
+	
 		g2d.setColor(color.black);
-		g2d.drawString(name, this.x - 4, this.y + diameter/2 + 15);
-		
-		g2d.dispose();
+		g2d.drawString(name, x - 4, y + 40);	
 	}
 	
 
