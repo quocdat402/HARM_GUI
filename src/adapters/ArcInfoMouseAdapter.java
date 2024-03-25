@@ -13,7 +13,7 @@ public class ArcInfoMouseAdapter extends MouseAdapter {
 	private MainModel model;
 	private MainView view;
 	private MainController controller;
-	
+
 	/**
 	 * Initialize ArcInfoMouseAdapter
 	 */
@@ -42,6 +42,8 @@ public class ArcInfoMouseAdapter extends MouseAdapter {
 					e.getX(), e.getY()) < distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
 
 				if (e.isPopupTrigger()) {
+					view.setArcPopupX(e.getX());
+                	view.setArcPopupY(e.getY());
 					view.getArcPopUp().show(e.getComponent(), e.getX(), e.getY());					
 					controller.setArcPropertyInt(i);
 				}
@@ -69,6 +71,8 @@ public class ArcInfoMouseAdapter extends MouseAdapter {
 					e.getX(), e.getY()) < distance(arc.getX1(), arc.getY1(), arc.getX2(), arc.getY2()) * 1.002) {
 
 				if (e.isPopupTrigger()) {
+					view.setArcPopupX(e.getX());
+                	view.setArcPopupY(e.getY());
 					view.getArcPopUp().show(e.getComponent(), e.getX(), e.getY());
 					controller.setArcPropertyInt(i);
 				}

@@ -215,6 +215,8 @@ public class MainController {
 		view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
 		view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
 		view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
+		// Set the location of the arcFrame based on the stored mouse click coordinates
+		view.getArcFrame().setLocation(view.getArcPopupX(), view.getArcPopupY());
 		view.getArcFrame().setVisible(true);
 		
 		
