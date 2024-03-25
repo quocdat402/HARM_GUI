@@ -213,7 +213,7 @@ public class MainView extends JFrame {
         
         /*Arc pop up menu*/
         arcPopUp = new JPopupMenu("Arc pop-up");
-        arcProperties = new JMenuItem("Properties"); 
+        arcProperties = new JMenuItem("Set Vulnerability"); 
         arcPopUp.add(arcProperties);
         arcPanel = new JPanel();
         arcPanel.setLayout(null);
