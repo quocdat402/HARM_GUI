@@ -79,14 +79,8 @@ public class NodeMouseAdapter extends MouseAdapter implements Command{
 			}
 		}
 
-		// Reset the arc numbers
-		for (int i = 0; i < model.getArcs().size(); i++) {
-			model.getArcs().get(i).setNumber(i);
-		}
-
 		controller.setNodeNumber(controller.getNodeNumber() + 1);
 		System.out.println("Add Node - Redo!");
-		view.getCenterPanel().repaint(); // Repaint the panel to reflect the changes
 	}
 
 	/**
@@ -109,14 +103,8 @@ public class NodeMouseAdapter extends MouseAdapter implements Command{
 			}
 		}
 
-		// Reset the arc numbers
-		for (int i = 0; i < model.getArcs().size(); i++) {
-			model.getArcs().get(i).setNumber(i);
-		}
-
 		controller.setNodeNumber(controller.getNodeNumber() - 1);
 		System.out.println("Remove Node - Undo!");
-		view.getCenterPanel().repaint(); // Repaint the panel to reflect the changes
 	}
 
 }

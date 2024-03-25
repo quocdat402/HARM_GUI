@@ -83,9 +83,6 @@ public class MainView extends JFrame {
     private JFileChooser fileChooser;
     
     private MainModel model;
-
-	private int arcPopupX, arcPopupY;
-	
     
     
     /**
@@ -199,7 +196,7 @@ public class MainView extends JFrame {
         
         /*Arc properties Frame*/
         arcFrame = new JFrame();
-        arcFrame.setSize(220, 300);
+        arcFrame.setSize(170, 300);
         arcFrame.setTitle("Arc");      
         
         /*Node pop up menu*/
@@ -589,21 +586,5 @@ public class MainView extends JFrame {
 
 	public void setMntmProperty(JMenuItem mntmProperty) {
 		this.mntmProperty = mntmProperty;
-	}
-
-	public int getArcPopupX() {
-		return arcPopupX;
-	}
-	
-	public void setArcPopupX(int arcPopupX) {
-		this.arcPopupX = arcPopupX;
-	}
-	
-	public int getArcPopupY() {
-		return arcPopupY;
-	}
-	
-	public void setArcPopupY(int arcPopupY) {
-		this.arcPopupY = arcPopupY;
 	}
 }

@@ -50,7 +50,7 @@ public class Node implements Serializable{
 		} else if (isTarget()) {
 			setColor(new Color(90, 232, 102));
 		} else {
-			setColor(new Color(72, 136, 240));
+			setColor(Color.WHITE);
 		}
 	}
 
