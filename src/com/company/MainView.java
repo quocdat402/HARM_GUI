@@ -19,6 +19,8 @@ import java.util.Map;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import java.awt.Image;
 
 public class MainView extends JFrame {
     private JPanel contentPane;
@@ -144,51 +146,96 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP)); 
         contentPane.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(null);
-        
-        /*Undo button*/
-        btnUndo = new JButton("Undo");
-        btnUndo.setName("UndoButton");
-        btnUndo.setBackground(Color.LIGHT_GRAY);
-        northPanel.add(btnUndo);
-        
+
+		// Set size for the icons
+		// Set size for the icons
+		int iconWidth = 21;
+		int iconHeight = 21;
+
+		// Undo button
+		ImageIcon undoIcon = new ImageIcon(getClass().getResource("/icons/undo.png"));
+		Image undoImage = undoIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		undoIcon = new ImageIcon(undoImage);
+		btnUndo = new JButton("Undo", undoIcon);
+		btnUndo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnUndo.setHorizontalTextPosition(SwingConstants.CENTER); 
+		btnUndo.setName("UndoButton");
+		btnUndo.setBackground(Color.LIGHT_GRAY);
+		northPanel.add(btnUndo);
+				
         /*Redo button*/
-        btnRedo = new JButton("Redo");
+		ImageIcon redoIcon = new ImageIcon(getClass().getResource("/icons/redo.png"));
+		Image redoImage = redoIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		redoIcon = new ImageIcon(redoImage);
+        btnRedo = new JButton("Redo", redoIcon);
+		btnRedo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnRedo.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnRedo.setName("RedoButton");
         btnRedo.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnRedo);
         
         /*Node button*/
-        btnNode = new JButton("Node");
+		ImageIcon nodeIcon = new ImageIcon(getClass().getResource("/icons/node.png"));
+		Image nodeImage = nodeIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		nodeIcon = new ImageIcon(nodeImage);
+        btnNode = new JButton("Node", nodeIcon);
+		btnNode.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnNode.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnNode.setName("NodeButton");
         btnNode.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnNode);
         
         /*Arc button*/
-        btnArc = new JButton("Arc");
+		ImageIcon arcIcon = new ImageIcon(getClass().getResource("/icons/arc.png"));
+		Image arcImage = arcIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		arcIcon = new ImageIcon(arcImage);
+        btnArc = new JButton("Arc", arcIcon);
+		btnArc.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnArc.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnArc.setName("ArcButton");
         btnArc.setBackground(Color.LIGHT_GRAY);        
         northPanel.add(btnArc);
         
         /*Move button*/
-        btnMove = new JButton("Move");
+		ImageIcon moveIcon = new ImageIcon(getClass().getResource("/icons/move.png"));
+		Image moveImage = moveIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		moveIcon = new ImageIcon(moveImage);
+        btnMove = new JButton("Move", moveIcon);
+		btnMove.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnMove.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnMove.setName("MoveButton");
         btnMove.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnMove);
         
         /*Delete button*/
-        btnDelete = new JButton("Delete");
+		ImageIcon deleteIcon = new ImageIcon(getClass().getResource("/icons/delete.png"));
+		Image deleteImage = deleteIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		deleteIcon = new ImageIcon(deleteImage);
+        btnDelete = new JButton("Delete", deleteIcon);
+		btnDelete.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnDelete.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnDelete.setName("DeleteButton");
         btnDelete.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnDelete);
         
         /*Clear button*/
-        btnClear = new JButton("Clear");
+		ImageIcon clearIcon = new ImageIcon(getClass().getResource("/icons/clear.png"));
+		Image clearImage = clearIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		clearIcon = new ImageIcon(clearImage);
+        btnClear = new JButton("Clear", clearIcon);
+		btnClear.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnClear.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnClear.setName("ClearButton");
         btnClear.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnClear);
         
         /*GetInfo button*/
-        btnGetinfo = new JButton("GetInfo");
+		ImageIcon infoIcon = new ImageIcon(getClass().getResource("/icons/info.png"));
+		Image infoImage = infoIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		infoIcon = new ImageIcon(infoImage);
+        btnGetinfo = new JButton("Get Info", infoIcon);
+		btnGetinfo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
+		btnGetinfo.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnGetinfo.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnGetinfo);
         
