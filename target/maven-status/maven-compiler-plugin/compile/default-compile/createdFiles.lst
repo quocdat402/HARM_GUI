@@ -1,4 +1,5 @@
 test\UnitTest.class
+com\company\RoundedButton.class
 com\company\MetricsView$1.class
 com\company\MetricsView$4.class
 test\GUITest.class

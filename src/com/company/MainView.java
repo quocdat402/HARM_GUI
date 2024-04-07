@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import java.awt.Image;
 
 public class MainView extends JFrame {
+
     private JPanel contentPane;
     private JPanel northPanel;
     private MyJPanel centerPanel;
@@ -87,9 +88,8 @@ public class MainView extends JFrame {
     private MainModel model;
 
 	private int arcPopupX, arcPopupY;
-	
-    
-    
+
+   
     /**
      * Implements any representation of information of HARMs GUI.
      */
@@ -106,7 +106,7 @@ public class MainView extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
-        setTitle("HARMs Simulator Prototype");
+        setTitle("HARMs Simulator v0.0.1");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
         
@@ -151,15 +151,17 @@ public class MainView extends JFrame {
 		// Set size for the icons
 		int iconWidth = 21;
 		int iconHeight = 21;
+		int buttonRadius = 7;
 
 		// Undo button
 		ImageIcon undoIcon = new ImageIcon(getClass().getResource("/icons/undo.png"));
 		Image undoImage = undoIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		undoIcon = new ImageIcon(undoImage);
-		btnUndo = new JButton("Undo", undoIcon);
+		btnUndo = new RoundedButton("Undo", undoIcon, buttonRadius);
 		btnUndo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnUndo.setHorizontalTextPosition(SwingConstants.CENTER); 
 		btnUndo.setName("UndoButton");
+
 		btnUndo.setBackground(Color.LIGHT_GRAY);
 		northPanel.add(btnUndo);
 				
@@ -167,10 +169,11 @@ public class MainView extends JFrame {
 		ImageIcon redoIcon = new ImageIcon(getClass().getResource("/icons/redo.png"));
 		Image redoImage = redoIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		redoIcon = new ImageIcon(redoImage);
-        btnRedo = new JButton("Redo", redoIcon);
+        btnRedo = new RoundedButton("Redo", redoIcon, buttonRadius);
 		btnRedo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnRedo.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnRedo.setName("RedoButton");
+		
         btnRedo.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnRedo);
         
@@ -178,10 +181,11 @@ public class MainView extends JFrame {
 		ImageIcon nodeIcon = new ImageIcon(getClass().getResource("/icons/node.png"));
 		Image nodeImage = nodeIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		nodeIcon = new ImageIcon(nodeImage);
-        btnNode = new JButton("Node", nodeIcon);
+        btnNode = new RoundedButton("Node", nodeIcon, buttonRadius);
 		btnNode.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnNode.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnNode.setName("NodeButton");
+	
         btnNode.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnNode);
         
@@ -189,21 +193,23 @@ public class MainView extends JFrame {
 		ImageIcon arcIcon = new ImageIcon(getClass().getResource("/icons/arc.png"));
 		Image arcImage = arcIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		arcIcon = new ImageIcon(arcImage);
-        btnArc = new JButton("Arc", arcIcon);
+        btnArc = new RoundedButton("Arc", arcIcon, buttonRadius);
 		btnArc.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnArc.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnArc.setName("ArcButton");
-        btnArc.setBackground(Color.LIGHT_GRAY);        
+	
+        btnArc.setBackground(Color.LIGHT_GRAY);      
         northPanel.add(btnArc);
         
         /*Move button*/
 		ImageIcon moveIcon = new ImageIcon(getClass().getResource("/icons/move.png"));
 		Image moveImage = moveIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		moveIcon = new ImageIcon(moveImage);
-        btnMove = new JButton("Move", moveIcon);
+        btnMove = new RoundedButton("Move", moveIcon, buttonRadius);
 		btnMove.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnMove.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnMove.setName("MoveButton");
+
         btnMove.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnMove);
         
@@ -211,7 +217,7 @@ public class MainView extends JFrame {
 		ImageIcon deleteIcon = new ImageIcon(getClass().getResource("/icons/delete.png"));
 		Image deleteImage = deleteIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		deleteIcon = new ImageIcon(deleteImage);
-        btnDelete = new JButton("Delete", deleteIcon);
+        btnDelete = new RoundedButton("Delete", deleteIcon, buttonRadius);
 		btnDelete.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnDelete.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnDelete.setName("DeleteButton");
@@ -222,7 +228,7 @@ public class MainView extends JFrame {
 		ImageIcon clearIcon = new ImageIcon(getClass().getResource("/icons/clear.png"));
 		Image clearImage = clearIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		clearIcon = new ImageIcon(clearImage);
-        btnClear = new JButton("Clear", clearIcon);
+        btnClear = new RoundedButton("Clear", clearIcon, buttonRadius);
 		btnClear.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnClear.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnClear.setName("ClearButton");
@@ -233,9 +239,10 @@ public class MainView extends JFrame {
 		ImageIcon infoIcon = new ImageIcon(getClass().getResource("/icons/info.png"));
 		Image infoImage = infoIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
 		infoIcon = new ImageIcon(infoImage);
-        btnGetinfo = new JButton("Get Info", infoIcon);
+        btnGetinfo = new RoundedButton("Info", infoIcon, buttonRadius);
 		btnGetinfo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnGetinfo.setHorizontalTextPosition(SwingConstants.CENTER); 
+		btnGetinfo.setName("GetInfoButton");
         btnGetinfo.setBackground(Color.LIGHT_GRAY);
         northPanel.add(btnGetinfo);
         
@@ -654,3 +661,4 @@ public class MainView extends JFrame {
 		this.arcPopupY = arcPopupY;
 	}
 }
+
