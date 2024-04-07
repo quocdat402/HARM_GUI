@@ -215,6 +215,7 @@ public class MainController {
 		view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
 		view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
 		view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
+	    view.getArcFrame().setLocation(view.getArcPopupX(), view.getArcPopupY());
 		view.getArcFrame().setVisible(true);
 		
 		

@@ -66,10 +66,27 @@ public class NodeMouseAdapter extends MouseAdapter implements Command{
 	 */
 	@Override
 	public void execute() {
-
 		model.getNodes().add(nodeRedo);
+
+		// Reset the node numbers and names
+		for (int i = 0; i < model.getNodes().size(); i++) {
+			Node node = model.getNodes().get(i);
+			node.setNumber(i);
+			if (node.isAttacker() || node.isTarget()) {
+				node.setName(node.isAttacker() ? "Attacker" : "Target");
+			} else {
+				node.setName("node " + i);
+			}
+		}
+
+		// Reset the arc numbers
+		for (int i = 0; i < model.getArcs().size(); i++) {
+			model.getArcs().get(i).setNumber(i);
+		}
+
+		controller.setNodeNumber(controller.getNodeNumber() + 1);
 		System.out.println("Add Node - Redo!");
-	
+		view.getCenterPanel().repaint(); // Repaint the panel to reflect the changes
 	}
 
 	/**
@@ -77,12 +94,29 @@ public class NodeMouseAdapter extends MouseAdapter implements Command{
 	 */
 	@Override
 	public void undo() {
-
 		int undoNodeIndex = model.getNodes().size() - 1;
 		nodeRedo = model.getNodes().get(undoNodeIndex);
 		model.getNodes().remove(undoNodeIndex);
+
+		// Reset the node numbers and names
+		for (int i = 0; i < model.getNodes().size(); i++) {
+			Node node = model.getNodes().get(i);
+			node.setNumber(i);
+			if (node.isAttacker() || node.isTarget()) {
+				node.setName(node.isAttacker() ? "Attacker" : "Target");
+			} else {
+				node.setName("node " + i);
+			}
+		}
+
+		// Reset the arc numbers
+		for (int i = 0; i < model.getArcs().size(); i++) {
+			model.getArcs().get(i).setNumber(i);
+		}
+
+		controller.setNodeNumber(controller.getNodeNumber() - 1);
 		System.out.println("Remove Node - Undo!");
-	
+		view.getCenterPanel().repaint(); // Repaint the panel to reflect the changes
 	}
 
 }
