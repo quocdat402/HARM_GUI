@@ -648,23 +648,28 @@ public class MainController {
 	 * Open server
 	 */
 	public void openServer() {
-		
-		String[] command = {"python3", "Server.py",String.valueOf(port)};
-		try {				
+		String[] command = {"python3", "Server.py", String.valueOf(port)};
+		try {
 			Process p = Runtime.getRuntime().exec(command);
-			InputStreamConsumerThread inputConsumer = 
+			InputStreamConsumerThread inputConsumer =
 					new InputStreamConsumerThread(p.getInputStream(), true);
 			InputStreamConsumerThread errorConsumer =
 					new InputStreamConsumerThread(p.getErrorStream(), true);
-			
+	
 			inputConsumer.start();
 			errorConsumer.start();
-			
-			//TimeUnit.MILLISECONDS.sleep(1000);
+	
+			int exitCode = p.waitFor(); // Wait for the process to finish
+			if (exitCode != 0) {
+				System.err.println("Server process exited with code: " + exitCode);
+			}
 		} catch (IOException e) {
-			
+			System.err.println("Error starting the server process: " + e.getMessage());
 			e.printStackTrace();
-		} 		
+		} catch (InterruptedException e) {
+			System.err.println("Server process interrupted: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	/**
