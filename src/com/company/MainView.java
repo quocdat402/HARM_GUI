@@ -152,6 +152,7 @@ public class MainView extends JFrame {
 		int iconWidth = 21;
 		int iconHeight = 21;
 		int buttonRadius = 7;
+		Insets buttonMargin = new Insets(5, 10, 5, 10); 
 
 		// Undo button
 		ImageIcon undoIcon = new ImageIcon(getClass().getResource("/icons/undo.png"));
@@ -161,8 +162,10 @@ public class MainView extends JFrame {
 		btnUndo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnUndo.setHorizontalTextPosition(SwingConstants.CENTER); 
 		btnUndo.setName("UndoButton");
-
+		btnUndo.setPreferredSize(new Dimension(75, 50));
+		btnUndo.setMaximumSize(btnUndo.getPreferredSize());
 		btnUndo.setBackground(Color.LIGHT_GRAY);
+		btnUndo.setMargin(buttonMargin);
 		northPanel.add(btnUndo);
 				
         /*Redo button*/
@@ -173,8 +176,10 @@ public class MainView extends JFrame {
 		btnRedo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnRedo.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnRedo.setName("RedoButton");
-		
+		btnRedo.setPreferredSize(new Dimension(75, 50));
+		btnRedo.setMaximumSize(btnRedo.getPreferredSize());
         btnRedo.setBackground(Color.LIGHT_GRAY);
+		btnRedo.setMargin(buttonMargin);
         northPanel.add(btnRedo);
         
         /*Node button*/
@@ -185,8 +190,10 @@ public class MainView extends JFrame {
 		btnNode.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnNode.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnNode.setName("NodeButton");
-	
+		btnNode.setPreferredSize(new Dimension(75, 50));
+		btnNode.setMaximumSize(btnNode.getPreferredSize());
         btnNode.setBackground(Color.LIGHT_GRAY);
+		btnNode.setMargin(buttonMargin);
         northPanel.add(btnNode);
         
         /*Arc button*/
@@ -197,8 +204,10 @@ public class MainView extends JFrame {
 		btnArc.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnArc.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnArc.setName("ArcButton");
-	
-        btnArc.setBackground(Color.LIGHT_GRAY);      
+		btnArc.setPreferredSize(new Dimension(75, 50));
+		btnArc.setMaximumSize(btnArc.getPreferredSize());
+        btnArc.setBackground(Color.LIGHT_GRAY);    
+		btnArc.setMargin(buttonMargin);  
         northPanel.add(btnArc);
         
         /*Move button*/
@@ -209,8 +218,10 @@ public class MainView extends JFrame {
 		btnMove.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnMove.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnMove.setName("MoveButton");
-
+		btnMove.setPreferredSize(new Dimension(75, 50));
+		btnMove.setMaximumSize(btnMove.getPreferredSize());
         btnMove.setBackground(Color.LIGHT_GRAY);
+		btnMove.setMargin(buttonMargin);
         northPanel.add(btnMove);
         
         /*Delete button*/
@@ -221,7 +232,10 @@ public class MainView extends JFrame {
 		btnDelete.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnDelete.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnDelete.setName("DeleteButton");
+		btnDelete.setPreferredSize(new Dimension(75, 50));
+		btnDelete.setMaximumSize(btnDelete.getPreferredSize());
         btnDelete.setBackground(Color.LIGHT_GRAY);
+		btnDelete.setMargin(buttonMargin);
         northPanel.add(btnDelete);
         
         /*Clear button*/
@@ -233,6 +247,9 @@ public class MainView extends JFrame {
 		btnClear.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnClear.setName("ClearButton");
         btnClear.setBackground(Color.LIGHT_GRAY);
+		btnClear.setPreferredSize(new Dimension(75, 50));
+		btnClear.setMaximumSize(btnClear.getPreferredSize());
+		btnClear.setMargin(buttonMargin);
         northPanel.add(btnClear);
         
         /*GetInfo button*/
@@ -244,6 +261,9 @@ public class MainView extends JFrame {
 		btnGetinfo.setHorizontalTextPosition(SwingConstants.CENTER); 
 		btnGetinfo.setName("GetInfoButton");
         btnGetinfo.setBackground(Color.LIGHT_GRAY);
+		btnGetinfo.setPreferredSize(new Dimension(75, 50));
+		btnGetinfo.setMaximumSize(btnGetinfo.getPreferredSize());
+		btnGetinfo.setMargin(buttonMargin);
         northPanel.add(btnGetinfo);
         
         /*Node properties Frame*/
