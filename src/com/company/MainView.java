@@ -284,14 +284,18 @@ public class MainView extends JFrame {
         nodeTarget = new JMenuItem("Set as the Target");
 		//nodeDelete = new JMenuItem("Delete");
         nodePopUp.add(nodeProperties);
+		nodePopUp.addSeparator();
         nodePopUp.add(nodeAttacker);
+		nodePopUp.addSeparator();
         nodePopUp.add(nodeTarget);
+		nodePopUp.addSeparator();
 		//nodePopUp.add(nodeDelete);
         
         /*Arc pop up menu*/
         arcPopUp = new JPopupMenu("Arc pop-up");
         arcProperties = new JMenuItem("Set Vulnerability"); 
         arcPopUp.add(arcProperties);
+		arcPopUp.addSeparator();
         arcPanel = new JPanel();
         arcPanel.setLayout(null);
         btnVul = new JButton("Okay");
