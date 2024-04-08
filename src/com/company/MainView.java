@@ -42,6 +42,7 @@ public class MainView extends JFrame {
     private JMenuItem nodeProperties;
     private JMenuItem nodeAttacker;
     private JMenuItem nodeTarget;
+	//private JMenuItem nodeDelete;
     private JMenuItem arcProperties;
     
     private JFrame nodeFrame;    
@@ -281,13 +282,15 @@ public class MainView extends JFrame {
         nodeProperties = new JMenuItem("Properties");
         nodeAttacker = new JMenuItem("Set as the Attacker");
         nodeTarget = new JMenuItem("Set as the Target");
+		//nodeDelete = new JMenuItem("Delete");
         nodePopUp.add(nodeProperties);
         nodePopUp.add(nodeAttacker);
         nodePopUp.add(nodeTarget);
+		//nodePopUp.add(nodeDelete);
         
         /*Arc pop up menu*/
         arcPopUp = new JPopupMenu("Arc pop-up");
-        arcProperties = new JMenuItem("Properties"); 
+        arcProperties = new JMenuItem("Set Vulnerability"); 
         arcPopUp.add(arcProperties);
         arcPanel = new JPanel();
         arcPanel.setLayout(null);

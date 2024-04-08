@@ -62,7 +62,6 @@ public class Arc implements Serializable {
 		/*Draw the line between two points (x1, y1), (x2, y2)*/
 		g.setColor(color);
 		drawArrow(g, x1, y1, x2, y2);
-
 		/*Show the value of vulnerability above the arc*/
 		g.setColor(color.black);
 		//String tempName = "Arc" + String.valueOf(number);
