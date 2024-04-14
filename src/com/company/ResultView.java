@@ -14,6 +14,7 @@ import javax.swing.JTextPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 public class ResultView extends JFrame {
 
 	private static final long serialVersionUID = 22L;
@@ -49,7 +50,6 @@ public class ResultView extends JFrame {
 		contentPane.setLayout(null);
 		
 		list = new JList();
-		list.setVisible(false); 
 		
 		list.addMouseListener(new MouseAdapter() {
 			@Override

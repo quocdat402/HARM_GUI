@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -173,14 +174,18 @@ public class MainController {
 	 * Actions when okay button in ArcProperty is clicked
 	 */
 	public void vulButtonAction() {
-		
-		model.getArcs().get(arcPropertyInt).setRisk(Double.valueOf(view.getTxtRisk().getText()));
+		double probability = Double.parseDouble(view.getTxtProb().getText());
+		double impact = Double.parseDouble(view.getTxtImpact().getText());
+		double risk = probability * impact;
+	
 		model.getArcs().get(arcPropertyInt).setCost(Double.valueOf(view.getTxtCost().getText()));
-		model.getArcs().get(arcPropertyInt).setImpact(Double.valueOf(view.getTxtImpact().getText()));
-		model.getArcs().get(arcPropertyInt).setProbability(Double.valueOf(view.getTxtProb().getText()));
+		model.getArcs().get(arcPropertyInt).setProbability(probability);
+		model.getArcs().get(arcPropertyInt).setImpact(impact);
+		model.getArcs().get(arcPropertyInt).setRisk(risk);
+	
+		view.getTxtRisk().setText(String.valueOf(risk));
 		view.getArcFrame().setVisible(false);
 		view.getCenterPanel().repaint();
-		
 	}
 	
 	/**
@@ -212,9 +217,9 @@ public class MainController {
 		view.getLblArc().setText("Arc Number: " + String.valueOf(model.getArcs().get(arcPropertyInt).getNumber()));
 		view.getLblVul().setText("Vulnerability " + String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability() + 1));
 		view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
-		view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
 		view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
 		view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
+		view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
 	    view.getArcFrame().setLocation(view.getArcPopupX(), view.getArcPopupY());
 		view.getArcFrame().setVisible(true);
 		
@@ -386,60 +391,62 @@ public class MainController {
 	 * Set up the attacker of the node
 	 */
 	public void nodeAttacker() {
-		int AttackerSetting = 0;
+		int nodeIndex = nodePropertyInt;
+		Node currentNode = model.getNodes().get(nodeIndex);
 	
-		for (int i = 0; i < model.getNodes().size(); i++) {
-			if (i == nodePropertyInt) {
-				continue;
+		// Unset any existing target
+		if (currentNode.isAttacker()) {
+			currentNode.setAttacker(false);
+			currentNode.setName("node " + currentNode.getNumber());
+			currentNode.updateColor();
+		} else {
+			// Unset any existing attacker
+			for (Node node : model.getNodes()) {
+				if (node.isAttacker()) {
+					node.setAttacker(false);
+					node.setName("node " + node.getNumber());
+					node.updateColor();
+				}
 			}
-			if (model.getNodes().get(i).isAttacker()) {
-				AttackerSetting = 1;
-			}
+	
+			// Set the current node as the attacker
+			currentNode.setAttacker(true);
+			currentNode.setName("Attacker");
+			currentNode.updateColor();
 		}
-		
-		if (AttackerSetting == 1) {
-			JOptionPane.showMessageDialog(null, "Attacker is already set");
-		} else if (!model.getNodes().get(nodePropertyInt).isAttacker()) {
-			model.getNodes().get(nodePropertyInt).setAttacker(true);
-			model.getNodes().get(nodePropertyInt).setName("Attacker");
-			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
-			view.getCenterPanel().repaint();
-		} else if (model.getNodes().get(nodePropertyInt).isAttacker()) {
-			model.getNodes().get(nodePropertyInt).setAttacker(false);
-			model.getNodes().get(nodePropertyInt).setName("node " + model.getNodes().get(nodePropertyInt).getNumber());
-			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
-			view.getCenterPanel().repaint();
-		}
+	
+		view.getCenterPanel().repaint();
 	}
 
 	/**
 	 * Set up the target of the node
 	 */
 	public void nodeTarget() {
-		int targetSetting = 0;
+		int nodeIndex = nodePropertyInt;
+		Node currentNode = model.getNodes().get(nodeIndex);
+		
+		// Unset any existing attacker and target
+		if (currentNode.isTarget()) {
+			currentNode.setTarget(false);
+			currentNode.setName("node " + currentNode.getNumber());
+			currentNode.updateColor();
+		} else {
+			// Unset any existing target
+			for (Node node : model.getNodes()) {
+				if (node.isTarget()) {
+					node.setTarget(false);
+					node.setName("node " + node.getNumber());
+					node.updateColor();
+				}
+			}
 	
-		for (int i = 0; i < model.getNodes().size(); i++) {
-			if (i == nodePropertyInt) {
-				continue;
-			}
-			if (model.getNodes().get(i).isTarget()) {
-				targetSetting = 1;
-			}
+			// Set the current node as the target
+			currentNode.setTarget(true);
+			currentNode.setName("Target");
+			currentNode.updateColor();
 		}
 	
-		if (targetSetting == 1) {
-			JOptionPane.showMessageDialog(null, "Target is already set");
-		} else if (!model.getNodes().get(nodePropertyInt).isTarget()) {
-			model.getNodes().get(nodePropertyInt).setTarget(true);
-			model.getNodes().get(nodePropertyInt).setName("Target");
-			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
-			view.getCenterPanel().repaint();
-		} else if (model.getNodes().get(nodePropertyInt).isTarget()) {
-			model.getNodes().get(nodePropertyInt).setTarget(false);
-			model.getNodes().get(nodePropertyInt).setName("node " + model.getNodes().get(nodePropertyInt).getNumber());
-			model.getNodes().get(nodePropertyInt).updateColor(); // Update the color
-			view.getCenterPanel().repaint();
-		}
+		view.getCenterPanel().repaint();
 	}
 
 	/**

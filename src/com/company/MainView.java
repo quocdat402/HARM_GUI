@@ -21,6 +21,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Image;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 
 public class MainView extends JFrame {
 
@@ -81,12 +84,13 @@ public class MainView extends JFrame {
     private JMenuItem mntmMetrics;
     private JMenuItem mntmAttackgraph;
     
- 
+	
     
     private JFrame saveFrame;
     private JFileChooser fileChooser;
     
     private MainModel model;
+	private MainController controller;
 
 	private int arcPopupX, arcPopupY;
 
@@ -299,6 +303,7 @@ public class MainView extends JFrame {
         arcPanel = new JPanel();
         arcPanel.setLayout(null);
         btnVul = new JButton("Okay");
+		btnVul.addActionListener(e -> controller.vulButtonAction());
         btnVul.setBounds(30, 200, 70, 24);
         
         nodePanel = new JPanel();
@@ -315,10 +320,6 @@ public class MainView extends JFrame {
         
         lblArc = new JLabel("Arc");
         lblArc.setBounds(20, 20, 100, 24);
-        lblRisk = new JLabel("Risk");
-        lblRisk.setBounds(20, 80, 80, 24);
-        txtRisk = new JTextField();
-        txtRisk.setBounds(100, 80, 40, 24);
         lblCost = new JLabel("Cost");
         lblCost.setBounds(20, 110, 80, 24);
         txtCost = new JTextField();
@@ -327,22 +328,25 @@ public class MainView extends JFrame {
         lblProb.setBounds(20, 140, 80, 24);
         txtProb = new JFormattedTextField(getMaskFormatter("0.##"));
         txtProb.setBounds(100, 140, 40, 24);        
-        
         lblImpact = new JLabel("Impact");
         lblImpact.setBounds(20, 170, 80 , 24);
         txtImpact = new JTextField();
         txtImpact.setBounds(100, 170, 40, 24);
+		lblRisk = new JLabel("Risk");
+        lblRisk.setBounds(20, 80, 80, 24);
+        txtRisk = new JTextField();
+        txtRisk.setBounds(100, 80, 40, 24);
         
         arcPanel.add(lblArc);
         arcPanel.add(lblVul);        
-        arcPanel.add(lblRisk);
-        arcPanel.add(txtRisk);
         arcPanel.add(lblCost);
         arcPanel.add(txtCost);
         arcPanel.add(lblProb);
         arcPanel.add(txtProb);
         arcPanel.add(lblImpact);
         arcPanel.add(txtImpact);
+		arcPanel.add(lblRisk);
+        arcPanel.add(txtRisk);
         arcPanel.add(btnVul);
         
         /*Node pop-up menu*/
@@ -573,12 +577,7 @@ public class MainView extends JFrame {
 	public void setNodeTarget(JMenuItem nodeTarget) {
 		this.nodeTarget = nodeTarget;
 	}
-	public JLabel getLblRisk() {
-		return lblRisk;
-	}
-	public void setLblRisk(JLabel lblRisk) {
-		this.lblRisk = lblRisk;
-	}
+	
 	public JLabel getLblCost() {
 		return lblCost;
 	}
@@ -597,12 +596,13 @@ public class MainView extends JFrame {
 	public void setLblImpact(JLabel lblImpact) {
 		this.lblImpact = lblImpact;
 	}
-	public JTextField getTxtRisk() {
-		return txtRisk;
+	public JLabel getLblRisk() {
+		return lblRisk;
 	}
-	public void setTxtRisk(JTextField txtRisk) {
-		this.txtRisk = txtRisk;
+	public void setLblRisk(JLabel lblRisk) {
+		this.lblRisk = lblRisk;
 	}
+	
 	public JTextField getTxtCost() {
 		return txtCost;
 	}
@@ -614,6 +614,12 @@ public class MainView extends JFrame {
 	}
 	public void setTxtProb(JFormattedTextField txtProb) {
 		this.txtProb = txtProb;
+	}
+	public JTextField getTxtRisk() {
+		return txtRisk;
+	}
+	public void setTxtRisk(JTextField txtRisk) {
+		this.txtRisk = txtRisk;
 	}
 	
 	
