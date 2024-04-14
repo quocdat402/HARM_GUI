@@ -8,6 +8,7 @@ adapters\DeleteNodeMouseAdapter.class
 adapters\NodeMouseAdapter.class
 com\company\Main.class
 com\company\MainController$2.class
+com\company\ResultView$2.class
 undoredoStack\CommandStack.class
 com\company\MetricsView$3.class
 adapters\ArcInfoMouseAdapter.class

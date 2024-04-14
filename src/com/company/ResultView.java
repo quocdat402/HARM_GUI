@@ -49,6 +49,7 @@ public class ResultView extends JFrame {
 		contentPane.setLayout(null);
 		
 		list = new JList();
+		list.setVisible(false); 
 		
 		list.addMouseListener(new MouseAdapter() {
 			@Override
@@ -100,7 +101,7 @@ public class ResultView extends JFrame {
 			}
 		});
 		//Add menus in the list
-		/*
+		
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Risk", "Cost", "Attack lengths", "Probability", "All Results"};
 			public int getSize() {
@@ -110,7 +111,7 @@ public class ResultView extends JFrame {
 				return values[index];
 			}
 		});
-		*/
+		
 		list.setBounds(12, 41, 175, 210);
 		contentPane.add(list);
 		
