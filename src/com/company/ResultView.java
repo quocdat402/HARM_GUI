@@ -140,7 +140,7 @@ public class ResultView extends JFrame {
 				
 			}
 			
-			textPane.setText(textPane.getText() + "\n" + "Total Risk: " + Risk);
+			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Risk: " + Risk);
 			
 			break;					
 		case 1:
@@ -153,15 +153,18 @@ public class ResultView extends JFrame {
 				
 			}
 			
-			textPane.setText(textPane.getText() + "\n" + "Total Cost: " + Cost);
+			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Cost: " + Cost);
 			
 			break;
 		case 2:
 			
 			textPane.setText("");
 			textPane.setText(textPane.getText() + "\n" + "Mean of attack path lengths: " + Mean);
+			textPane.setText(textPane.getText() + "\n" + "-----------------------");
 			textPane.setText(textPane.getText() + "\n" + "Mode of attack path lengths: " + Mode);
+			textPane.setText(textPane.getText() + "\n" + "-----------------------");
 			textPane.setText(textPane.getText() + "\n" + "Shortest attack path length: " + Shortest);
+			textPane.setText(textPane.getText() + "\n" + "-----------------------");
 			textPane.setText(textPane.getText() + "\n" + "Standard Deviaton of attack path length: " + Standard);
 			
 			break;			
@@ -176,8 +179,7 @@ public class ResultView extends JFrame {
 				
 			}
 			
-			textPane.setText(textPane.getText() + "\n" + "Probability of Attack Success: " + Prob);
-			
+			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Probability of Attack Success: " + Prob);			
 			
 			break;
 				
