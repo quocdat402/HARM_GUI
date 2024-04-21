@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.RowSorterEvent;
@@ -60,15 +63,37 @@ public class MetricsView extends JFrame {
 		nodeNames = new ArrayList<String>();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 557, 270);
+		setBounds(100, 100, 650, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
+		
+
+		int iconWidth = 13; 
+        int iconHeight = 13;
+
+		ImageIcon connectionIcon = new ImageIcon(getClass().getResource("/icons/connection.png"));
+		Image connectionImage = connectionIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+        connectionIcon = new ImageIcon(connectionImage);
+
+		ImageIcon riskIcon = new ImageIcon(getClass().getResource("/icons/risk.png"));
+        Image riskImage = riskIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+        riskIcon = new ImageIcon(riskImage);
+
+        ImageIcon costIcon = new ImageIcon(getClass().getResource("/icons/cost.png"));
+        Image costImage = costIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+        costIcon = new ImageIcon(costImage);
+
+        ImageIcon probabilityIcon = new ImageIcon(getClass().getResource("/icons/probability.png"));
+        Image probabilityImage = probabilityIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+        probabilityIcon = new ImageIcon(probabilityImage);
+
+        ImageIcon impactIcon = new ImageIcon(getClass().getResource("/icons/impact.png"));
+        Image impactImage = impactIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+        impactIcon = new ImageIcon(impactImage);
 
 		for (Node node : model.getNodes()) {
-
 			nodeNames.add(node.getName());
-
 		}
 
 		nodeSize = model.getNodes().size();
@@ -128,8 +153,8 @@ public class MetricsView extends JFrame {
 		}
 		headerTable.setShowGrid(false);
 		headerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		headerTable.setPreferredScrollableViewportSize(new Dimension(50, 0));
-		headerTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+		headerTable.setPreferredScrollableViewportSize(new Dimension(60, 0));
+		headerTable.getColumnModel().getColumn(0).setPreferredWidth(60);
 		
 		//Add feature which color of font and cell changed when user clicks the cell
 		headerTable.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
@@ -168,7 +193,7 @@ public class MetricsView extends JFrame {
 		
 		//Add scrollpane to table
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 0, 547, 200);
+		scrollPane.setBounds(0, 0, 635, 200);
 		scrollPane.setRowHeaderView(headerTable);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -176,27 +201,44 @@ public class MetricsView extends JFrame {
 		getContentPane().add(scrollPane);
 
 		panel = new JPanel();
-		panel.setBounds(0, 199, 547, 33);
+		panel.setBounds(0, 199, 635, 33);
 		contentPane.add(panel);
+		
 		
 		//Buttons at the bottom of the frame
 		btnConnection = new JButton("Connection");
+		btnConnection.setIcon(connectionIcon);
+        btnConnection.setHorizontalTextPosition(SwingConstants.RIGHT);
+        btnConnection.setVerticalTextPosition(SwingConstants.CENTER);
+		//btnConnection.setPreferredSize(new Dimension(120, 30));
 		btnConnection.addActionListener(e->connectionAction());
 		panel.add(btnConnection);
 
 		btnRisk = new JButton("Risk");
+		btnRisk.setIcon(riskIcon);
+        btnRisk.setHorizontalTextPosition(SwingConstants.RIGHT);
+        btnRisk.setVerticalTextPosition(SwingConstants.CENTER);
 		btnRisk.addActionListener(e->riskAction());
 		panel.add(btnRisk);
 		
 		btnCost = new JButton("Cost");
+		btnCost.setIcon(costIcon);
+        btnCost.setHorizontalTextPosition(SwingConstants.RIGHT);
+        btnCost.setVerticalTextPosition(SwingConstants.CENTER);
 		btnCost.addActionListener(e->costAction());
 		panel.add(btnCost);
 		
 		btnProb = new JButton("Probability");
+		btnProb.setIcon(probabilityIcon);
+        btnProb.setHorizontalTextPosition(SwingConstants.RIGHT);
+        btnProb.setVerticalTextPosition(SwingConstants.CENTER);
 		btnProb.addActionListener(e->probAction());
 		panel.add(btnProb);
 		
 		btnImpact = new JButton("Impact");
+		btnImpact.setIcon(impactIcon);
+        btnImpact.setHorizontalTextPosition(SwingConstants.RIGHT);
+        btnImpact.setVerticalTextPosition(SwingConstants.CENTER);
 		btnImpact.addActionListener(e->impactAction());
 		panel.add(btnImpact);
 		

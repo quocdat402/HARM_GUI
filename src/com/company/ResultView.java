@@ -127,26 +127,16 @@ public class ResultView extends JFrame {
 
 	//When the user double click item in the list, the textPane shows related outputs.
 	public void listClickAction(int index) {
-		
 		switch(index) {					
-		
 		case 0:
-			
-			textPane.setText("");
-			
-			for(Arc arc: model.getArcs()) {
-				
-				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Risk: " + arc.getRisk());
-				
-			}
-			
-			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Risk: " + Risk);
-			
+			textPane.setText("");		
+			for(Arc arc: model.getArcs()) {	
+				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Risk: " + arc.getRisk());		
+			}		
+			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Risk: " + Risk);		
 			break;					
-		case 1:
-			
-			textPane.setText("");			
-			
+		case 1:		
+			textPane.setText("");					
 			for(Arc arc: model.getArcs()) {
 				
 				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Cost: " + arc.getCost());
