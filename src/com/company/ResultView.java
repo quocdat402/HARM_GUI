@@ -131,19 +131,16 @@ public class ResultView extends JFrame {
 		case 0:
 			textPane.setText("");		
 			for(Arc arc: model.getArcs()) {	
-				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Risk: " + arc.getRisk());		
+				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Risk: " + String.format("%.2f", arc.getRisk()));		
 			}		
-			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Risk: " + Risk);		
+			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Risk: " + String.format("%.2f", Double.parseDouble(Risk)));
 			break;					
 		case 1:		
 			textPane.setText("");					
 			for(Arc arc: model.getArcs()) {
-				
-				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Cost: " + arc.getCost());
-				
-			}
-			
-			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Cost: " + Cost);
+				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Cost: " + String.format("%.2f", arc.getCost()));				
+			}		
+			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Cost: " + String.format("%.2f", Double.parseDouble(Cost)));
 			
 			break;
 		case 2:
@@ -160,29 +157,18 @@ public class ResultView extends JFrame {
 			break;			
 	
 		case 3:
-			
 			textPane.setText("");
-			
-			for(Arc arc: model.getArcs()) {
-				
-				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Probability: " + arc.getProbability());
-				
+			for (Arc arc : model.getArcs()) {
+				textPane.setText(textPane.getText() + "\n" + "Node " + arc.getNumber() + " Probability: " + String.format("%.2f", arc.getProbability()));
 			}
-			
-			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Probability of Attack Success: " + Prob);			
-			
+			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Probability of Attack Success: " + String.format("%.2f", Double.parseDouble(Prob)));
 			break;
 				
-		case 4:
-			
-			textPane.setText("");
-			
-			for (String lineTemp : controller.getLines()) {
-			
+		case 4:		
+			textPane.setText("");			
+			for (String lineTemp : controller.getLines()) {			
 				ResultView.getTextPane().setText(ResultView.getTextPane().getText() + "\n" + lineTemp);
-
-			}
-			
+			}			
 			break;
 		}
 		

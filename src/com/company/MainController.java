@@ -183,7 +183,7 @@ public class MainController {
 		model.getArcs().get(arcPropertyInt).setImpact(impact);
 		model.getArcs().get(arcPropertyInt).setRisk(risk);
 	
-		view.getTxtRisk().setText(String.valueOf(risk));
+		view.getTxtRisk().setText(String.format("%.2f", risk));
 		view.getArcFrame().setVisible(false);
 		view.getCenterPanel().repaint();
 	}
@@ -216,10 +216,10 @@ public class MainController {
 		
 		view.getLblArc().setText("Arc Number: " + String.valueOf(model.getArcs().get(arcPropertyInt).getNumber()));
 		view.getLblVul().setText("Vulnerability " + String.valueOf(model.getArcs().get(arcPropertyInt).getVulnerability() + 1));
-		view.getTxtCost().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getCost()));
-		view.getTxtImpact().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getImpact()));
-		view.getTxtProb().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getProbability()));
-		view.getTxtRisk().setText(String.valueOf(model.getArcs().get(arcPropertyInt).getRisk()));
+		view.getTxtCost().setText(String.format("%.2f", model.getArcs().get(arcPropertyInt).getCost()));
+		view.getTxtImpact().setText(String.format("%.2f", model.getArcs().get(arcPropertyInt).getImpact()));
+		view.getTxtProb().setText(String.format("%.2f", model.getArcs().get(arcPropertyInt).getProbability()));
+		view.getTxtRisk().setText(String.format("%.2f", model.getArcs().get(arcPropertyInt).getRisk()));
 	    view.getArcFrame().setLocation(view.getArcPopupX(), view.getArcPopupY());
 		view.getArcFrame().setVisible(true);
 		

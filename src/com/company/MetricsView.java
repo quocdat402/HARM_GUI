@@ -258,44 +258,30 @@ public class MetricsView extends JFrame {
 	
 	//Shows value of Risks when Risk button is clicked
 	public void riskAction() {
-
 		for (Arc arc : model.getArcs()) {
-			
-			table.setValueAt(arc.getRisk(), arc.getInitNode(), arc.getEndNode());
-			
+			table.setValueAt(String.format("%.2f", arc.getRisk()), arc.getInitNode(), arc.getEndNode());	
 		}
 	}
 	
 	//Shows value of Costs when Cost button is clicked
 	public void costAction() {
-		
 		for(Arc arc: model.getArcs()) {
-			
-			table.setValueAt(arc.getCost(), arc.getInitNode(), arc.getEndNode());
-			
+			table.setValueAt(String.format("%.2f", arc.getCost()), arc.getInitNode(), arc.getEndNode());		
 		}
 	}
-	
+
 	//Shows value of Probability when Probability button is clicked
 	public void probAction() {
-		
 		for(Arc arc: model.getArcs()) {
-			
-			table.setValueAt(arc.getProbability(), arc.getInitNode(), arc.getEndNode());
-			
+			table.setValueAt(String.format("%.2f", arc.getProbability()), arc.getInitNode(), arc.getEndNode());	
 		}
-	
 	}
 	
 	//Shows value of Impact when impact button is clicked
 	public void impactAction() {
-		
-		for(Arc arc: model.getArcs()) {
-			
-			table.setValueAt(arc.getImpact(), arc.getInitNode(), arc.getEndNode());
-			
-		}
-		
+		for(Arc arc: model.getArcs()) {	
+			table.setValueAt(String.format("%.2f", arc.getImpact()), arc.getInitNode(), arc.getEndNode());	
+		}	
 	}
 
 	/*
