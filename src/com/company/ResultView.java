@@ -1,15 +1,19 @@
 package com.company;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.AbstractListModel;
+import javax.swing.BorderFactory;
 import javax.swing.JTextPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,6 +41,7 @@ public class ResultView extends JFrame {
 	/**
 	 * Create the Resut frame.
 	 */
+	@SuppressWarnings("unchecked")
 	public ResultView(MainModel m, MainController c) {
 		
 		this.model = m;
@@ -47,9 +52,13 @@ public class ResultView extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout());
 		
-		list = new JList();
+		list = new JList<>();
+
+		list.setCellRenderer(new CustomListCellRenderer());
+		list.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 5));
+		list.setBackground(new Color(240, 240, 240));
 		
 		list.addMouseListener(new MouseAdapter() {
 			@Override
@@ -101,13 +110,15 @@ public class ResultView extends JFrame {
 			}
 		});
 		//Add menus in the list
+
+		list.setModel(new AbstractListModel<String>() {
+			String[] values = new String[] {"Risk", "Cost", "Attack Lengths", "Probability", "All Results"};
 		
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Risk", "Cost", "Attack lengths", "Probability", "All Results"};
 			public int getSize() {
 				return values.length;
 			}
-			public Object getElementAt(int index) {
+		
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -115,14 +126,30 @@ public class ResultView extends JFrame {
 		list.setBounds(12, 41, 175, 210);
 		contentPane.add(list);
 		
-		JLabel lblOutput = new JLabel("Output");
-		lblOutput.setBounds(372, 16, 57, 15);
-		contentPane.add(lblOutput);
+		//JLabel lblOutput = new JLabel("Output");
+		//lblOutput.setBounds(372, 16, 57, 15);
+		//contentPane.add(lblOutput);
+
+		JScrollPane listScrollPane = new JScrollPane(list);
 		
 		textPane = new JTextPane();
 		textPane.setEditable(false);
 		textPane.setBounds(199, 41, 373, 210);
 		contentPane.add(textPane);
+
+		JScrollPane textScrollPane = new JScrollPane(textPane);
+		textScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		textScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollPane, textScrollPane);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setDividerLocation(200); 
+
+		contentPane.add(splitPane, BorderLayout.CENTER);
+
+		JLabel lblOutput = new JLabel("Output");
+		lblOutput.setBounds(372, 16, 57, 15);
+    	contentPane.add(lblOutput, BorderLayout.NORTH);
 	}
 
 	//When the user double click item in the list, the textPane shows related outputs.

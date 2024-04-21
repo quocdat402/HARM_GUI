@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import java.awt.Image;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.Insets;
 
 
 public class MainView extends JFrame {

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionListener;
+import java.awt.Insets;
 
 public class MetricsView extends JFrame {
 
@@ -63,14 +66,14 @@ public class MetricsView extends JFrame {
 		nodeNames = new ArrayList<String>();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 270);
+		setBounds(100, 100, 700, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		
 
-		int iconWidth = 13; 
-        int iconHeight = 13;
+		int iconWidth = 15; 
+        int iconHeight = 15;
 
 		ImageIcon connectionIcon = new ImageIcon(getClass().getResource("/icons/connection.png"));
 		Image connectionImage = connectionIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
@@ -193,7 +196,7 @@ public class MetricsView extends JFrame {
 		
 		//Add scrollpane to table
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 0, 635, 200);
+		scrollPane.setBounds(0, 0, 685, 200);
 		scrollPane.setRowHeaderView(headerTable);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -201,46 +204,69 @@ public class MetricsView extends JFrame {
 		getContentPane().add(scrollPane);
 
 		panel = new JPanel();
-		panel.setBounds(0, 199, 635, 33);
+		panel.setBounds(0, 199, 685, 33);
 		contentPane.add(panel);
+
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(2, 2, 2, 2);
 		
+		Dimension buttonSize = new Dimension(110, 25);
+		Insets buttonMargin = new Insets(2, 5, 2, 5);
 		
+
 		//Buttons at the bottom of the frame
 		btnConnection = new JButton("Connection");
 		btnConnection.setIcon(connectionIcon);
         btnConnection.setHorizontalTextPosition(SwingConstants.RIGHT);
         btnConnection.setVerticalTextPosition(SwingConstants.CENTER);
-		//btnConnection.setPreferredSize(new Dimension(120, 30));
+		btnConnection.setPreferredSize(buttonSize);
+		btnConnection.setMargin(buttonMargin);
 		btnConnection.addActionListener(e->connectionAction());
-		panel.add(btnConnection);
+		panel.add(btnConnection, gbc);
+		gbc.gridx++;
 
 		btnRisk = new JButton("Risk");
 		btnRisk.setIcon(riskIcon);
         btnRisk.setHorizontalTextPosition(SwingConstants.RIGHT);
         btnRisk.setVerticalTextPosition(SwingConstants.CENTER);
+		btnRisk.setPreferredSize(buttonSize);
+		btnRisk.setMargin(buttonMargin);
 		btnRisk.addActionListener(e->riskAction());
-		panel.add(btnRisk);
+		panel.add(btnRisk, gbc);
+		gbc.gridx++;
 		
 		btnCost = new JButton("Cost");
 		btnCost.setIcon(costIcon);
         btnCost.setHorizontalTextPosition(SwingConstants.RIGHT);
         btnCost.setVerticalTextPosition(SwingConstants.CENTER);
+		btnCost.setPreferredSize(buttonSize);
+		btnCost.setMargin(buttonMargin);
 		btnCost.addActionListener(e->costAction());
-		panel.add(btnCost);
+		panel.add(btnCost, gbc);
+		gbc.gridx++;
 		
 		btnProb = new JButton("Probability");
 		btnProb.setIcon(probabilityIcon);
         btnProb.setHorizontalTextPosition(SwingConstants.RIGHT);
         btnProb.setVerticalTextPosition(SwingConstants.CENTER);
+		btnProb.setPreferredSize(buttonSize);
+		btnProb.setMargin(buttonMargin);
 		btnProb.addActionListener(e->probAction());
-		panel.add(btnProb);
-		
+		panel.add(btnProb, gbc);
+		gbc.gridx++;
+
 		btnImpact = new JButton("Impact");
 		btnImpact.setIcon(impactIcon);
         btnImpact.setHorizontalTextPosition(SwingConstants.RIGHT);
         btnImpact.setVerticalTextPosition(SwingConstants.CENTER);
+		btnImpact.setPreferredSize(buttonSize);
+		btnImpact.setMargin(buttonMargin);
 		btnImpact.addActionListener(e->impactAction());
-		panel.add(btnImpact);
+		panel.add(btnImpact,gbc);
+		gbc.gridx++;
 		
 		this.setLocation(150, 150);
 		this.setVisible(true);

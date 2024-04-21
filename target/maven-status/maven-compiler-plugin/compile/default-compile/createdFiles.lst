@@ -13,6 +13,7 @@ adapters\DeleteArcMouseAdapter.class
 undoredoStack\QueueStack.class
 com\company\MetricsView$2.class
 com\company\MainView$MyJPanel.class
+com\company\CustomListCellRenderer.class
 adapters\NodeInfoMouseAdapter.class
 com\company\MainController$1.class
 test\UnitTest.class
