@@ -143,8 +143,7 @@ public class ResultView extends JFrame {
 			textPane.setText(textPane.getText() + "\n" + "-----------------------" + "\n" + "Total Cost: " + String.format("%.2f", Double.parseDouble(Cost)));
 			
 			break;
-		case 2:
-			
+		case 2:			
 			textPane.setText("");
 			textPane.setText(textPane.getText() + "\n" + "Mean of attack path lengths: " + Mean);
 			textPane.setText(textPane.getText() + "\n" + "-----------------------");
@@ -152,8 +151,7 @@ public class ResultView extends JFrame {
 			textPane.setText(textPane.getText() + "\n" + "-----------------------");
 			textPane.setText(textPane.getText() + "\n" + "Shortest attack path length: " + Shortest);
 			textPane.setText(textPane.getText() + "\n" + "-----------------------");
-			textPane.setText(textPane.getText() + "\n" + "Standard Deviaton of attack path length: " + Standard);
-			
+			textPane.setText(textPane.getText() + "\n" + "Standard Deviaton of attack path length: " + Standard);			
 			break;			
 	
 		case 3:

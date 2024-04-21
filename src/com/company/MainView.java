@@ -304,7 +304,7 @@ public class MainView extends JFrame {
         arcPanel.setLayout(null);
         btnVul = new JButton("Okay");
 		btnVul.addActionListener(e -> controller.vulButtonAction());
-        btnVul.setBounds(30, 200, 70, 24);
+        btnVul.setBounds(30, 230, 70, 24);
         
         nodePanel = new JPanel();
         nodePanel.setLayout(null);        
@@ -321,21 +321,22 @@ public class MainView extends JFrame {
         lblArc = new JLabel("Arc");
         lblArc.setBounds(20, 20, 100, 24);
         lblCost = new JLabel("Cost");
-        lblCost.setBounds(20, 110, 80, 24);
+        lblCost.setBounds(20, 80, 80, 24);
         txtCost = new JTextField();
-        txtCost.setBounds(100, 110, 40, 24);
-        lblProb = new JLabel("Prob");
-        lblProb.setBounds(20, 140, 80, 24);
+        txtCost.setBounds(100, 80, 40, 24);
+        lblProb = new JLabel("Probability");
+        lblProb.setBounds(20, 110, 80, 24);
         txtProb = new JFormattedTextField(getMaskFormatter("0.##"));
-        txtProb.setBounds(100, 140, 40, 24);        
+        txtProb.setBounds(100, 110, 40, 24);      
         lblImpact = new JLabel("Impact");
-        lblImpact.setBounds(20, 170, 80 , 24);
+        lblImpact.setBounds(20, 140, 80, 24);
         txtImpact = new JTextField();
-        txtImpact.setBounds(100, 170, 40, 24);
+        txtImpact.setBounds(100, 140, 40, 24);
 		lblRisk = new JLabel("Risk");
-        lblRisk.setBounds(20, 80, 80, 24);
+        lblRisk.setBounds(20, 170, 80, 24);
         txtRisk = new JTextField();
-        txtRisk.setBounds(100, 80, 40, 24);
+        txtRisk.setBounds(100, 170, 40, 24);
+		txtRisk.setEditable(false);
         
         arcPanel.add(lblArc);
         arcPanel.add(lblVul);        
@@ -357,10 +358,55 @@ public class MainView extends JFrame {
         nodePanel.add(btnName);
         nodePanel.add(lblNode); 
         arcFrame.getContentPane().add(arcPanel);        
-        nodeFrame.getContentPane().add(nodePanel);        
+        nodeFrame.getContentPane().add(nodePanel);
+		
+		txtProb.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				calculateRisk();
+			}
+		
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				calculateRisk();
+			}
+		
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				calculateRisk();
+			}
+		});
+		
+		txtImpact.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				calculateRisk();
+			}
+		
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				calculateRisk();
+			}
+		
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				calculateRisk();
+			}
+		});
         
         
     }
+
+	private void calculateRisk() {
+		try {
+			double probability = Double.parseDouble(txtProb.getText());
+			double impact = Double.parseDouble(txtImpact.getText());
+			double risk = probability * impact;
+			txtRisk.setText(String.format("%.2f", risk));
+		} catch (NumberFormatException e) {
+			txtRisk.setText("");
+		}
+	}
     
     /**
      * Set the format of Text in JTextfield
