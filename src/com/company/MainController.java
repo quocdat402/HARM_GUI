@@ -148,8 +148,8 @@ public class MainController {
 		view.getCenterPanel().addMouseListener(getInforMouseAdapter);
 		view.getCenterPanel().addMouseListener(nodeInfoMouseAdapter);
 		view.getCenterPanel().addMouseListener(arcInfoMouseAdapter);
-		view.getMntmAttackgraph().addActionListener(e -> attackGraphAction());
-		view.getMntmMetrics().addActionListener(e-> metricsAction());
+		//view.getMntmAttackgraph().addActionListener(e -> attackGraphAction());
+		//view.getMntmMetrics().addActionListener(e-> metricsAction());
 		view.getBtnNode().addActionListener(e -> activateNodeInt());
 		view.getBtnArc().addActionListener(e -> activateArcInt());
 		view.getBtnMove().addActionListener(e -> activateMoveInt());
@@ -167,6 +167,8 @@ public class MainController {
 		view.getNodeProperties().addActionListener(e->openNodeProp());
 		view.getBtnName().addActionListener(e->nameButtonAction());		
 		view.getBtnVul().addActionListener(e->vulButtonAction());
+        view.getBtnMetrics().addActionListener(e -> metricsAction());
+        view.getBtnAnalysis().addActionListener(e -> attackGraphAction());
 
 	}
 	

@@ -147,7 +147,7 @@ public class ResultView extends JFrame {
 
 		contentPane.add(splitPane, BorderLayout.CENTER);
 
-		JLabel lblOutput = new JLabel("Output");
+		JLabel lblOutput = new JLabel("Report Information");
 		lblOutput.setBounds(372, 16, 57, 15);
     	contentPane.add(lblOutput, BorderLayout.NORTH);
 	}

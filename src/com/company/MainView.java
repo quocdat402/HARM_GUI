@@ -85,8 +85,6 @@ public class MainView extends JFrame {
     private JMenuItem mntmMetrics;
     private JMenuItem mntmAttackgraph;
     
-	
-    
     private JFrame saveFrame;
     private JFileChooser fileChooser;
     
@@ -94,6 +92,11 @@ public class MainView extends JFrame {
 	private MainController controller;
 
 	private int arcPopupX, arcPopupY;
+
+	private JPanel menuPanel;
+    //private JButton btnProperty;
+    private JButton btnMetrics;
+    private JButton btnAnalysis;
 
    
     /**
@@ -132,16 +135,40 @@ public class MainView extends JFrame {
         JMenuItem mntmExit = new JMenuItem("Exit");
         mnFile.add(mntmExit);
         
-        JMenu mnTools = new JMenu("Tools");
-        menuBar.add(mnTools);
-        mntmMetrics = new JMenuItem("Metrics");
-        mntmAttackgraph = new JMenuItem("Analysis");
-        mntmProperty = new JMenuItem("Data Property");
+        // JMenu mnTools = new JMenu("Tools");
+        // menuBar.add(mnTools);
+        // mntmMetrics = new JMenuItem("Metrics");
+        // mntmAttackgraph = new JMenuItem("Run Analysis");
+        // mntmProperty = new JMenuItem("Data Property");
         
-        mnTools.add(mntmProperty);
-        mnTools.add(mntmMetrics);
-        mnTools.add(mntmAttackgraph); 
-        
+        // mnTools.add(mntmProperty);
+        // mnTools.add(mntmMetrics);
+        // mnTools.add(mntmAttackgraph);
+		
+		menuPanel = new JPanel();
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+        menuPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
+
+        //btnProperty = new JButton("Data Property");
+        btnMetrics = new JButton("Show Metrics");
+        btnAnalysis = new JButton("Run Analysis");
+
+		Dimension buttonSize = new Dimension(115, 30);
+
+		btnMetrics.setMaximumSize(buttonSize);
+        btnAnalysis.setMaximumSize(buttonSize);
+
+        //btnProperty.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnMetrics.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnAnalysis.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        //menuPanel.add(btnProperty);
+        //menuPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        menuPanel.add(btnMetrics);
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        menuPanel.add(btnAnalysis);
+
+        contentPane.add(menuPanel, BorderLayout.EAST);
 
         /*North Panel that contains buttons*/
         northPanel = new JPanel();
@@ -740,5 +767,13 @@ public class MainView extends JFrame {
 	public void setArcPopupY(int arcPopupY) {
 		this.arcPopupY = arcPopupY;
 	}
+
+    public JButton getBtnMetrics() {
+        return btnMetrics;
+    }
+
+    public JButton getBtnAnalysis() {
+        return btnAnalysis;
+    }
 }
 
