@@ -213,7 +213,7 @@ public class MetricsView extends JFrame {
 		gbc.gridy = 0;
 		gbc.insets = new Insets(2, 2, 2, 2);
 		
-		Dimension buttonSize = new Dimension(110, 25);
+		Dimension buttonSize = new Dimension(125, 25);
 		Insets buttonMargin = new Insets(2, 5, 2, 5);
 		
 
