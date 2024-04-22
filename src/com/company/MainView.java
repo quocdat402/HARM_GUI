@@ -149,11 +149,24 @@ public class MainView extends JFrame {
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
 
-        //btnProperty = new JButton("Data Property");
+		ImageIcon metricsIcon = new ImageIcon(getClass().getResource("/icons/metrics.png"));
+    	ImageIcon analysisIcon = new ImageIcon(getClass().getResource("/icons/analysis.png"));
+
+		int iconWidth = 21; // Adjust the width as needed
+		int iconHeight = 21; // Adjust the height as needed
+		Image metricsImage = metricsIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+		Image analysisImage = analysisIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+
+		ImageIcon resizedMetricsIcon = new ImageIcon(metricsImage);
+    	ImageIcon resizedAnalysisIcon = new ImageIcon(analysisImage);
+    
         btnMetrics = new JButton("Show Metrics");
         btnAnalysis = new JButton("Run Analysis");
 
-		Dimension buttonSize = new Dimension(115, 30);
+		btnMetrics.setIcon(resizedMetricsIcon);
+    	btnAnalysis.setIcon(resizedAnalysisIcon);
+
+		Dimension buttonSize = new Dimension(165, 30);
 
 		btnMetrics.setMaximumSize(buttonSize);
         btnAnalysis.setMaximumSize(buttonSize);
@@ -182,8 +195,8 @@ public class MainView extends JFrame {
 
 		// Set size for the icons
 		// Set size for the icons
-		int iconWidth = 21;
-		int iconHeight = 21;
+		//int iconWidth = 21;
+		//int iconHeight = 21;
 		int buttonRadius = 7;
 		Insets buttonMargin = new Insets(5, 10, 5, 10); 
 
