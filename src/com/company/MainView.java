@@ -19,11 +19,9 @@ import java.util.Map;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
-import java.awt.Image;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.Insets;
 
 
 public class MainView extends JFrame {
@@ -117,7 +115,7 @@ public class MainView extends JFrame {
         setContentPane(contentPane);
         setTitle("HARMs Simulator v0.0.1");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 600);
+        setBounds(100, 100, 880, 600);
         
         /*Menu navigation at the top*/
         JMenuBar menuBar = new JMenuBar();
@@ -134,23 +132,36 @@ public class MainView extends JFrame {
         mnFile.add(separator);
         JMenuItem mntmExit = new JMenuItem("Exit");
         mnFile.add(mntmExit);
-        
-        // JMenu mnTools = new JMenu("Tools");
-        // menuBar.add(mnTools);
-        // mntmMetrics = new JMenuItem("Metrics");
-        // mntmAttackgraph = new JMenuItem("Run Analysis");
-        // mntmProperty = new JMenuItem("Data Property");
-        
-        // mnTools.add(mntmProperty);
-        // mnTools.add(mntmMetrics);
-        // mnTools.add(mntmAttackgraph);
-		
+    		
+		/*North Panel that contains buttons*/
+
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BorderLayout());
+		contentPane.add(topPanel, BorderLayout.NORTH);
+
+        northPanel = new JPanel();
+        northPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Selector", TitledBorder.CENTER, TitledBorder.TOP));
+		northPanel.setPreferredSize(new Dimension(680, 100));
+		topPanel.add(northPanel, BorderLayout.WEST);
+        //contentPane.add(northPanel, BorderLayout.NORTH);
+
 		menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        menuPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
+        menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Tools", TitledBorder.CENTER, TitledBorder.TOP));
+		menuPanel.setPreferredSize(new Dimension(173, 100));
+		topPanel.add(menuPanel, BorderLayout.EAST);
+
+        centerPanel = new MyJPanel();
+        centerPanel.setName("centerPanel");
+        centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "WorkSpace", TitledBorder.CENTER, TitledBorder.TOP)); 
+        contentPane.add(centerPanel, BorderLayout.CENTER);
+        centerPanel.setLayout(null);
+
+		
 
 		ImageIcon metricsIcon = new ImageIcon(getClass().getResource("/icons/metrics.png"));
     	ImageIcon analysisIcon = new ImageIcon(getClass().getResource("/icons/analysis.png"));
+		int buttonRadius = 7;
 
 		int iconWidth = 21; // Adjust the width as needed
 		int iconHeight = 21; // Adjust the height as needed
@@ -160,44 +171,29 @@ public class MainView extends JFrame {
 		ImageIcon resizedMetricsIcon = new ImageIcon(metricsImage);
     	ImageIcon resizedAnalysisIcon = new ImageIcon(analysisImage);
     
-        btnMetrics = new JButton("Show Metrics");
-        btnAnalysis = new JButton("Run Analysis");
+        btnMetrics = new RoundedButton("Show Metrics", metricsIcon, buttonRadius);
+		btnMetrics.setBackground(Color.LIGHT_GRAY);
+        btnAnalysis = new RoundedButton("Run Analysis", analysisIcon, buttonRadius);
+		btnAnalysis.setBackground(Color.LIGHT_GRAY);
 
 		btnMetrics.setIcon(resizedMetricsIcon);
     	btnAnalysis.setIcon(resizedAnalysisIcon);
 
-		Dimension buttonSize = new Dimension(165, 30);
+		Dimension buttonSize = new Dimension(180, 30);
 
 		btnMetrics.setMaximumSize(buttonSize);
         btnAnalysis.setMaximumSize(buttonSize);
 
-        //btnProperty.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnMetrics.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnAnalysis.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //menuPanel.add(btnProperty);
-        //menuPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		btnMetrics.setAlignmentY(Component.CENTER_ALIGNMENT);
+		btnAnalysis.setAlignmentY(Component.CENTER_ALIGNMENT);
+        
         menuPanel.add(btnMetrics);
         menuPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         menuPanel.add(btnAnalysis);
-
-        contentPane.add(menuPanel, BorderLayout.EAST);
-
-        /*North Panel that contains buttons*/
-        northPanel = new JPanel();
-        northPanel.setBorder(BorderFactory.createTitledBorder("Selector"));
-        contentPane.add(northPanel, BorderLayout.NORTH);
-        centerPanel = new MyJPanel();
-        centerPanel.setName("centerPanel");
-        centerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Work Space", TitledBorder.CENTER, TitledBorder.TOP)); 
-        contentPane.add(centerPanel, BorderLayout.CENTER);
-        centerPanel.setLayout(null);
-
-		// Set size for the icons
-		// Set size for the icons
-		//int iconWidth = 21;
-		//int iconHeight = 21;
-		int buttonRadius = 7;
+		
 		Insets buttonMargin = new Insets(5, 10, 5, 10); 
 
 		// Undo button
