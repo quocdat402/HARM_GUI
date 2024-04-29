@@ -30,13 +30,14 @@ Graphical User Interface for HARMs
 
 ## Installation
 1. Install HARMs Engine at https://github.com/whistlebee/harmat<br />
-   Note: You will need Ubuntu 18.04 for HARMs Engine to work.
+   Note: You will need Ubuntu 18.04 or any linux distros that support python 3.5 or 3.6 for HARMs Engine to work.
 2. Choose “releases”
-   download "harmat-2.0-cp35-cp35m-linux_x86_64.whl" if you using python3.5
-   download "harmat-2.0-cp36-cp36m-linux_x86_64.whl" if you using python3.6
+   - download "harmat-2.0-cp35-cp35m-linux_x86_64.whl" if you using python3.5
+   - download "harmat-2.0-cp36-cp36m-linux_x86_64.whl" if you using python3.6
 3. Go to the directry where you had download the file, run
-    $ sudo pip3 install <file name>
-    <file name> is which file you have downloaded
+    - $ sudo pip3 install <file name>
+    - <file name> is which file you have downloaded
+4.     
 ```java
 git clone https://github.com/quocdat402/HARM_GUI.git
 cd HARM_GUI
