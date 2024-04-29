@@ -148,7 +148,7 @@ public class MainView extends JFrame {
 		menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Tools", TitledBorder.CENTER, TitledBorder.TOP));
-		menuPanel.setPreferredSize(new Dimension(173, 100));
+		menuPanel.setPreferredSize(new Dimension(175, 100));
 		topPanel.add(menuPanel, BorderLayout.EAST);
 
         centerPanel = new MyJPanel();
@@ -179,7 +179,7 @@ public class MainView extends JFrame {
 		btnMetrics.setIcon(resizedMetricsIcon);
     	btnAnalysis.setIcon(resizedAnalysisIcon);
 
-		Dimension buttonSize = new Dimension(180, 30);
+		Dimension buttonSize = new Dimension(136, 30);
 
 		btnMetrics.setMaximumSize(buttonSize);
         btnAnalysis.setMaximumSize(buttonSize);
@@ -191,7 +191,7 @@ public class MainView extends JFrame {
 		btnAnalysis.setAlignmentY(Component.CENTER_ALIGNMENT);
         
         menuPanel.add(btnMetrics);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 8)));
         menuPanel.add(btnAnalysis);
 		
 		Insets buttonMargin = new Insets(5, 10, 5, 10); 
