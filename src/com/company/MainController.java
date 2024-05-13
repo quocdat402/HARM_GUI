@@ -25,9 +25,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import adapters.ArcInfoMouseAdapter;
 import adapters.ArcMouseAdapter;
@@ -178,6 +181,7 @@ public class MainController {
         view.getBtnAnalysis().addActionListener(e -> attackGraphAction());
 		view.getMntmZoomIn().addActionListener(e -> zoomIn());
 		view.getMntmZoomOut().addActionListener(e -> zoomOut());
+		view.getMntmHowToUse().addActionListener(e -> showHowToUse());
 
 	}
 	
@@ -435,6 +439,22 @@ public class MainController {
 		view.getCenterPanel().setPreferredSize(new Dimension((int) (800 * zoomFactor), (int) (600 * zoomFactor)));
 		view.getCenterPanel().revalidate();
 		view.getCenterPanel().repaint();
+	}
+
+	private void showHowToUse() {
+		JDialog dialog = new JDialog(view, "How to Use", true);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setSize(800, 600); // Adjust the size as needed
+
+		JLabel imageLabel = new JLabel();
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/icons/node.png"));
+		imageLabel.setIcon(imageIcon);
+
+		JScrollPane scrollPane = new JScrollPane(imageLabel);
+		dialog.getContentPane().add(scrollPane);
+
+		dialog.setLocationRelativeTo(view);
+		dialog.setVisible(true);
 	}
 
 	/**

@@ -17,10 +17,10 @@ Graphical User Interface for HARMs
 -	Analayze data
 
 ## How to use
-- Draw Attack Graph
-- Set an Attacker and Target
-- Set all vulnerabilities on Arc
-- Run analysis or metrics on Tools menu
+- Use the top menu option to draw Attack Graph
+- Right click on the nodes to set an Attacker and Target
+- Right click on the arc to set all vulnerabilities 
+- Run analysis or metrics
 
 ## Usage Examples
 - Analysis<br />
