@@ -163,7 +163,7 @@ public class MainController {
 		view.getBtnArc().addActionListener(e -> activateArcInt());
 		view.getBtnMove().addActionListener(e -> activateMoveInt());
 		view.getBtnDelete().addActionListener(e -> activateDeleteInt());
-		view.getBtnGetinfo().addActionListener(e -> activateGetInfoInt());
+		//view.getBtnGetinfo().addActionListener(e -> activateGetInfoInt());
 		view.getNodeAttacker().addActionListener(e -> nodeAttacker());
 		view.getNodeTarget().addActionListener(e -> nodeTarget());
 		view.getMntmSave().addActionListener(e -> saveAction());
@@ -182,6 +182,7 @@ public class MainController {
 		view.getMntmZoomIn().addActionListener(e -> zoomIn());
 		view.getMntmZoomOut().addActionListener(e -> zoomOut());
 		view.getMntmHowToUse().addActionListener(e -> showHowToUse());
+		view.getBtnGetinfo().addActionListener(e -> createAttackTree());
 
 	}
 	
@@ -455,6 +456,11 @@ public class MainController {
 
 		dialog.setLocationRelativeTo(view);
 		dialog.setVisible(true);
+	}
+
+	private void createAttackTree() {
+		AttackTreeView attackTreeView = new AttackTreeView(this);
+		attackTreeView.setVisible(true);
 	}
 
 	/**
