@@ -444,10 +444,10 @@ public class MainController {
 	private void showHowToUse() {
 		JDialog dialog = new JDialog(view, "How to Use", true);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setSize(800, 600); // Adjust the size as needed
+		dialog.setSize(450, 180); 
 
 		JLabel imageLabel = new JLabel();
-		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/icons/node.png"));
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/icons/how_to_use.png"));
 		imageLabel.setIcon(imageIcon);
 
 		JScrollPane scrollPane = new JScrollPane(imageLabel);
