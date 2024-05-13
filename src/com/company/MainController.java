@@ -94,6 +94,7 @@ public class MainController {
 		view = v;
 		model = m;
 		initController();
+		loadDataFromFile();
 	}
 
 	/**
@@ -158,6 +159,7 @@ public class MainController {
 		view.getNodeAttacker().addActionListener(e -> nodeAttacker());
 		view.getNodeTarget().addActionListener(e -> nodeTarget());
 		view.getMntmSave().addActionListener(e -> saveAction());
+		view.getMntmSaveAs().addActionListener(e -> saveAsAction());
 		view.getMntmOpen().addActionListener(e -> loadAction());
 		view.getBtnUndo().addActionListener(e -> undoAction());
 		view.getBtnRedo().addActionListener(e -> redoAction());
@@ -271,12 +273,38 @@ public class MainController {
 		
 	}
 	
-	
+	public void saveAction() {
+		saveDataToFile(model.getDefaultSaveFilePath());
+	}
+
+	private void saveDataToFile(String filePath) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
+			out.writeObject(model.getNodes());
+			out.writeObject(model.getArcs());
+		} catch (IOException e) {
+			e.printStackTrace();
+			// Handle the exception appropriately (e.g., show an error message)
+		}
+	}
+
+	private void loadDataFromFile() {
+		String filePath = model.getDefaultSaveFilePath();
+		if (new File(filePath).exists()) {
+			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
+				model.setNodes((List<Node>) in.readObject());
+				model.setArcs((List<Arc>) in.readObject());
+				view.getCenterPanel().repaint();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+				// Handle the exception appropriately (e.g., show an error message)
+			}
+		}
+	}
 
 	/**
 	 * Save the data
 	 */
-	public void saveAction() {
+	public void saveAsAction() {
 
 		try {
 

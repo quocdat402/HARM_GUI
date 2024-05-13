@@ -77,7 +77,8 @@ public class MainView extends JFrame {
     
     private JMenuItem mntmNew;
     private JMenuItem mntmOpen;
-    private JMenuItem mntmSave;
+    private JMenuItem mntmSaveAs;
+	private JMenuItem mntmSave;
     
     private JMenuItem mntmProperty;
     private JMenuItem mntmMetrics;
@@ -126,8 +127,10 @@ public class MainView extends JFrame {
         mnFile.add(mntmNew);
         mntmOpen = new JMenuItem("Open");
         mnFile.add(mntmOpen);
-        mntmSave = new JMenuItem("Save");
-        mnFile.add(mntmSave);
+		mntmSave = new JMenuItem("Save");
+		mnFile.add(mntmSave);
+        mntmSaveAs = new JMenuItem("Save As");
+        mnFile.add(mntmSaveAs);
         JSeparator separator = new JSeparator();
         mnFile.add(separator);
         JMenuItem mntmExit = new JMenuItem("Exit");
@@ -143,12 +146,11 @@ public class MainView extends JFrame {
         northPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Selector", TitledBorder.CENTER, TitledBorder.TOP));
 		northPanel.setPreferredSize(new Dimension(680, 100));
 		topPanel.add(northPanel, BorderLayout.WEST);
-        //contentPane.add(northPanel, BorderLayout.NORTH);
 
 		menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Tools", TitledBorder.CENTER, TitledBorder.TOP));
-		menuPanel.setPreferredSize(new Dimension(175, 100));
+		menuPanel.setPreferredSize(new Dimension(180, 100));
 		topPanel.add(menuPanel, BorderLayout.EAST);
 
         centerPanel = new MyJPanel();
@@ -628,6 +630,12 @@ public class MainView extends JFrame {
 	}
 	public void setMntmOpen(JMenuItem mntmOpen) {
 		this.mntmOpen = mntmOpen;
+	}
+	public JMenuItem getMntmSaveAs() {
+		return mntmSaveAs;
+	}
+	public void setMntmSaveAs(JMenuItem mntmSaveAs) {
+		this.mntmSaveAs = mntmSaveAs;
 	}
 	public JMenuItem getMntmSave() {
 		return mntmSave;

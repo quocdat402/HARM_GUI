@@ -6,7 +6,8 @@ public class MainModel {
 	
 	private List<Node> nodes;
     private List<Arc> arcs;
-    
+    private String saveFilePath;
+	private String defaultSaveFilePath = "default_save.ser";
     /**
      * MainModel class corresponds to all the data of the program that the user works with.
      */
@@ -35,7 +36,18 @@ public class MainModel {
 		this.arcs = arcs;
 	}
 
+	public String getSaveFilePath() {
+		return saveFilePath;
+	}
 	
+	public void setSaveFilePath(String saveFilePath) {
+		this.saveFilePath = saveFilePath;
+	}
+	
+	public String getDefaultSaveFilePath() {
+		return defaultSaveFilePath;
+	}
+
 	
     
     
