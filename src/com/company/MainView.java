@@ -79,6 +79,9 @@ public class MainView extends JFrame {
     private JMenuItem mntmOpen;
     private JMenuItem mntmSaveAs;
 	private JMenuItem mntmSave;
+
+	private JMenuItem mntmZoomIn;
+	private JMenuItem mntmZoomOut;
     
     private JMenuItem mntmProperty;
     private JMenuItem mntmMetrics;
@@ -135,7 +138,15 @@ public class MainView extends JFrame {
         mnFile.add(separator);
         JMenuItem mntmExit = new JMenuItem("Exit");
         mnFile.add(mntmExit);
-    		
+
+		/*View for zoom in and out */
+		JMenu mnView = new JMenu("View");
+    	menuBar.add(mnView);
+		mntmZoomIn = new JMenuItem("Zoom In");
+		mnView.add(mntmZoomIn);
+		mntmZoomOut = new JMenuItem("Zoom Out");
+		mnView.add(mntmZoomOut);
+
 		/*North Panel that contains buttons*/
 
 		JPanel topPanel = new JPanel();
@@ -792,5 +803,13 @@ public class MainView extends JFrame {
     public JButton getBtnAnalysis() {
         return btnAnalysis;
     }
+
+	public JMenuItem getMntmZoomIn() {
+		return mntmZoomIn;
+	}
+	
+	public JMenuItem getMntmZoomOut() {
+		return mntmZoomOut;
+	}
 }
 

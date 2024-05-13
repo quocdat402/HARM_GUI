@@ -1,6 +1,7 @@
 package com.company;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -83,7 +84,11 @@ public class MainController {
 
 	private ResultView resultView;
 	private MetricsView metricsView;
-	
+
+	/*Zoom in and out */
+	private double zoomFactor = 1.0;
+	private final double ZOOM_STEP = 0.1;
+
 	private int port;
 	
 	/**
@@ -171,6 +176,8 @@ public class MainController {
 		view.getBtnVul().addActionListener(e->vulButtonAction());
         view.getBtnMetrics().addActionListener(e -> metricsAction());
         view.getBtnAnalysis().addActionListener(e -> attackGraphAction());
+		view.getMntmZoomIn().addActionListener(e -> zoomIn());
+		view.getMntmZoomOut().addActionListener(e -> zoomOut());
 
 	}
 	
@@ -293,7 +300,7 @@ public class MainController {
 			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
 				model.setNodes((List<Node>) in.readObject());
 				model.setArcs((List<Arc>) in.readObject());
-				view.getCenterPanel().repaint();
+				applyZoom(); // Apply the initial zoom factor
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 				// Handle the exception appropriately (e.g., show an error message)
@@ -305,29 +312,21 @@ public class MainController {
 	 * Save the data
 	 */
 	public void saveAsAction() {
-
 		try {
-
 			/*
 			 * Set up the directory to save the file
 			 */
 			view.getFileChooser().setDialogTitle("save file");
 			view.getFileChooser().setCurrentDirectory(new File(System.getProperty("user.dir")));
 			int userSelection = view.getFileChooser().showSaveDialog(view.getSaveFrame());
-			File fileToSave = null;
-			
+			File fileToSave = null;	
 			if (userSelection == JFileChooser.APPROVE_OPTION) {
-
 				fileToSave = view.getFileChooser().getSelectedFile();
-			}
-			
+			}			
 			if (fileToSave == null) {
-
 			} else {
-
 				FileOutputStream file = new FileOutputStream(fileToSave);
 				ObjectOutputStream out = new ObjectOutputStream(file);
-
 				/*
 				 * Write objects into Outputstream
 				 */
@@ -415,6 +414,27 @@ public class MainController {
 
 		view.getCenterPanel().repaint();
 
+	}
+
+	public void zoomIn() {
+		zoomFactor += ZOOM_STEP;
+		applyZoom();
+	}
+	
+	private void zoomOut() {
+		if (zoomFactor > ZOOM_STEP) {
+			zoomFactor -= ZOOM_STEP;
+			applyZoom();
+		}
+	}
+
+	private void applyZoom() {
+		for (Node node : model.getNodes()) {
+			node.updateSize(zoomFactor);
+		}
+		view.getCenterPanel().setPreferredSize(new Dimension((int) (800 * zoomFactor), (int) (600 * zoomFactor)));
+		view.getCenterPanel().revalidate();
+		view.getCenterPanel().repaint();
 	}
 
 	/**

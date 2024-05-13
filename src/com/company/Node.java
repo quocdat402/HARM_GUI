@@ -22,6 +22,7 @@ public class Node implements Serializable{
 	private boolean attacker;
 	private boolean target;
 	
+	private static final int INITIAL_SIZE = 25; // Initial size of the node
 	
 	/**
 	 * Initialize all the information of Node
@@ -39,7 +40,6 @@ public class Node implements Serializable{
 		this.target = target;
 		
 	}
-	
 	/*
 	 * Update the color based on the type of node
 	 */
@@ -53,6 +53,10 @@ public class Node implements Serializable{
 			setColor(new Color(66, 224, 245));
 		}
 	}
+
+	public void updateSize(double zoomFactor) {
+        diameter = (int) (INITIAL_SIZE * zoomFactor);
+    }
 
 	/**
 	 * Draw a node on the centrepane
