@@ -9,7 +9,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 
@@ -22,7 +21,7 @@ public class AttackTreeView extends JFrame {
     public AttackTreeView(MainController controller) {
         setTitle("Create Attack Tree");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(900, 850));
+        setPreferredSize(new Dimension(800, 850));
 
         // Create the main panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -33,11 +32,9 @@ public class AttackTreeView extends JFrame {
         // Create the "File" menu
         JMenu fileMenu = new JMenu("File");
         // Add menu items to the "File" menu
-        JMenuItem newMenuItem = new JMenuItem("New");
         JMenuItem openMenuItem = new JMenuItem("Open");
         JMenuItem saveMenuItem = new JMenuItem("Save");
         JMenuItem saveAsMenuItem = new JMenuItem("Save As");
-        fileMenu.add(newMenuItem);
         fileMenu.add(openMenuItem);
         fileMenu.add(saveMenuItem);
         fileMenu.add(saveAsMenuItem);
