@@ -23,7 +23,7 @@ Graphical User Interface for HARMs
 - Run analysis or metrics
 
 ## How to use the attack tree
-The attack tree is generated from text.
+Attack tree is generated from text.
 
 In the text area, define the structure of the attack tree using the following format:
 
@@ -34,6 +34,7 @@ In the text area, define the structure of the attack tree using the following fo
 - Child nodes should have more equals signs than their parent node.
 
 For example:
+
 =Root Node
 
 ==Child Node 1
