@@ -27,18 +27,24 @@ The attack tree is generated from text.
 
 In the text area, define the structure of the attack tree using the following format:
 
-Use equals signs (=) to indicate the level of each node in the tree hierarchy.
-Each node should be on a separate line.
-The number of equals signs before a node represents its level in the tree.
-The root node should have only one equals sign (=).
-Child nodes should have more equals signs than their parent node.
+- Use equals signs (=) to indicate the level of each node in the tree hierarchy.
+- Each node should be on a separate line.
+- The number of equals signs before a node represents its level in the tree.
+- The root node should have only one equals sign (=).
+- Child nodes should have more equals signs than their parent node.
 
 For example:
 =Root Node
+
 ==Child Node 1
+
 ===Grandchild Node 1
+
 ===Grandchild Node 2
+
 ==Child Node 2
+
+After entering the attack tree structure, click on the "Generate Tree" button.
 
 ## Usage Examples
 - Analysis<br />
