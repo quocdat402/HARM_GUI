@@ -16,11 +16,29 @@ Graphical User Interface for HARMs
 -	Save and load data
 -	Analayze data
 
-## How to use
+## How to use the attack graph
 - Use the top menu option to draw Attack Graph
 - Right click on the nodes to set an Attacker and Target
 - Right click on the arc to set all vulnerabilities 
 - Run analysis or metrics
+
+## How to use the attack tree
+The attack tree is generated from text.
+
+In the text area, define the structure of the attack tree using the following format:
+
+Use equals signs (=) to indicate the level of each node in the tree hierarchy.
+Each node should be on a separate line.
+The number of equals signs before a node represents its level in the tree.
+The root node should have only one equals sign (=).
+Child nodes should have more equals signs than their parent node.
+
+For example:
+=Root Node
+==Child Node 1
+===Grandchild Node 1
+===Grandchild Node 2
+==Child Node 2
 
 ## Usage Examples
 - Analysis<br />

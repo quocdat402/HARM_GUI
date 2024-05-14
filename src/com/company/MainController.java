@@ -182,7 +182,7 @@ public class MainController {
 		view.getMntmZoomIn().addActionListener(e -> zoomIn());
 		view.getMntmZoomOut().addActionListener(e -> zoomOut());
 		view.getMntmHowToUse().addActionListener(e -> showHowToUse());
-		view.getBtnGetinfo().addActionListener(e -> createAttackTree());
+		view.getBtnGetinfo().addActionListener(e -> createAttackTree());	
 
 	}
 	
@@ -442,7 +442,7 @@ public class MainController {
 		view.getCenterPanel().repaint();
 	}
 
-	private void showHowToUse() {
+	public void showHowToUse() {
 		JDialog dialog = new JDialog(view, "How to Use", true);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setSize(450, 180); 
@@ -458,8 +458,24 @@ public class MainController {
 		dialog.setVisible(true);
 	}
 
+	public void showHowToUseAT() {
+		JDialog dialog = new JDialog(view, "How to Use", true);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setSize(450, 180); 
+
+		JLabel imageLabel = new JLabel();
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/icons/how_to_use_at.png"));
+		imageLabel.setIcon(imageIcon);
+
+		JScrollPane scrollPane = new JScrollPane(imageLabel);
+		dialog.getContentPane().add(scrollPane);
+
+		dialog.setLocationRelativeTo(view);
+		dialog.setVisible(true);
+	}
+
 	private void createAttackTree() {
-		AttackTreeView attackTreeView = new AttackTreeView(this);
+		AttackTreeView attackTreeView = new AttackTreeView(this, this);
 		attackTreeView.setVisible(true);
 	}
 

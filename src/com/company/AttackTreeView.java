@@ -16,11 +16,14 @@ public class AttackTreeView extends JFrame {
     private JPanel attackTreePanel;
     private JTextArea textArea;
     private JButton btnGenerateTree;
+    private MainController mainController;
 
-    public AttackTreeView(MainController controller) {
+    public AttackTreeView(MainController controller, MainController mainController) {
+
+        this.mainController = mainController;
         setTitle("Create Attack Tree");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(1000, 850));
+        setPreferredSize(new Dimension(1100, 900));
 
         // Create the main panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -50,6 +53,12 @@ public class AttackTreeView extends JFrame {
         // Set the menu bar for the frame
         setJMenuBar(menuBar);
 
+        // Add action listeners to the menu items
+        openMenuItem.addActionListener(e -> mainController.loadAction());
+        saveMenuItem.addActionListener(e -> mainController.saveAction());
+        saveAsMenuItem.addActionListener(e -> mainController.saveAsAction());
+        howToCreateMenuItem.addActionListener(e -> mainController.showHowToUseAT());
+
         // Create the attack tree panel
         attackTreePanel = new JPanel();
         attackTreePanel.setLayout(null);
@@ -57,8 +66,9 @@ public class AttackTreeView extends JFrame {
 
         // Create the text area and scroll pane
         textArea = new JTextArea();
+        textArea.setFont(textArea.getFont().deriveFont(17f));
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(250, 200));
+        scrollPane.setPreferredSize(new Dimension(200, 250));
 
         // Add the text area to the top-right corner
         JPanel topRightPanel = new JPanel(new BorderLayout());
