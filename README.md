@@ -28,39 +28,27 @@ Attack tree is generated from text.
 
 In the text area, define the structure of the attack tree using the following format:
 
-- Use equals signs (=) to indicate the level of each node in the tree hierarchy.
-- Each node should be on a separate line.
-- The number of equals signs before a node represents its level in the tree.
-- The root node should have only one equals sign (=).
-- Child nodes should have more equals signs than their parent node.
-- To add an AND, OR gate to the tree use the prefix AND, OR before the text.
+- Each line represents a node in the attack tree.
+- The level of a node is determined by the number of leading equals signs (=) before the node text.
+- The root node should have only one leading equals sign (=).
+- Child nodes should have more leading equals signs than their parent node.
+- Optional: You can specify the gate type (AND or OR) at the beginning of a node's text, separated by a space.
 
-For example:
+Example attack tree text:
 
 =Root Node
 
-==Child Node 1
+==AND Child Node 1
 
-===Grandchild Node 1
+===Grandchild Node 1.1
 
-===Grandchild Node 2
+===Grandchild Node 1.2
 
-==Child Node 2
+==OR Child Node 2
 
-Example 2
-=AND 1
+===Grandchild Node 2.1
 
-==OR 2
-
-=== 3
-
-=== 4
-
-== AND 5
-
-=== 6
-
-=== 7
+===Grandchild Node 2.2
 
 After entering the attack tree structure, click on the "Generate Tree" button.
 
