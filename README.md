@@ -2,7 +2,7 @@
 Graphical User Interface for HARMs
 
 ## Description
--	This is a GUI tool for HARMs written based on Java SWT. The tool support graph-based attack models in HARMs. It also provides security analysis using HARMs Engine.
+-	This is a GUI tool for HARMs written based on Java SWT. The tool support graph-based and tree-based attack models in HARMs. It also provides security analysis for attack graph using HARMs Engine.
 
 ![Main](./img/main.png)
  
@@ -15,6 +15,7 @@ Graphical User Interface for HARMs
 -	Clear all
 -	Save and load data
 -	Analayze data
+-  Create attack tree
 
 ## How to use the attack graph
 - Use the top menu option to draw Attack Graph

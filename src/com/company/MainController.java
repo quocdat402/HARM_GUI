@@ -461,7 +461,7 @@ public class MainController {
 	public void showHowToUseAT() {
 		JDialog dialog = new JDialog(view, "How to Use", true);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setSize(450, 180); 
+		dialog.setSize(645, 580); 
 
 		JLabel imageLabel = new JLabel();
 		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/icons/how_to_use_at.png"));
