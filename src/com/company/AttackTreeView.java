@@ -80,9 +80,9 @@ public class AttackTreeView extends JFrame {
         
         JPanel buttonPanel = new JPanel();
         btnGenerateTree = new JButton("Generate Tree");
-        btnGenerateTree.setPreferredSize(new Dimension(180, 35));
+        btnGenerateTree.setPreferredSize(new Dimension(250, 35));
         btnGenerateTree.setFont(btnGenerateTree.getFont().deriveFont(Font.BOLD, 15));
-        btnGenerateTree.setBorder(BorderFactory.createLineBorder(Color.blue, 2, true));
+        btnGenerateTree.setBorder(BorderFactory.createLineBorder(new Color(132, 176, 227), 3, true));
         btnGenerateTree.addActionListener(e -> {
             AttackTreeController viewController = new AttackTreeController(this);
             viewController.generateAttackTree();
