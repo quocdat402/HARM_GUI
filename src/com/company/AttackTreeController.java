@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
@@ -26,7 +27,7 @@ public class AttackTreeController {
     private void initController() {
         view.getBtnGenerateTree().addActionListener(e -> generateAttackTree());
     }
-
+    
     private void generateAttackTreeVisual(AttackTreeNode node, int depth, int siblingIndex, int parentX, int parentY) {
         // Create a graphical component for the current node
         JPanel nodePanel = new JPanel();
@@ -42,12 +43,7 @@ public class AttackTreeController {
         if (depth > 0) {
             x = parentX + (int) ((siblingIndex - (node.getParent().getChildren().size() - 1) / 2.0) * 200);
         }
-
         final int finalX = x;
-        final int finalParentX = parentX;
-        final int finalY = y;
-        final int finalParentY = parentY;
-
         int nodeWidth = 150;
         int nodeHeight = 50;
         nodePanel.setBounds(x, y, nodeWidth, nodeHeight);
@@ -55,37 +51,26 @@ public class AttackTreeController {
         // Add the node component to the attack tree panel
         view.getAttackTreePanel().add(nodePanel);
     
-        // Draw a line from the parent node to the current node
-        if (depth > 0) {
-            JPanel linePanel = new JPanel() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    Graphics2D g2d = (Graphics2D) g;
-                    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2d.setStroke(new BasicStroke(2));
-                    g2d.setColor(Color.BLACK);
-                    int parentX = finalParentX + nodeWidth / 2;
-                    int parentY = finalParentY + nodeHeight;
-                    int childX = finalX + nodeWidth / 2;
-                    int childY = finalY;
-                    g2d.drawLine(parentX, parentY, childX, childY);
+        // Create a custom panel to draw the lines
+        JPanel linePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setStroke(new BasicStroke(2));
+                if (depth > 0) {
+                    g2d.drawLine(parentX + 75, parentY + 50, finalX + 75, y);
                 }
-            };
-            linePanel.setOpaque(false);
-            int lineX = Math.min(finalX, finalParentX);
-            int lineY = parentY;
-            int lineWidth = Math.abs(finalX - finalParentX) + nodeWidth;
-            int lineHeight = finalY - lineY + nodeHeight;
-            linePanel.setBounds(lineX, lineY, lineWidth, lineHeight);
-            view.getAttackTreePanel().add(linePanel);
-        }
+            }
+        };
+        linePanel.setOpaque(false);
+        linePanel.setBounds(0, 0, view.getAttackTreePanel().getWidth(), view.getAttackTreePanel().getHeight());
+        view.getAttackTreePanel().add(linePanel);
     
-        // Recursive call for child nodes
+        // Recursively generate the child nodes
         for (int i = 0; i < node.getChildren().size(); i++) {
-            generateAttackTreeVisual(node.getChildren().get(i), depth + 1, i, finalX, y + nodeHeight);
+            generateAttackTreeVisual(node.getChildren().get(i), depth + 1, i, x, y);
         }
-
     }
 
     void generateAttackTree() {

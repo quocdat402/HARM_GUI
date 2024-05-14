@@ -16,12 +16,11 @@ public class AttackTreeView extends JFrame {
     private JPanel attackTreePanel;
     private JTextArea textArea;
     private JButton btnGenerateTree;
-    private MainController controller;
 
     public AttackTreeView(MainController controller) {
         setTitle("Create Attack Tree");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 850));
+        setPreferredSize(new Dimension(1000, 850));
 
         // Create the main panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -59,7 +58,7 @@ public class AttackTreeView extends JFrame {
         // Create the text area and scroll pane
         textArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(200, 200));
+        scrollPane.setPreferredSize(new Dimension(250, 200));
 
         // Add the text area to the top-right corner
         JPanel topRightPanel = new JPanel(new BorderLayout());
