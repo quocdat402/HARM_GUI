@@ -9,7 +9,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import java.awt.Font;
 import javax.swing.JTextArea;
+import javax.swing.BorderFactory;
+import java.awt.Color;
 
 
 public class AttackTreeView extends JFrame {
@@ -23,7 +26,7 @@ public class AttackTreeView extends JFrame {
         this.mainController = mainController;
         setTitle("Create Attack Tree");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(1100, 900));
+        setPreferredSize(new Dimension(1100, 1000));
 
         // Create the main panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -66,25 +69,33 @@ public class AttackTreeView extends JFrame {
 
         // Create the text area and scroll pane
         textArea = new JTextArea();
-        textArea.setFont(textArea.getFont().deriveFont(16f));
+        textArea.setFont(textArea.getFont().deriveFont(15f));
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(200, 230));
+        scrollPane.setPreferredSize(new Dimension(280, 260));
 
         // Add the text area to the top-right corner
         JPanel topRightPanel = new JPanel(new BorderLayout());
-        topRightPanel.add(scrollPane, BorderLayout.CENTER);
-        mainPanel.add(topRightPanel, BorderLayout.NORTH);
-
+        JPanel textAreaPanel = new JPanel(new BorderLayout());
+        textAreaPanel.add(scrollPane, BorderLayout.CENTER);
+        
+        JPanel buttonPanel = new JPanel();
         btnGenerateTree = new JButton("Generate Tree");
+        btnGenerateTree.setPreferredSize(new Dimension(180, 35));
+        btnGenerateTree.setFont(btnGenerateTree.getFont().deriveFont(Font.BOLD, 15));
+        btnGenerateTree.setBorder(BorderFactory.createLineBorder(Color.blue, 2, true));
         btnGenerateTree.addActionListener(e -> {
             AttackTreeController viewController = new AttackTreeController(this);
             viewController.generateAttackTree();
         });
+        buttonPanel.add(btnGenerateTree); 
 
+        textAreaPanel.add(buttonPanel, BorderLayout.SOUTH);
+        topRightPanel.add(textAreaPanel, BorderLayout.EAST);
+        mainPanel.add(topRightPanel, BorderLayout.NORTH);
         // Add the "Generate Tree" button to the bottom
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.add(btnGenerateTree);
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+        // JPanel bottomPanel = new JPanel();
+        // bottomPanel.add(btnGenerateTree);
+        // mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
         pack();
