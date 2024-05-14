@@ -66,9 +66,9 @@ public class AttackTreeView extends JFrame {
 
         // Create the text area and scroll pane
         textArea = new JTextArea();
-        textArea.setFont(textArea.getFont().deriveFont(17f));
+        textArea.setFont(textArea.getFont().deriveFont(16f));
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(200, 250));
+        scrollPane.setPreferredSize(new Dimension(200, 230));
 
         // Add the text area to the top-right corner
         JPanel topRightPanel = new JPanel(new BorderLayout());

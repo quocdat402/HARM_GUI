@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,6 +32,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import adapters.ArcInfoMouseAdapter;
 import adapters.ArcMouseAdapter;
@@ -473,7 +475,7 @@ public class MainController {
 		dialog.setLocationRelativeTo(view);
 		dialog.setVisible(true);
 	}
-
+	
 	private void createAttackTree() {
 		AttackTreeView attackTreeView = new AttackTreeView(this, this);
 		attackTreeView.setVisible(true);

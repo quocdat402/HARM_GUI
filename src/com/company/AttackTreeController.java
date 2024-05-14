@@ -3,6 +3,7 @@ package com.company;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.Stack;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -35,18 +36,26 @@ public class AttackTreeController {
         nodePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     
         JLabel nodeLabel = new JLabel(node.getText());
+        Font font = nodeLabel.getFont();
+        Font largerFont = font.deriveFont(font.getSize() + 2f); // Increase font size by 2 points
+        nodeLabel.setFont(largerFont);
         nodePanel.add(nodeLabel);
     
         // Calculate the position of the node based on depth and siblingIndex
         int x = parentX;
-        int y = parentY + 100;
+        int y = parentY + 80;
         if (depth > 0) {
-            x = parentX + (int) ((siblingIndex - (node.getParent().getChildren().size() - 1) / 2.0) * 200);
+            AttackTreeNode parent = node.getParent();
+            int spacing = calculateSpacing(node);
+            int parentWidth = spacing * parent.getChildren().size();
+            int currentWidth = spacing;
+            int currentIndex = siblingIndex;
+            x = parentX - parentWidth / 2 + currentIndex * currentWidth + currentWidth / 2;
         }
         final int finalX = x;
-        int nodeWidth = 150;
-        int nodeHeight = 50;
-        nodePanel.setBounds(x, y, nodeWidth, nodeHeight);
+        int nodeWidth = 180;
+        int nodeHeight = 60;
+        nodePanel.setBounds(x - nodeWidth / 2, y, nodeWidth, nodeHeight);
     
         // Add the node component to the attack tree panel
         view.getAttackTreePanel().add(nodePanel);
@@ -59,7 +68,7 @@ public class AttackTreeController {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setStroke(new BasicStroke(2));
                 if (depth > 0) {
-                    g2d.drawLine(parentX + 75, parentY + 50, finalX + 75, y);
+                    g2d.drawLine(parentX, parentY + nodeHeight / 2, finalX, y);
                 }
             }
         };
@@ -68,9 +77,24 @@ public class AttackTreeController {
         view.getAttackTreePanel().add(linePanel);
     
         // Recursively generate the child nodes
-        for (int i = 0; i < node.getChildren().size(); i++) {
-            generateAttackTreeVisual(node.getChildren().get(i), depth + 1, i, x, y);
+        int childSiblingIndex = 0;
+        for (AttackTreeNode child : node.getChildren()) {
+            generateAttackTreeVisual(child, depth + 1, childSiblingIndex, x, y);
+            childSiblingIndex++;
         }
+    }
+
+    private int calculateSpacing(AttackTreeNode node) {
+        int descendants = countDescendants(node);
+        return 200 + 100 * descendants;
+    }
+    
+    private int countDescendants(AttackTreeNode node) {
+        int count = node.getChildren().size();
+        for (AttackTreeNode child : node.getChildren()) {
+            count += countDescendants(child);
+        }
+        return count;
     }
 
     void generateAttackTree() {
