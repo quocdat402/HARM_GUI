@@ -5,11 +5,13 @@ import java.util.List;
 
 public class AttackTreeNode {
     private String text;
+    private String gate;
     private List<AttackTreeNode> children;
     private AttackTreeNode parent;
 
-    public AttackTreeNode(String text) {
+    public AttackTreeNode(String text, String gate) {
         this.text = text;
+        this.gate = gate;
         this.children = new ArrayList<>();
         this.parent = null;
     }
@@ -33,5 +35,13 @@ public class AttackTreeNode {
 
     public void setParent(AttackTreeNode parent) {
         this.parent = parent;
+    }
+
+    public String getGate() {
+        return gate;
+    }
+
+    public void setGate(String gate) {
+        this.gate = gate;
     }
 }

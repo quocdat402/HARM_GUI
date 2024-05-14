@@ -33,6 +33,7 @@ In the text area, define the structure of the attack tree using the following fo
 - The number of equals signs before a node represents its level in the tree.
 - The root node should have only one equals sign (=).
 - Child nodes should have more equals signs than their parent node.
+- To add an AND, OR gate to the tree use the prefix AND, OR before the text.
 
 For example:
 
@@ -45,6 +46,21 @@ For example:
 ===Grandchild Node 2
 
 ==Child Node 2
+
+Example 2
+=AND 1
+
+==OR 2
+
+=== 3
+
+=== 4
+
+== AND 5
+
+=== 6
+
+=== 7
 
 After entering the attack tree structure, click on the "Generate Tree" button.
 

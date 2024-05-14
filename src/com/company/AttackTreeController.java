@@ -15,6 +15,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import java.awt.Component;
 import java.awt.GridBagLayout;
 
 public class AttackTreeController {
@@ -34,16 +36,18 @@ public class AttackTreeController {
         JPanel nodePanel = new JPanel();
         nodePanel.setLayout(new GridBagLayout());
         nodePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    
+        
+        // Create a JLabel for the node tex
         JLabel nodeLabel = new JLabel(node.getText());
         Font font = nodeLabel.getFont();
-        Font largerFont = font.deriveFont(font.getSize() + 2f); // Increase font size by 2 points
+        Font largerFont = font.deriveFont(font.getSize() + 3f); // Increase font size by 2 points
         nodeLabel.setFont(largerFont);
+        nodeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         nodePanel.add(nodeLabel);
-    
+
         // Calculate the position of the node based on depth and siblingIndex
         int x = parentX;
-        int y = parentY + 80;
+        int y = parentY + 100;
         if (depth > 0) {
             AttackTreeNode parent = node.getParent();
             int spacing = calculateSpacing(node);
@@ -59,6 +63,19 @@ public class AttackTreeController {
     
         // Add the node component to the attack tree panel
         view.getAttackTreePanel().add(nodePanel);
+
+        // Create a JLabel for the gate information
+        JLabel gateLabel = new JLabel(node.getGate());
+        gateLabel.setFont(largerFont);
+        gateLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        // Calculate the position of the gate label
+        int gateLabelX = x - nodeWidth / 2;
+        int gateLabelY = y + nodeHeight;
+        gateLabel.setBounds(gateLabelX, gateLabelY, nodeWidth, 20);
+        
+        // Add the gate label to the attack tree panel
+        view.getAttackTreePanel().add(gateLabel);
     
         // Create a custom panel to draw the lines
         JPanel linePanel = new JPanel() {
@@ -109,10 +126,17 @@ public class AttackTreeController {
         int treeHeight = calculateTreeHeight(rootNode);
         view.getAttackTreePanel().setPreferredSize(new Dimension(treeWidth, treeHeight));
     
+        // Calculate the center coordinates of the attack tree panel
+        int panelWidth = view.getAttackTreePanel().getWidth();
+        int panelHeight = view.getAttackTreePanel().getHeight();
+        int centerX = panelWidth / 2;
+        int centerY = panelHeight / 2;
+        
         // Generate the visual representation of the attack tree
-        int centerX = treeWidth / 2;
-        generateAttackTreeVisual(rootNode, 0, 0, centerX, 50);
-    
+        int rootX = centerX;
+        int rootY = 10;
+        generateAttackTreeVisual(rootNode, 0, 0, rootX, rootY);
+        
         // Refresh the attack tree panel
         view.getAttackTreePanel().revalidate();
         view.getAttackTreePanel().repaint();
@@ -153,7 +177,13 @@ public class AttackTreeController {
             int level = countLeadingEquals(line);
             String nodeText = line.substring(level).trim();
     
-            AttackTreeNode node = new AttackTreeNode(nodeText);
+            String gate = "";
+            if (nodeText.startsWith("AND ") || nodeText.startsWith("OR ")) {
+                gate = nodeText.substring(0, nodeText.indexOf(" "));
+                nodeText = nodeText.substring(nodeText.indexOf(" ") + 1);
+            }
+    
+            AttackTreeNode node = new AttackTreeNode(nodeText, gate);
     
             if (level == 1) {
                 rootNode = node;

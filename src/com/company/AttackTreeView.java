@@ -71,7 +71,7 @@ public class AttackTreeView extends JFrame {
         textArea = new JTextArea();
         textArea.setFont(textArea.getFont().deriveFont(15f));
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(280, 260));
+        scrollPane.setPreferredSize(new Dimension(280, 230));
 
         // Add the text area to the top-right corner
         JPanel topRightPanel = new JPanel(new BorderLayout());
@@ -80,7 +80,7 @@ public class AttackTreeView extends JFrame {
         
         JPanel buttonPanel = new JPanel();
         btnGenerateTree = new JButton("Generate Tree");
-        btnGenerateTree.setPreferredSize(new Dimension(250, 35));
+        btnGenerateTree.setPreferredSize(new Dimension(280, 35));
         btnGenerateTree.setFont(btnGenerateTree.getFont().deriveFont(Font.BOLD, 15));
         btnGenerateTree.setBorder(BorderFactory.createLineBorder(new Color(132, 176, 227), 3, true));
         btnGenerateTree.addActionListener(e -> {
