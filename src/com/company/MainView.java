@@ -121,7 +121,7 @@ public class MainView extends JFrame {
         setContentPane(contentPane);
         setTitle("HARMs Simulator v0.0.1");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 980, 600);
+        setBounds(100, 100, 1100, 800);
         
         /*Menu navigation at the top*/
         JMenuBar menuBar = new JMenuBar();
@@ -163,13 +163,13 @@ public class MainView extends JFrame {
 
         northPanel = new JPanel();
         northPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Selector", TitledBorder.CENTER, TitledBorder.TOP));
-		northPanel.setPreferredSize(new Dimension(780, 100));
+		northPanel.setPreferredSize(new Dimension(850, 100));
 		topPanel.add(northPanel, BorderLayout.WEST);
 
 		menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Tools", TitledBorder.CENTER, TitledBorder.TOP));
-		menuPanel.setPreferredSize(new Dimension(180, 100));
+		menuPanel.setPreferredSize(new Dimension(230, 100));
 		topPanel.add(menuPanel, BorderLayout.EAST);
 
         centerPanel = new MyJPanel();
@@ -215,7 +215,7 @@ public class MainView extends JFrame {
         menuPanel.add(Box.createRigidArea(new Dimension(0, 8)));
         menuPanel.add(btnAnalysis);
 		
-		Insets buttonMargin = new Insets(5, 5, 5, 5); 
+		Insets buttonMargin = new Insets(10, 10, 10, 10); 
 
 		// Undo button
 		ImageIcon undoIcon = new ImageIcon(getClass().getResource("/icons/undo.png"));
