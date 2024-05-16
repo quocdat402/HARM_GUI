@@ -200,7 +200,7 @@ public class MainView extends JFrame {
 		btnMetrics.setIcon(resizedMetricsIcon);
     	btnAnalysis.setIcon(resizedAnalysisIcon);
 
-		Dimension buttonSize = new Dimension(145, 30);
+		Dimension buttonSize = new Dimension(160, 30);
 
 		btnMetrics.setMaximumSize(buttonSize);
         btnAnalysis.setMaximumSize(buttonSize);
@@ -316,7 +316,7 @@ public class MainView extends JFrame {
 		btnGetinfo.setVerticalTextPosition(SwingConstants.BOTTOM); // Set text position to bottom
 		btnGetinfo.setHorizontalTextPosition(SwingConstants.CENTER); 
         btnGetinfo.setBackground(Color.LIGHT_GRAY);
-		btnGetinfo.setPreferredSize(new Dimension(140, 50));
+		btnGetinfo.setPreferredSize(new Dimension(170, 50));
 		btnGetinfo.setMaximumSize(btnGetinfo.getPreferredSize());
 		btnGetinfo.setMargin(buttonMargin);
         northPanel.add(btnGetinfo);
