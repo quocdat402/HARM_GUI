@@ -26,7 +26,7 @@ public class AttackTreeView extends JFrame {
         this.mainController = mainController;
         setTitle("Create Attack Tree");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(1100, 1000));
+        setPreferredSize(new Dimension(900, 800));
 
         // Create the main panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());

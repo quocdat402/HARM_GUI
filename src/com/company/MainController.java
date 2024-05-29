@@ -297,7 +297,7 @@ public class MainController {
 			out.writeObject(model.getArcs());
 		} catch (IOException e) {
 			e.printStackTrace();
-			// Handle the exception appropriately (e.g., show an error message)
+			
 		}
 	}
 
@@ -310,7 +310,7 @@ public class MainController {
 				applyZoom(); // Apply the initial zoom factor
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
-				// Handle the exception appropriately (e.g., show an error message)
+				
 			}
 		}
 	}

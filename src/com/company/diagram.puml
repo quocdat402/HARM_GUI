@@ -1,0 +1,49 @@
+@startuml
+
+package com.company {
+    class Arc
+    class AttackTreeController{
+        -AttackTreeView view
+        +AttackTreeController(AttackTreeView view)
+    }
+    class AttackTreeNode
+    class AttackTreeView 
+    class InputStreamConsumerThread {
+        +run()
+    }
+
+    class MainController {
+        -MainModel model
+        -MainView view
+        +MainController(MainModel model, MainView view)
+    }
+    class MainModel
+    class MainView
+    class MetricsView
+    class Node
+    class ResultView
+}
+
+package "Python Server" {
+    class Server {
+        +openServer()
+        +openClient()
+    }
+}
+
+MainController --> MainModel
+MainController --> MainView
+MainController --> AttackTreeView
+AttackTreeView --> AttackTreeController
+AttackTreeNode --> AttackTreeController
+MainView --> MetricsView
+MainView --> ResultView
+MainModel --> Node
+MainModel --> Arc
+MainController --> InputStreamConsumerThread
+MainController --> Server: Send data
+
+Server --> MainController: Send output
+
+
+@enduml

@@ -54,9 +54,9 @@ After entering the attack tree structure, click on the "Generate Tree" button.
 
 ## Usage Examples
 - Analysis<br />
-![Analysis](./img/analysis.png)
+![Analysis](./img/result.png)
 - Metrics<br />
-![Metrics](./img/metrics.png)
+![Metrics](./img/metrics view.png)
 
 ## Installation
 1. Install HARMs Engine at https://github.com/whistlebee/harmat<br />
